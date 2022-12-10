@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e38b4ea0239f445a8e632adff2326f0, type: 3}
+  m_Name: Sword lvl 3
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 811659026035613124, guid: dc243796b57e44ebca3778729b3a0765, type: 3}
+  itemType: 0
+  description: A sword for slashing and stabbing.
+  equipmentType: 2
+  rarityType: 0
+  durability: 64
+  damageValue: 20
