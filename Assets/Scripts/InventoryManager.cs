@@ -40,13 +40,9 @@ public class InventoryManager : MonoBehaviour
         foreach (var slot in inventory.Container)
         {
             if (itemsDisplayed.ContainsKey(slot))
-            {
                 itemsDisplayed[slot].GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
-            }
             else
-            {
                 InstantiateNewSlot(slot);
-            }
         }
     }
 
