@@ -5,6 +5,6 @@ public class QuestObject : ItemObject
 {
     private void Awake()
     {
-        itemType = ItemType.Quest;
+        type = ItemType.Quest;
     }
 }

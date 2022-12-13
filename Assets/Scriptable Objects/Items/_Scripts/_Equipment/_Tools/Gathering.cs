@@ -6,7 +6,7 @@ public class Gathering : ToolObject
 {
     private void Awake()
     {
-        itemType = ItemType.Equipment;
+        type = ItemType.Equipment;
         equipmentType = EquipmentType.Tool;
         toolType = ToolType.Gathering;
         rarityType = RarityType.Common;

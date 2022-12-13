@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bc662b7406a4739bf493c22392e9e2, type: 3}
   m_Name: HP potion lvl 1
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3576063206979450137, guid: 3b820152f6a0f458287de7baa1c24e34, type: 3}
-  itemType: 2
+  uiDisplay: {fileID: 21300000, guid: 117b17facff65dc42b1b57deb7c21551, type: 3}
+  type: 2
   description: One of the most common items you should have. Restores 30 health.
+  maxStack: 3
   potionType: 0
   restoreHealthValue: 30

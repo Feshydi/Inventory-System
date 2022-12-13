@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd86651f7f874abda80ad0c79d9e2d1, type: 3}
   m_Name: Bones
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1333868670767514496, guid: d833dfa3342da402b957ad45582baee4, type: 3}
-  itemType: 5
+  uiDisplay: {fileID: 21300000, guid: 844a1050d03ba5046bfb86af34a81e47, type: 3}
+  type: 5
   description: The left overs of those youv slain!
+  maxStack: 3

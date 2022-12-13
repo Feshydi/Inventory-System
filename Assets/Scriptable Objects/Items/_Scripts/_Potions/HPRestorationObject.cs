@@ -7,7 +7,7 @@ public class HPRestorationObject : PotionObject
 
     private void Awake()
     {
-        itemType = ItemType.Potion;
+        type = ItemType.Potion;
         potionType = PotionType.HPRestoration;
     }
 }

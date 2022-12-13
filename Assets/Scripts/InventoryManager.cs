@@ -1,44 +1,29 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class InventoryManager : MonoBehaviour
-{
+public class InventoryManager : MonoBehaviour {
+    public GameObject inventoryPrefab;
     public InventoryObject inventory;
     Dictionary<InventorySlot, GameObject> itemsDisplayed = new Dictionary<InventorySlot, GameObject>();
 
-    private void Start()
-    {
+    private void Start() {
         CreateDisplay();
     }
 
-    private void Update()
-    {
+    private void Update() {
         UpdateDisplay();
     }
 
-    private void CreateDisplay()
-    {
-        foreach (var slot in inventory.Container)
-        {
+    private void CreateDisplay() {
+        foreach (var slot in inventory.Container.Items) {
             InstantiateNewSlot(slot);
         }
     }
 
-    private void UpdateDisplay()
-    {
-        if (inventory.Container.Count == 0)
-        {
-            foreach (Transform child in transform)
-            {
-                Destroy(child.gameObject);
-            }
-        }
-
-        foreach (var slot in inventory.Container)
-        {
+    private void UpdateDisplay() {
+        foreach (var slot in inventory.Container.Items) {
             if (itemsDisplayed.ContainsKey(slot))
                 itemsDisplayed[slot].GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
             else
@@ -46,9 +31,15 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void InstantiateNewSlot(InventorySlot _slot)
-    {
-        var obj = Instantiate(_slot.item.prefab, Vector3.zero, Quaternion.identity, transform);
+    public void ClearDisplay() {
+        foreach (Transform child in transform) {
+            Destroy(child.gameObject);
+        }
+    }
+
+    private void InstantiateNewSlot(InventorySlot _slot) {
+        var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
+        obj.transform.GetChild(0).GetComponent<Image>().sprite = inventory.database.GetItem[_slot.item.Id].uiDisplay;
         obj.GetComponentInChildren<TextMeshProUGUI>().text = _slot.amount.ToString("n0");
         itemsDisplayed.Add(_slot, obj);
     }

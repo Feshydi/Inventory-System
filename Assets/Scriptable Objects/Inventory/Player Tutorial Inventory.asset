@@ -15,12 +15,28 @@ MonoBehaviour:
   savePath: /Inventory.Save
   database: {fileID: 11400000, guid: ef164c1f14e67477e8bcf5cfb5dc7de3, type: 2}
   Container:
-  - ID: 8
-    item: {fileID: 11400000, guid: 853c483d2cda94cd199ae762df9612b1, type: 2}
-    amount: 1
-  - ID: 5
-    item: {fileID: 11400000, guid: 62c8cd8af8bbb4bb9a144aed6582cab8, type: 2}
-    amount: 1
-  - ID: 3
-    item: {fileID: 11400000, guid: 584bbaa30b6464524ad9f4e38cbeb206, type: 2}
-    amount: 10
+    Items:
+    - ID: 8
+      item:
+        Name: Sword lvl 3
+        Id: 8
+        MaxStack: 0
+      amount: 1
+    - ID: 5
+      item:
+        Name: Shield
+        Id: 5
+        MaxStack: 0
+      amount: 1
+    - ID: 3
+      item:
+        Name: HP potion lvl 3
+        Id: 3
+        MaxStack: 0
+      amount: 1
+    - ID: 0
+      item:
+        Name: Bones
+        Id: 0
+        MaxStack: 0
+      amount: 3

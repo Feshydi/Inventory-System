@@ -6,7 +6,7 @@ public class Cutting : ToolObject
 {
     private void Awake()
     {
-        itemType = ItemType.Equipment;
+        type = ItemType.Equipment;
         equipmentType = EquipmentType.Tool;
         toolType = ToolType.Cutting;
         rarityType = RarityType.Common;

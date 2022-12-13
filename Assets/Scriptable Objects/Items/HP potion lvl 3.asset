@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bc662b7406a4739bf493c22392e9e2, type: 3}
   m_Name: HP potion lvl 3
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1528747125787541085, guid: e1de1b4cac95c492a84b4b32c8d0abe9, type: 3}
-  itemType: 2
+  uiDisplay: {fileID: 21300000, guid: 7b3876a2b72c44540a4bbd5aaba9e506, type: 3}
+  type: 2
   description: There are rumors that it gives an unknown power. Restores 100 health.
+  maxStack: 3
   potionType: 0
   restoreHealthValue: 100

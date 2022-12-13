@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bc662b7406a4739bf493c22392e9e2, type: 3}
   m_Name: HP potion lvl 2
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3377946781126450019, guid: 7af255373047f4c318191dd8f15e1759, type: 3}
-  itemType: 2
+  uiDisplay: {fileID: 21300000, guid: 44dc65116207f4b46aa85443dae5ad96, type: 3}
+  type: 2
   description: Best choice for the adventures. Restores 50 health.
+  maxStack: 3
   potionType: 0
   restoreHealthValue: 70

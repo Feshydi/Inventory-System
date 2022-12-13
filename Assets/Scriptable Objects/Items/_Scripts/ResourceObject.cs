@@ -7,6 +7,6 @@ public class ResourceObject : ItemObject
 
     private void Awake()
     {
-        itemType = ItemType.Resource;
+        type = ItemType.Resource;
     }
 }

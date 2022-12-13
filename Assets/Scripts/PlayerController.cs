@@ -1,52 +1,45 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
     public GameObject inventoryWindow;
     public InventoryObject inventory;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.I)) {
             ShowOrHideInventoryWindow();
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        var item = other.GetComponent<Item>();
-        if (item)
-        {
-            inventory.AddItem(item.item, 1);
+    private void OnTriggerEnter(Collider other) {
+        var item = other.GetComponent<GroundItem>();
+        if (item) {
+            if (!inventory.Container.IsFull())
+                inventory.AddItem(new Item(item.item), 1);
+            else if (!inventory.AddItemToStack(new Item(item.item), 1))
+                return;
             Destroy(other.gameObject);
         }
     }
 
-    private void OnApplicationQuit()
-    {
-        inventory.Container.Clear();
+    private void OnApplicationQuit() {
+        ClearInventory();
     }
 
-    public void SaveInventory()
-    {
+    public void SaveInventory() {
         inventory.Save();
     }
 
-    public void LoadInvetory()
-    {
+    public void LoadInvetory() {
+        inventoryWindow.GetComponentInChildren<InventoryManager>().ClearDisplay();
         inventory.Load();
     }
 
-    public void ClearInventory()
-    {
+    public void ClearInventory() {
+        inventoryWindow.GetComponentInChildren<InventoryManager>().ClearDisplay();
         inventory.Clear();
     }
 
-    public void ShowOrHideInventoryWindow()
-    {
+    public void ShowOrHideInventoryWindow() {
         inventoryWindow.SetActive(!inventoryWindow.activeSelf);
     }
 }

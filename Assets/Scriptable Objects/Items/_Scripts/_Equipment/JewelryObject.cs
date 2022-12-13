@@ -9,7 +9,7 @@ public class Jewelry : EquipmentObject
 
     private void Awake()
     {
-        itemType = ItemType.Equipment;
+        type = ItemType.Equipment;
         equipmentType = EquipmentType.Jewelry;
         rarityType = RarityType.Common;
     }

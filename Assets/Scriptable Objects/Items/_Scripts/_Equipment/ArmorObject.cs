@@ -7,7 +7,7 @@ public class ArmorObject : EquipmentObject
 
     private void Awake()
     {
-        itemType = ItemType.Equipment;
+        type = ItemType.Equipment;
         equipmentType = EquipmentType.Armor;
         rarityType = RarityType.Common;
     }
