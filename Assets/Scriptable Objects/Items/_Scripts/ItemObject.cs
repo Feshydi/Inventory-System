@@ -23,7 +23,7 @@ public class Item {
 }
 
 public abstract class ItemObject : ScriptableObject {
-    [System.NonSerialized] public int Id;
+    [HideInInspector] public int Id;
     public Sprite uiDisplay;
     public ItemType type;
     [TextArea(15, 20)]

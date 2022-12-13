@@ -4,6 +4,10 @@ public class PlayerController : MonoBehaviour {
     public GameObject inventoryWindow;
     public InventoryObject inventory;
 
+    private void Start() {
+        LoadInvetory();
+    }
+
     private void Update() {
         if (Input.GetKeyDown(KeyCode.I)) {
             ShowOrHideInventoryWindow();
@@ -30,12 +34,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void LoadInvetory() {
-        inventoryWindow.GetComponentInChildren<InventoryManager>().ClearDisplay();
+        inventoryWindow.GetComponentInChildren<InventoryManager>().ClearSlots();
         inventory.Load();
     }
 
     public void ClearInventory() {
-        inventoryWindow.GetComponentInChildren<InventoryManager>().ClearDisplay();
+        inventoryWindow.GetComponentInChildren<InventoryManager>().ClearSlots();
         inventory.Clear();
     }
 
