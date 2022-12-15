@@ -67,9 +67,13 @@ public class InventoryManager : MonoBehaviour {
     }
 
     public void SwapItems(Transform obj1Transform, Transform obj2Transform) {
-        InventorySlot slot1 = itemsDisplayed[itemsTransform[obj1Transform]];
-        InventorySlot slot2 = itemsDisplayed[itemsTransform[obj2Transform]];
+        InventorySlot slot1 = GetSlotByTransform(obj1Transform);
+        InventorySlot slot2 = GetSlotByTransform(obj2Transform);
         inventory.SwapItems(slot1, slot2);
         CreateSlots();
+    }
+
+    public InventorySlot GetSlotByTransform(Transform _transform) {
+        return itemsDisplayed[itemsTransform[_transform]];
     }
 }

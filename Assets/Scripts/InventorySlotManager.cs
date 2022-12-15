@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class InventorySlotManager : MonoBehaviour, IDropHandler {
+
     public void OnDrop(PointerEventData eventData) {
         GameObject dropped = eventData.pointerDrag;
         InventoryItemManager inventoryItemManager = dropped.GetComponent<InventoryItemManager>();

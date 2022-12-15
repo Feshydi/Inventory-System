@@ -130,6 +130,8 @@ MonoBehaviour:
   parentAfterDrag: {fileID: 0}
   parentBeforeDrag: {fileID: 0}
   image: {fileID: 8989865760460639385}
+  database: {fileID: 11400000, guid: ef164c1f14e67477e8bcf5cfb5dc7de3, type: 2}
+  infoWindow: {fileID: 2006521078071348500, guid: 38bb180dedfc549c39c39bd4d5eef032, type: 3}
 --- !u!1 &5055307180503294688
 GameObject:
   m_ObjectHideFlags: 0
