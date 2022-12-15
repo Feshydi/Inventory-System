@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         var item = other.GetComponent<GroundItem>();
-        if (item && !inventory.IsFull()) {
+        if (item && !inventory.IsFull(new Item(item.item))) {
             inventory.AddItem(new Item(item.item), 1);
             Destroy(other.gameObject);
         }

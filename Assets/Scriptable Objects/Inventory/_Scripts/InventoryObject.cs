@@ -71,26 +71,29 @@ public class InventoryObject : ScriptableObject {
                 return slot;
             }
         }
-        // when inventory full
         return null;
     }
 
-    public bool IsFull() {
+    public bool IsFull(Item item) {
         foreach (var slot in Container.Items) {
-            if (slot.ID <= -1 || slot.amount < slot.item.MaxStack) {
+            if (slot.ID <= -1 || item.Id == slot.item.Id && slot.amount < slot.item.MaxStack) {
                 return false;
             }
         }
         return true;
     }
 
-    public void SwapItems(Transform transform1, Transform transform2) {
-
-        //int i1 = itemsTransform[transform1];
-        //int i2 = itemsTransform[transform2];
-        //InventorySlot inventorySlot = inventory.Container.Items[i1];
-        //inventory.Container.Items[i1] = inventory.Container.Items[i2];
-        //inventory.Container.Items[i2] = inventorySlot;
+    public void SwapItems(InventorySlot _slot1, InventorySlot _slot2) {
+        int ind1 = 0, ind2 = 0;
+        for (int i = 0; i < Container.Items.Length; i++) {
+            if (Container.Items[i] == _slot1)
+                ind1 = i;
+            if (Container.Items[i] == _slot2)
+                ind2 = i;
+        }
+        InventorySlot tempSlot = Container.Items[ind1];
+        Container.Items[ind1] = Container.Items[ind2];
+        Container.Items[ind2] = tempSlot;
     }
 
     [ContextMenu("Save")]

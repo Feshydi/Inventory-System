@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,7 +24,6 @@ public class InventoryItemManager : MonoBehaviour, IBeginDragHandler, IDragHandl
         transform.SetParent(parentAfterDrag);
         image.raycastTarget = true;
         InventoryManager InvMan = transform.GetComponentInParent<InventoryManager>();
-        //InvMan.SwapDisplayedItems(parentAfterDrag, parentBeforeDrag);
-        //InvMan.CreateSlots();
+        InvMan.SwapItems(parentAfterDrag, parentBeforeDrag);
     }
 }

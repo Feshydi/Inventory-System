@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 
 public class InventoryManager : MonoBehaviour {
     public GameObject inventoryPrefab;
     public InventoryObject inventory;
 
     Dictionary<GameObject, InventorySlot> itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
+    Dictionary<Transform, GameObject> itemsTransform = new Dictionary<Transform, GameObject>();
 
     private void Start() {
         CreateSlots();
@@ -40,11 +40,13 @@ public class InventoryManager : MonoBehaviour {
         Transform child = transform.GetChild(transform.GetChild(_childPos).GetSiblingIndex());
         var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, child);
         itemsDisplayed.Add(obj, slot);
+        itemsTransform.Add(child, obj);
         return;
     }
 
     public void ClearSlots() {
         itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
+        itemsTransform = new Dictionary<Transform, GameObject>();
         foreach (Transform _transform in transform) {
             foreach (Transform child in _transform) {
                 Destroy(child.gameObject);
@@ -64,15 +66,10 @@ public class InventoryManager : MonoBehaviour {
         }
     }
 
-    public void SwapDisplayedItems(Transform transform1, Transform transform2) {
-
-        //int i1 = itemsTransform[transform1];
-        //int i2 = itemsTransform[transform2];
-        //InventorySlot inventorySlot = inventory.Container.ItemsArray[i1];
-        //inventory.Container.ItemsArray[i1] = inventory.Container.ItemsArray[i2];
-        //inventory.Container.ItemsArray[i2] = inventorySlot;
-
-        //ClearSlots();
-        //itemsDisplayed = new Dictionary<InventorySlot, GameObject>();
+    public void SwapItems(Transform obj1Transform, Transform obj2Transform) {
+        InventorySlot slot1 = itemsDisplayed[itemsTransform[obj1Transform]];
+        InventorySlot slot2 = itemsDisplayed[itemsTransform[obj2Transform]];
+        inventory.SwapItems(slot1, slot2);
+        CreateSlots();
     }
 }
