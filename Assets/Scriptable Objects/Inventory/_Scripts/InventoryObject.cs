@@ -3,17 +3,30 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 [System.Serializable]
 public class InventorySlot {
-    public int ID;
+    public int ID = -1;
     public Item item;
     [Range(1, 99)]
-    public int amount = 1;
+    public int amount;
     private int maxStackAmount;
 
+    public InventorySlot() {
+        ID = -1;
+        item = null;
+        amount = 0;
+        maxStackAmount = 0;
+    }
+
     public InventorySlot(int _id, Item _item, int _amount, int _maxStackAmount) {
+        ID = _id;
+        item = _item;
+        amount = _amount;
+        maxStackAmount = _maxStackAmount;
+    }
+
+    public void UpdateSlot(int _id, Item _item, int _amount, int _maxStackAmount) {
         ID = _id;
         item = _item;
         amount = _amount;
@@ -28,14 +41,10 @@ public class InventorySlot {
 [System.Serializable]
 public class Inventory {
     public int capacity = 15;
-    public List<InventorySlot> Items;
+    public InventorySlot[] Items;
 
     public Inventory() {
-        Items = new List<InventorySlot>(capacity);
-    }
-
-    public bool IsFull() {
-        return Items.Count >= Items.Capacity;
+        Items = new InventorySlot[capacity];
     }
 }
 
@@ -46,18 +55,42 @@ public class InventoryObject : ScriptableObject {
     public Inventory Container = new Inventory();
 
     public void AddItem(Item _item, int _amount) {
-        if (!AddItemToStack(_item, _amount))
-            Container.Items.Add(new InventorySlot(_item.Id, _item, _amount, _item.MaxStack));
-    }
-
-    public bool AddItemToStack(Item _item, int _amount) {
         foreach (var slot in Container.Items) {
-            if (slot.item.Id == _item.Id && slot.amount < slot.item.MaxStack) {
+            if (slot.ID == _item.Id && slot.amount < slot.item.MaxStack) {
                 slot.AddAmount(_amount);
-                return true;
+                return;
             }
         }
-        return false;
+        SetEmptySLot(_item, _amount);
+    }
+
+    private InventorySlot SetEmptySLot(Item _item, int _amount) {
+        foreach (var slot in Container.Items) {
+            if (slot.ID <= -1) {
+                slot.UpdateSlot(_item.Id, _item, _amount, _item.MaxStack);
+                return slot;
+            }
+        }
+        // when inventory full
+        return null;
+    }
+
+    public bool IsFull() {
+        foreach (var slot in Container.Items) {
+            if (slot.ID <= -1 || slot.amount < slot.item.MaxStack) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void SwapItems(Transform transform1, Transform transform2) {
+
+        //int i1 = itemsTransform[transform1];
+        //int i2 = itemsTransform[transform2];
+        //InventorySlot inventorySlot = inventory.Container.Items[i1];
+        //inventory.Container.Items[i1] = inventory.Container.Items[i2];
+        //inventory.Container.Items[i2] = inventorySlot;
     }
 
     [ContextMenu("Save")]
@@ -92,5 +125,8 @@ public class InventoryObject : ScriptableObject {
     [ContextMenu("Clear")]
     public void Clear() {
         Container = new Inventory();
+        for (int i = 0; i < Container.Items.Length; i++) {
+            Container.Items[i] = new InventorySlot();
+        }
     }
 }

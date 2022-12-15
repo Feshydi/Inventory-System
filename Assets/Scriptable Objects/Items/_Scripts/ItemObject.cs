@@ -23,7 +23,7 @@ public class Item {
 }
 
 public abstract class ItemObject : ScriptableObject {
-    [HideInInspector] public int Id;
+    public int Id;
     public Sprite uiDisplay;
     public ItemType type;
     [TextArea(15, 20)]

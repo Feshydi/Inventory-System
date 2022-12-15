@@ -11,7 +11,7 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler {
             inventoryItemManager.parentAfterDrag = transform;
         } else {
             Transform slot2 = transform;
-            transform.GetChild(0).transform.SetParent(inventoryItemManager.parentAfterDrag);
+            transform.GetChild(0).SetParent(inventoryItemManager.parentAfterDrag);
             inventoryItemManager.parentAfterDrag = slot2;
         }
     }

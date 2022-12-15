@@ -4,10 +4,6 @@ public class PlayerController : MonoBehaviour {
     public GameObject inventoryWindow;
     public InventoryObject inventory;
 
-    private void Start() {
-        LoadInvetory();
-    }
-
     private void Update() {
         if (Input.GetKeyDown(KeyCode.I)) {
             ShowOrHideInventoryWindow();
@@ -16,11 +12,8 @@ public class PlayerController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         var item = other.GetComponent<GroundItem>();
-        if (item) {
-            if (!inventory.Container.IsFull())
-                inventory.AddItem(new Item(item.item), 1);
-            else if (!inventory.AddItemToStack(new Item(item.item), 1))
-                return;
+        if (item && !inventory.IsFull()) {
+            inventory.AddItem(new Item(item.item), 1);
             Destroy(other.gameObject);
         }
     }
@@ -34,13 +27,13 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void LoadInvetory() {
-        inventoryWindow.GetComponentInChildren<InventoryManager>().ClearSlots();
         inventory.Load();
+        inventoryWindow.GetComponentInChildren<InventoryManager>().CreateSlots();
     }
 
     public void ClearInventory() {
-        inventoryWindow.GetComponentInChildren<InventoryManager>().ClearSlots();
         inventory.Clear();
+        inventoryWindow.GetComponentInChildren<InventoryManager>().CreateSlots();
     }
 
     public void ShowOrHideInventoryWindow() {

@@ -12,8 +12,98 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0e75f65bb1fc455483b669585e663c9, type: 3}
   m_Name: Player Inventory
   m_EditorClassIdentifier: 
-  savePath: /Inventory.Save
-  database: {fileID: 11400000, guid: ef164c1f14e67477e8bcf5cfb5dc7de3, type: 2}
+  savePath: 
+  database: {fileID: 0}
   Container:
     capacity: 15
-    Items: []
+    Items:
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
+    - ID: -1
+      item:
+        Name: 
+        Id: 0
+        MaxStack: 0
+      amount: 0
