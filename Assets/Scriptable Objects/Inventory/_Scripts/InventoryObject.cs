@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -40,16 +41,23 @@ public class InventorySlot {
 
 [System.Serializable]
 public class Inventory {
-    public int capacity = 24;
+    public int capacity;
     public InventorySlot[] Items;
 
     public Inventory() {
         Items = new InventorySlot[capacity];
     }
+
+    public void Init(int size) {
+        Items = new InventorySlot[size];
+        for (int i = 0; i < Items.Length; i++) {
+            Items[i] = new InventorySlot();
+        }
+    }
 }
 
 [CreateAssetMenu(menuName = "Inventory System/Inventory")]
-public class InventoryObject : ScriptableObject {
+public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver {
     public string savePath;
     public ItemDatabaseObject database;
     public Inventory Container = new Inventory();
@@ -96,6 +104,22 @@ public class InventoryObject : ScriptableObject {
         Container.Items[ind2] = tempSlot;
     }
 
+    public InventorySlot GetItem(InventorySlot _slot) {
+        for (int i = 0; i < Container.Items.Length; i++) {
+            if (Container.Items[i] == _slot)
+                return Container.Items[i];
+        }
+        return null;
+    }
+
+    public int GetItemIndex(InventorySlot _slot) {
+        for (int i = 0; i < Container.Items.Length; i++) {
+            if (Container.Items[i] == _slot)
+                return i;
+        }
+        return -1;
+    }
+
     [ContextMenu("Save")]
     public void Save() {
         //string saveData = JsonUtility.ToJson(this, true);
@@ -127,9 +151,12 @@ public class InventoryObject : ScriptableObject {
 
     [ContextMenu("Clear")]
     public void Clear() {
-        Container = new Inventory();
-        for (int i = 0; i < Container.Items.Length; i++) {
-            Container.Items[i] = new InventorySlot();
-        }
+        Container.Init(Container.capacity);
+    }
+
+    public void OnBeforeSerialize() { }
+
+    public void OnAfterDeserialize() {
+        Container.Items = new InventorySlot[Container.capacity];
     }
 }

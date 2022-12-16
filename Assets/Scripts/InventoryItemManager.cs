@@ -3,26 +3,27 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using System.ComponentModel;
 
 public class InventoryItemManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler {
     [HideInInspector] public Transform parentAfterDrag;
     [HideInInspector] public Transform parentBeforeDrag;
     public Image image;
 
-    private InventoryManager inventoryManager;
+    private InventoryManager inventoryManagerObj1;
     public GameObject infoWindow;
     private GameObject info;
 
     private void Start() {
-        inventoryManager = transform.GetComponentInParent<InventoryManager>();
+        inventoryManagerObj1 = transform.GetComponentInParent<InventoryManager>();
     }
 
     private void Update() {
-        image.raycastTarget = inventoryManager.isDragging ? false : true;
+        image.raycastTarget = inventoryManagerObj1.isDragging ? false : true;
     }
 
     public void OnBeginDrag(PointerEventData eventData) {
-        inventoryManager.isDragging = true;
+        inventoryManagerObj1.isDragging = true;
         parentAfterDrag = transform.parent;
         parentBeforeDrag = parentAfterDrag;
         transform.SetParent(transform.root);
@@ -35,16 +36,15 @@ public class InventoryItemManager : MonoBehaviour, IBeginDragHandler, IDragHandl
 
     public void OnEndDrag(PointerEventData eventData) {
         transform.SetParent(parentAfterDrag);
-        InventoryManager InvMan = transform.GetComponentInParent<InventoryManager>();
-        InvMan.SwapItems(parentAfterDrag, parentBeforeDrag);
-        inventoryManager.isDragging = false;
+        GetComponentInParent<PlayerScreenManager>().ItemSwap(parentAfterDrag, parentBeforeDrag);
+        this.inventoryManagerObj1.isDragging = false;
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        if (!inventoryManager.isDragging) {
-            InventorySlot slot = inventoryManager.GetSlotByTransform(transform.parent);
+        if (!inventoryManagerObj1.isDragging) {
+            InventorySlot slot = inventoryManagerObj1.GetSlotByTransform(transform.parent);
             if (slot.ID >= 0) {
-                ItemObject item = inventoryManager.inventory.database.GetItem[slot.item.Id];
+                ItemObject item = inventoryManagerObj1.inventory.database.GetItem[slot.item.Id];
 
                 foreach (TextMeshProUGUI text in infoWindow.GetComponentsInChildren<TextMeshProUGUI>()) {
                     if (text.name == "Name Text") {
@@ -56,6 +56,7 @@ public class InventoryItemManager : MonoBehaviour, IBeginDragHandler, IDragHandl
                     }
                 }
                 info = Instantiate(infoWindow, transform.parent.parent.parent.parent.parent);
+                info.transform.SetAsLastSibling();
             }
         }
     }

@@ -3,6 +3,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     public GameObject inventoryWindow;
     public InventoryObject inventory;
+    public InventoryObject equipment;
+
+    private void Start() {
+        LoadInvetory();
+    }
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.I)) {
@@ -24,16 +29,23 @@ public class PlayerController : MonoBehaviour {
 
     public void SaveInventory() {
         inventory.Save();
+        equipment.Save();
     }
 
     public void LoadInvetory() {
         inventory.Load();
-        inventoryWindow.GetComponentInChildren<InventoryManager>().CreateSlots();
+        equipment.Load();
+        foreach (var inventoryManager in inventoryWindow.GetComponentsInChildren<InventoryManager>()) {
+            inventoryManager.CreateSlots();
+        }
     }
 
     public void ClearInventory() {
         inventory.Clear();
-        inventoryWindow.GetComponentInChildren<InventoryManager>().CreateSlots();
+        equipment.Clear();
+        foreach (var inventoryManager in inventoryWindow.GetComponentsInChildren<InventoryManager>()) {
+            inventoryManager.CreateSlots();
+        }
     }
 
     public void ShowOrHideInventoryWindow() {
