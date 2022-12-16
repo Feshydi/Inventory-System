@@ -9,18 +9,20 @@ public class InventoryItemManager : MonoBehaviour, IBeginDragHandler, IDragHandl
     [HideInInspector] public Transform parentBeforeDrag;
     public Image image;
 
+    private InventoryManager inventoryManager;
     public GameObject infoWindow;
     private GameObject info;
-    public bool isDragging;
+
+    private void Start() {
+        inventoryManager = transform.GetComponentInParent<InventoryManager>();
+    }
 
     private void Update() {
-        image.raycastTarget = isDragging ? false : true;
+        image.raycastTarget = inventoryManager.isDragging ? false : true;
     }
 
     public void OnBeginDrag(PointerEventData eventData) {
-        if (info)
-            Destroy(info.gameObject);
-        isDragging = true;
+        inventoryManager.isDragging = true;
         parentAfterDrag = transform.parent;
         parentBeforeDrag = parentAfterDrag;
         transform.SetParent(transform.root);
@@ -35,14 +37,13 @@ public class InventoryItemManager : MonoBehaviour, IBeginDragHandler, IDragHandl
         transform.SetParent(parentAfterDrag);
         InventoryManager InvMan = transform.GetComponentInParent<InventoryManager>();
         InvMan.SwapItems(parentAfterDrag, parentBeforeDrag);
-        isDragging = false;
+        inventoryManager.isDragging = false;
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        if (!isDragging) {
-            InventorySlot slot = transform.GetComponentInParent<InventoryManager>().GetSlotByTransform(transform.parent);
+        if (!inventoryManager.isDragging) {
+            InventorySlot slot = inventoryManager.GetSlotByTransform(transform.parent);
             if (slot.ID >= 0) {
-                InventoryManager inventoryManager = transform.GetComponentInParent<InventoryManager>();
                 ItemObject item = inventoryManager.inventory.database.GetItem[slot.item.Id];
 
                 foreach (TextMeshProUGUI text in infoWindow.GetComponentsInChildren<TextMeshProUGUI>()) {
@@ -54,7 +55,7 @@ public class InventoryItemManager : MonoBehaviour, IBeginDragHandler, IDragHandl
                         text.text = item.description;
                     }
                 }
-                info = Instantiate(infoWindow, transform.parent.parent.parent.parent);
+                info = Instantiate(infoWindow, transform.parent.parent.parent.parent.parent);
             }
         }
     }

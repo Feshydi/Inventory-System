@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class InventoryManager : MonoBehaviour {
     public GameObject inventoryPrefab;
     public InventoryObject inventory;
+    public bool isDragging;
 
     Dictionary<GameObject, InventorySlot> itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
     Dictionary<Transform, GameObject> itemsTransform = new Dictionary<Transform, GameObject>();

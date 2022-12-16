@@ -40,7 +40,7 @@ public class InventorySlot {
 
 [System.Serializable]
 public class Inventory {
-    public int capacity = 15;
+    public int capacity = 24;
     public InventorySlot[] Items;
 
     public Inventory() {
