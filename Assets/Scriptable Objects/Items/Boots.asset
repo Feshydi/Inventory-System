@@ -9,11 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f83330326651432ca99d8adbd4a2e2b, type: 3}
-  m_Name: Bones
+  m_Script: {fileID: 11500000, guid: 6b1b41a71463e4060b30949c1362dae7, type: 3}
+  m_Name: Boots
   m_EditorClassIdentifier: 
   _id: 0
-  _icon: {fileID: 21300000, guid: 844a1050d03ba5046bfb86af34a81e47, type: 3}
-  _title: Bones
-  _description: The left overs of those youv slain!
-  _maxStackSize: 24
+  _icon: {fileID: 21300000, guid: 5170e0068a8cf184fb119834fa7ba0f3, type: 3}
+  _title: Leather Boots
+  _description: 
+  _maxStackSize: 1
+  _defense: 5
+  _speed: 10

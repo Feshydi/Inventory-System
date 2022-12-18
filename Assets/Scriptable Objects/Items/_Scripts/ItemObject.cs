@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public enum ItemType {
+public enum ItemType
+{
     Equipment,
     Food,
     Potion,
@@ -10,19 +11,22 @@ public enum ItemType {
 }
 
 [System.Serializable]
-public class Item {
+public class Item
+{
     public string Name;
     public int Id;
     public int MaxStack;
 
-    public Item(ItemObject item) {
+    public Item(ItemObject item)
+    {
         Name = item.name;
         Id = item.Id;
         MaxStack = item.maxStack;
     }
 }
 
-public abstract class ItemObject : ScriptableObject {
+public abstract class ItemObject : ScriptableObject
+{
     public int Id;
     public Sprite uiDisplay;
     public ItemType type;

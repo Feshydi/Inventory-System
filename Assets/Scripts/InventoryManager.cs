@@ -57,7 +57,7 @@ public class InventoryManager : MonoBehaviour {
 
     private void SetSlotSprite(GameObject key, InventorySlot value) {
         if (value.ID >= 0) {
-            key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.GetItem[value.item.Id].uiDisplay;
+//            key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.getItem[value.item.Id].uiDisplay;
             key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
             key.GetComponentInChildren<TextMeshProUGUI>().text = value.amount == 1 ? "" : value.amount.ToString("n0");
         } else {

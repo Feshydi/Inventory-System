@@ -2,19 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Inventory System/Items/Database")]
-public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiver {
-    public ItemObject[] items;
-    public Dictionary<int, ItemObject> GetItem = new Dictionary<int, ItemObject>();
+[CreateAssetMenu(fileName = "Database", menuName = "Inventory System/Inventory Items/Database")]
+public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiver
+{
 
-    public void OnAfterDeserialize() {
-        for (int i = 0; i < items.Length; i++) {
-            items[i].Id = i;
-            GetItem.Add(i, items[i]);
+    #region Fields
+
+    [SerializeField]
+    private ObjectItem[] _items;
+
+    [SerializeField]
+    private Dictionary<int, ObjectItem> _getItem = new Dictionary<int, ObjectItem>();
+
+    #endregion
+
+    #region Properties
+
+    public ObjectItem[] Items
+    {
+        get { return _items; }
+    }
+
+    public Dictionary<int, ObjectItem> GetItem
+    {
+        get { return _getItem; }
+    }
+
+    #endregion
+
+    #region Methods
+
+    private void SetData()
+    {
+        for (int i = 0; i < _items.Length; i++)
+        {
+            _items[i].ID = i;
+            _getItem.Add(i, _items[i]);
         }
     }
 
-    public void OnBeforeSerialize() {
-        GetItem = new Dictionary<int, ItemObject>();
+    private void ClearData()
+    {
+        _getItem = new Dictionary<int, ObjectItem>();
     }
+
+    public void OnAfterDeserialize()
+    {
+        SetData();
+    }
+
+    public void OnBeforeSerialize()
+    {
+        ClearData();
+    }
+
+    #endregion
+
 }
