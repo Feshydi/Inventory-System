@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Sword", menuName = "Inventory System/Inventory Items/Weapons/Sword")]
-public class SwordType : ObjectItem
+[CreateAssetMenu(fileName = "Sword", menuName = "Inventory System/Items/Weapons/Sword")]
+public class SwordType : ItemObject
 {
 
     #region Fields

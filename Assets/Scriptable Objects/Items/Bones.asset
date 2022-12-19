@@ -16,4 +16,4 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: 844a1050d03ba5046bfb86af34a81e47, type: 3}
   _title: Bones
   _description: The left overs of those youv slain!
-  _maxStackSize: 24
+  _maxStackSize: 5

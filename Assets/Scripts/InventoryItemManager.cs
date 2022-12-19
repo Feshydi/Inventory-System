@@ -43,7 +43,7 @@ public class InventoryItemManager : MonoBehaviour, IBeginDragHandler, IDragHandl
 
     public void OnPointerEnter(PointerEventData eventData) {
         if (!inventoryManager.isDragging) {
-            InventorySlot slot = inventoryManager.GetSlotByTransform(transform.parent);
+            OldInventorySlot slot = inventoryManager.GetSlotByTransform(transform.parent);
             if (slot.ID >= 0) {
                 //ItemObject item = inventoryManager.inventory.database.getItem[slot.item.Id];
 

@@ -2,28 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Database", menuName = "Inventory System/Inventory Items/Database")]
+[CreateAssetMenu(fileName = "Database", menuName = "Inventory System/Database")]
 public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiver
 {
 
     #region Fields
 
     [SerializeField]
-    private ObjectItem[] _items;
+    private ItemObject[] _items;
 
     [SerializeField]
-    private Dictionary<int, ObjectItem> _getItem = new Dictionary<int, ObjectItem>();
+    private Dictionary<int, ItemObject> _getItem = new Dictionary<int, ItemObject>();
 
     #endregion
 
     #region Properties
 
-    public ObjectItem[] Items
-    {
-        get { return _items; }
-    }
-
-    public Dictionary<int, ObjectItem> GetItem
+    public Dictionary<int, ItemObject> GetItem
     {
         get { return _getItem; }
     }
@@ -43,7 +38,7 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
     private void ClearData()
     {
-        _getItem = new Dictionary<int, ObjectItem>();
+        _getItem = new Dictionary<int, ItemObject>();
     }
 
     public void OnAfterDeserialize()

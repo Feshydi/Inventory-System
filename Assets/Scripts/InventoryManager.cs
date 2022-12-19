@@ -5,22 +5,22 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour {
     public GameObject inventoryPrefab;
-    public InventoryObject inventory;
+    public OldInventoryObject inventory;
     public bool isDragging;
 
-    Dictionary<GameObject, InventorySlot> itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
+    Dictionary<GameObject, OldInventorySlot> itemsDisplayed = new Dictionary<GameObject, OldInventorySlot>();
     Dictionary<Transform, GameObject> itemsTransform = new Dictionary<Transform, GameObject>();
 
     private void Start() {
-        CreateSlots();
+        //CreateSlots();
     }
 
     private void Update() {
-        UpdateSlots();
+       // UpdateSlots();
     }
 
     private void UpdateSlots() {
-        foreach (KeyValuePair<GameObject, InventorySlot> _slot in itemsDisplayed) {
+        foreach (KeyValuePair<GameObject, OldInventorySlot> _slot in itemsDisplayed) {
             SetSlotSprite(_slot.Key, _slot.Value);
         }
     }
@@ -28,7 +28,7 @@ public class InventoryManager : MonoBehaviour {
     public void CreateSlots() {
         ClearSlots();
         int childPos = 0;
-        foreach (InventorySlot item in inventory.Container.Items) {
+        foreach (OldInventorySlot item in inventory.Container.Items) {
             InstantiateSlot(item, childPos);
             childPos++;
         }
@@ -37,7 +37,7 @@ public class InventoryManager : MonoBehaviour {
 
     // Check every slot for empty one
     // Create GameObject slot and put in Dictionary
-    private void InstantiateSlot(InventorySlot slot, int _childPos) {
+    private void InstantiateSlot(OldInventorySlot slot, int _childPos) {
         Transform child = transform.GetChild(transform.GetChild(_childPos).GetSiblingIndex());
         var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, child);
         itemsDisplayed.Add(obj, slot);
@@ -46,7 +46,7 @@ public class InventoryManager : MonoBehaviour {
     }
 
     public void ClearSlots() {
-        itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
+        itemsDisplayed = new Dictionary<GameObject, OldInventorySlot>();
         itemsTransform = new Dictionary<Transform, GameObject>();
         foreach (Transform _transform in transform) {
             foreach (Transform child in _transform) {
@@ -55,7 +55,7 @@ public class InventoryManager : MonoBehaviour {
         }
     }
 
-    private void SetSlotSprite(GameObject key, InventorySlot value) {
+    private void SetSlotSprite(GameObject key, OldInventorySlot value) {
         if (value.ID >= 0) {
 //            key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.getItem[value.item.Id].uiDisplay;
             key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
@@ -68,13 +68,13 @@ public class InventoryManager : MonoBehaviour {
     }
 
     public void SwapItems(Transform obj1Transform, Transform obj2Transform) {
-        InventorySlot slot1 = GetSlotByTransform(obj1Transform);
-        InventorySlot slot2 = GetSlotByTransform(obj2Transform);
+        OldInventorySlot slot1 = GetSlotByTransform(obj1Transform);
+        OldInventorySlot slot2 = GetSlotByTransform(obj2Transform);
         inventory.SwapItems(slot1, slot2);
         CreateSlots();
     }
 
-    public InventorySlot GetSlotByTransform(Transform _transform) {
+    public OldInventorySlot GetSlotByTransform(Transform _transform) {
         return itemsDisplayed[itemsTransform[_transform]];
     }
 }

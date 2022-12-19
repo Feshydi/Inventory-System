@@ -19,22 +19,27 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    public GameObject inventoryWindow;
-    public InventoryObject inventory;
-    public InventoryObject equipment;
+    #region Methods
 
     private void Start()
     {
-        LoadInvetory();
+        //LoadInvetory();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            ShowOrHideInventoryWindow();
-        }
+        //if (Input.GetKeyDown(KeyCode.I))
+        //{
+        //    ShowOrHideInventoryWindow();
+        //}
     }
+
+    #endregion
+
+    public GameObject inventoryWindow;
+    public OldInventoryObject inventory;
+    public OldInventoryObject equipment;
+
 
     private void OnTriggerEnter(Collider other)
     {

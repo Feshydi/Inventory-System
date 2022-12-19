@@ -12,12 +12,12 @@ public class PlayerScreenManager : MonoBehaviour {
             return;
         }
 
-        InventorySlot slot1 = inventoryManagerObj1.GetSlotByTransform(parentAfterDrag);
-        InventorySlot slot2 = inventoryManagerObj2.GetSlotByTransform(parentBeforeDrag);
+        OldInventorySlot slot1 = inventoryManagerObj1.GetSlotByTransform(parentAfterDrag);
+        OldInventorySlot slot2 = inventoryManagerObj2.GetSlotByTransform(parentBeforeDrag);
         int slot1Index = inventoryManagerObj1.inventory.GetItemIndex(slot1);
         int slot2Index = inventoryManagerObj2.inventory.GetItemIndex(slot2);
 
-        InventorySlot tempSlot = inventoryManagerObj1.inventory.Container.Items[slot1Index];
+        OldInventorySlot tempSlot = inventoryManagerObj1.inventory.Container.Items[slot1Index];
         inventoryManagerObj1.inventory.Container.Items[slot1Index] = inventoryManagerObj2.inventory.Container.Items[slot2Index];
         inventoryManagerObj2.inventory.Container.Items[slot2Index] = tempSlot;
 

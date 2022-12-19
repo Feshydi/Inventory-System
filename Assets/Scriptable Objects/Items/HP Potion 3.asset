@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a9149d11c5f40cab0bfd17b609f02f, type: 3}
   m_Name: HP Potion 3
   m_EditorClassIdentifier: 
-  _id: 0
+  _id: 6
   _icon: {fileID: 21300000, guid: 7b3876a2b72c44540a4bbd5aaba9e506, type: 3}
   _title: Large healing potion
   _description: There are rumors that it gives an unknown power. Restores 100 health.
-  _maxStackSize: 8
+  _maxStackSize: 2
   _restorationValue: 5
   _restorationTime: 15

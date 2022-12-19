@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Ring", menuName = "Inventory System/Inventory Items/Equipment/Ring")]
-public class RingType : ObjectItem
+[CreateAssetMenu(fileName = "Jewelry", menuName = "Inventory System/Items/Equipment/Jewelry")]
+public class JewelryType : ItemObject
 {
 
     #region Fields

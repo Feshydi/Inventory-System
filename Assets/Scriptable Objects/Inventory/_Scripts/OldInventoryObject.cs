@@ -6,21 +6,21 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 [System.Serializable]
-public class InventorySlot {
+public class OldInventorySlot {
     public int ID = -1;
     public Item item;
     [Range(1, 99)]
     public int amount;
     private int maxStackAmount;
 
-    public InventorySlot() {
+    public OldInventorySlot() {
         ID = -1;
         item = null;
         amount = 0;
         maxStackAmount = 0;
     }
 
-    public InventorySlot(int _id, Item _item, int _amount, int _maxStackAmount) {
+    public OldInventorySlot(int _id, Item _item, int _amount, int _maxStackAmount) {
         ID = _id;
         item = _item;
         amount = _amount;
@@ -40,27 +40,27 @@ public class InventorySlot {
 }
 
 [System.Serializable]
-public class Inventory {
+public class OldInventory {
     public int capacity;
-    public InventorySlot[] Items;
+    public OldInventorySlot[] Items;
 
-    public Inventory() {
-        Items = new InventorySlot[capacity];
+    public OldInventory() {
+        Items = new OldInventorySlot[capacity];
     }
 
     public void Init(int size) {
-        Items = new InventorySlot[size];
+        Items = new OldInventorySlot[size];
         for (int i = 0; i < Items.Length; i++) {
-            Items[i] = new InventorySlot();
+            Items[i] = new OldInventorySlot();
         }
     }
 }
 
 [CreateAssetMenu(menuName = "Inventory System/Inventory")]
-public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver {
+public class OldInventoryObject : ScriptableObject, ISerializationCallbackReceiver {
     public string savePath;
     public ItemDatabaseObject database;
-    public Inventory Container = new Inventory();
+    public OldInventory Container = new OldInventory();
 
     public void AddItem(Item _item, int _amount) {
         foreach (var slot in Container.Items) {
@@ -72,7 +72,7 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver 
         SetEmptySLot(_item, _amount);
     }
 
-    private InventorySlot SetEmptySLot(Item _item, int _amount) {
+    private OldInventorySlot SetEmptySLot(Item _item, int _amount) {
         foreach (var slot in Container.Items) {
             if (slot.ID <= -1) {
                 slot.UpdateSlot(_item.Id, _item, _amount, _item.MaxStack);
@@ -91,7 +91,7 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver 
         return true;
     }
 
-    public void SwapItems(InventorySlot _slot1, InventorySlot _slot2) {
+    public void SwapItems(OldInventorySlot _slot1, OldInventorySlot _slot2) {
         int ind1 = 0, ind2 = 0;
         for (int i = 0; i < Container.Items.Length; i++) {
             if (Container.Items[i] == _slot1)
@@ -99,12 +99,12 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver 
             if (Container.Items[i] == _slot2)
                 ind2 = i;
         }
-        InventorySlot tempSlot = Container.Items[ind1];
+        OldInventorySlot tempSlot = Container.Items[ind1];
         Container.Items[ind1] = Container.Items[ind2];
         Container.Items[ind2] = tempSlot;
     }
 
-    public InventorySlot GetItem(InventorySlot _slot) {
+    public OldInventorySlot GetItem(OldInventorySlot _slot) {
         for (int i = 0; i < Container.Items.Length; i++) {
             if (Container.Items[i] == _slot)
                 return Container.Items[i];
@@ -112,7 +112,7 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver 
         return null;
     }
 
-    public int GetItemIndex(InventorySlot _slot) {
+    public int GetItemIndex(OldInventorySlot _slot) {
         for (int i = 0; i < Container.Items.Length; i++) {
             if (Container.Items[i] == _slot)
                 return i;
@@ -133,7 +133,7 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver 
         if (File.Exists(string.Concat(Application.persistentDataPath, savePath))) {
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Open, FileAccess.Read);
-            Container = (Inventory)formatter.Deserialize(stream);
+            Container = (OldInventory)formatter.Deserialize(stream);
             stream.Close();
         }
     }
@@ -146,6 +146,6 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver 
     public void OnBeforeSerialize() { }
 
     public void OnAfterDeserialize() {
-        Container.Items = new InventorySlot[Container.capacity];
+        Container.Items = new OldInventorySlot[Container.capacity];
     }
 }
