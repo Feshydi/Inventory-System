@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45e01eb93ef14ffc85a12ce03c5090b, type: 3}
   m_Name: Sword 1
   m_EditorClassIdentifier: 
-  _id: 0
+  _id: 7
   _icon: {fileID: 21300000, guid: 8f28955d92038974a9b04aafaeea79b0, type: 3}
   _title: Iron Sword
   _description: A sword for slashing and stabbing.

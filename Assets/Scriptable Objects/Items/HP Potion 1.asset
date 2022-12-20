@@ -16,6 +16,6 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: 117b17facff65dc42b1b57deb7c21551, type: 3}
   _title: Small healing potion
   _description: One of the most common items you should have. Restores 30 health.
-  _maxStackSize: 2
+  _maxStackSize: 12
   _restorationValue: 2
   _restorationTime: 15

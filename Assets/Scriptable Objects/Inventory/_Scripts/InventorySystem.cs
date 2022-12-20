@@ -13,6 +13,7 @@ public class InventorySystem
     [SerializeField]
     private List<InventorySlot> _inventorySlots;
 
+    [System.NonSerialized]
     private UnityAction<InventorySlot> _onInventorySlotChanged;
 
     #endregion
@@ -33,6 +34,7 @@ public class InventorySystem
     public UnityAction<InventorySlot> OnInventorySlotChanged
     {
         get { return _onInventorySlotChanged; }
+        set { _onInventorySlotChanged = value; }
     }
 
     #endregion
@@ -45,7 +47,7 @@ public class InventorySystem
 
         for (int i = 0; i < size; i++)
         {
-            InventorySlots.Add(new InventorySlot());
+            _inventorySlots.Add(new InventorySlot());
         }
     }
 
@@ -90,6 +92,18 @@ public class InventorySystem
         return true;
     }
 
+    public void RemoveFromInventory(InventorySlot slot)
+    {
+        for (int i = 0; i < _inventorySlots.Count; i++)
+        {
+            if (_inventorySlots[i].Equals(slot))
+            {
+                _inventorySlots[i] = new InventorySlot();
+                _onInventorySlotChanged?.Invoke(_inventorySlots[i]);
+            }
+        }
+    }
+
     public bool ContainsItem(ItemObject itemToAdd, out List<InventorySlot> inventorySlots)
     {
         inventorySlots = _inventorySlots.Where(slot => slot.ID == itemToAdd.ID).ToList();
@@ -101,6 +115,11 @@ public class InventorySystem
         freeSlot = InventorySlots.FirstOrDefault(slot => slot.ID == -1);
         return freeSlot != null ? true : false;
     }
+
+    //public void ReplaceSlotItem(InventorySlot slot, out InventorySlot replacedItem)
+    //{
+
+    //}
 
     #endregion
 

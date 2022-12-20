@@ -11,7 +11,8 @@ public class InventoryHolder : MonoBehaviour
 
     #region Fields
 
-    private string savePath;
+    [SerializeField]
+    private string _savePath;
 
     [SerializeField]
     private int _inventorySize;
@@ -47,13 +48,21 @@ public class InventoryHolder : MonoBehaviour
 
     private void Awake()
     {
-        _inventorySystem = new InventorySystem(_inventorySize);
+        Load();
+
+        if (_inventorySystem.InventorySize != _inventorySize)
+            Clear();
+    }
+
+    private void OnApplicationQuit()
+    {
+        Save();
     }
 
     [ContextMenu("Save")]
     public void Save()
     {
-        string path = string.Concat(Application.persistentDataPath, "/", gameObject.name, "_", savePath);
+        string path = string.Concat(Application.persistentDataPath, "/", gameObject.name, "_", _savePath);
 
         IFormatter formatter = new BinaryFormatter();
         Stream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
@@ -64,7 +73,7 @@ public class InventoryHolder : MonoBehaviour
     [ContextMenu("Load")]
     public void Load()
     {
-        string path = string.Concat(Application.persistentDataPath, "/", gameObject.name, "_", savePath);
+        string path = string.Concat(Application.persistentDataPath, "/", gameObject.name, "_", _savePath);
 
         if (File.Exists(path))
         {
@@ -73,6 +82,12 @@ public class InventoryHolder : MonoBehaviour
             _inventorySystem = (InventorySystem)formatter.Deserialize(stream);
             stream.Close();
         }
+    }
+
+    [ContextMenu("Clear")]
+    public void Clear()
+    {
+        _inventorySystem = new InventorySystem(_inventorySize);
     }
 
     #endregion

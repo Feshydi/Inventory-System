@@ -16,6 +16,6 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: 44dc65116207f4b46aa85443dae5ad96, type: 3}
   _title: Medium healing potion
   _description: Best choice for the adventures. Restores 50 health.
-  _maxStackSize: 2
-  _restorationValue: 3
-  _restorationTime: 15
+  _maxStackSize: 10
+  _restorationValue: 5
+  _restorationTime: 10

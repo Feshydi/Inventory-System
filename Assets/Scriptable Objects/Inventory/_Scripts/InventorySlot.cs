@@ -99,6 +99,11 @@ public class InventorySlot
         _stackSize += amount;
     }
 
+    public override string ToString()
+    {
+        return GameManager.Instance.Database.GetItem[ID].GetType().Name;
+    }
+
     #endregion
 
 }
