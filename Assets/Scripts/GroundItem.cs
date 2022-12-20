@@ -66,8 +66,10 @@ public class GroundItem : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        _stackSize = amountLeft;
+        else
+        {
+            _stackSize = amountLeft;
+        }
     }
 
     #endregion

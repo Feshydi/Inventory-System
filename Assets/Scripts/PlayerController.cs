@@ -1,12 +1,24 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
 
     #region Fields
 
     [SerializeField]
+    private CharacterController _controller;
+
+    [SerializeField]
+    private PlayerControls _inputActions;
+
+    [SerializeField]
     private string _name;
+
+    [SerializeField]
+    private float _speed = 5.0f;
 
     #endregion
 
@@ -17,75 +29,44 @@ public class PlayerController : MonoBehaviour
         get { return _name; }
     }
 
+    public float Speed
+    {
+        get { return _speed; }
+    }
+
     #endregion
 
     #region Methods
 
-    private void Start()
+    private void Awake()
     {
-        //LoadInvetory();
+        _controller = gameObject.GetComponent<CharacterController>();
+        _inputActions = new PlayerControls();
+    }
+
+    private void OnEnable()
+    {
+        _inputActions?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _inputActions?.Disable();
     }
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.I))
-        //{
-        //    ShowOrHideInventoryWindow();
-        //}
+
+        Vector3 move = new Vector3(_inputActions.Player.Movement.ReadValue<Vector2>().x, 0, _inputActions.Player.Movement.ReadValue<Vector2>().y);
+        _controller.Move(move * Time.deltaTime * _speed);
+
+        if (move != Vector3.zero)
+        {
+            gameObject.transform.forward = move;
+        }
     }
 
     #endregion
-
-    public GameObject inventoryWindow;
-    public OldInventoryObject inventory;
-    public OldInventoryObject equipment;
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        //var item = other.GetComponent<GroundItem>();
-        //if (item && !inventory.IsFull(new Item(item.item)))
-        //{
-        //    inventory.AddItem(new Item(item.item), 1);
-        //    Destroy(other.gameObject);
-        //}
-    }
-
-    private void OnApplicationQuit()
-    {
-        ClearInventory();
-    }
-
-    public void SaveInventory()
-    {
-        inventory.Save();
-        equipment.Save();
-    }
-
-    public void LoadInvetory()
-    {
-        inventory.Load();
-        equipment.Load();
-        foreach (var inventoryManager in inventoryWindow.GetComponentsInChildren<InventoryManager>())
-        {
-            inventoryManager.CreateSlots();
-        }
-    }
-
-    public void ClearInventory()
-    {
-        inventory.Clear();
-        equipment.Clear();
-        foreach (var inventoryManager in inventoryWindow.GetComponentsInChildren<InventoryManager>())
-        {
-            inventoryManager.CreateSlots();
-        }
-    }
-
-    public void ShowOrHideInventoryWindow()
-    {
-        inventoryWindow.SetActive(!inventoryWindow.activeSelf);
-    }
 
     #region Methods
 

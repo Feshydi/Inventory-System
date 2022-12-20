@@ -56,21 +56,21 @@ public class InventorySystem
     public bool AddToInventory(ItemObject itemToAdd, int amountToAdd, out int amountLeft)
     {
         amountLeft = amountToAdd;
+
         if (ContainsItem(itemToAdd, out List<InventorySlot> inventorySlots))    // putting items in existed slots
         {
             foreach (var slot in inventorySlots)
             {
-                if (slot.RoomLeftInStack(amountToAdd, out int amountRemaining))
+                if (slot.RoomLeftInStack(amountLeft, out int amountRemaining))
                 {
-                    slot.AddToStack(amountToAdd);
+                    slot.AddToStack(amountLeft);
                     _onInventorySlotChanged?.Invoke(slot);
                     return true;
                 }
                 else
                 {
+                    amountLeft -= amountRemaining;
                     slot.AddToStack(amountRemaining);
-                    amountToAdd -= amountRemaining;
-                    amountLeft = amountToAdd;
                     _onInventorySlotChanged?.Invoke(slot);
                 }
             }
@@ -80,8 +80,7 @@ public class InventorySystem
         {
             if (HasFreeSlot(out InventorySlot freeSlot))
             {
-                freeSlot.SetInventorySlotWithItem(itemToAdd, amountToAdd, out amountLeft);
-                amountToAdd = amountLeft;
+                freeSlot.SetInventorySlotWithItem(itemToAdd, amountLeft, out amountLeft);
                 _onInventorySlotChanged?.Invoke(freeSlot);
             }
             else
