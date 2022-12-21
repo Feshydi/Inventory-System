@@ -29,6 +29,7 @@ public class InventorySlot
     public int StackSize
     {
         get { return _stackSize; }
+        set { _stackSize = value; }
     }
 
     // #to do:
@@ -62,6 +63,7 @@ public class InventorySlot
     {
         _id = id;
         _stackSize = amount;
+        _stats = new Dictionary<string, string>();
     }
 
     public void SetEmptySlot()

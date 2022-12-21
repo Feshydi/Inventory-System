@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class InventorySlotManager : MonoBehaviour, IDropHandler
 {
@@ -15,6 +16,9 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
 
     [SerializeField]
     private InventorySlot _assignedInventoryItem;
+
+    [SerializeField]
+    private UnityAction<InventorySlot, Image> _onItemSelected;
 
     #endregion
 
@@ -29,6 +33,12 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
     {
         get { return _assignedInventoryItem; }
         set { _assignedInventoryItem = value; }
+    }
+
+    public UnityAction<InventorySlot, Image> OnItemSelected
+    {
+        get { return _onItemSelected; }
+        set { _onItemSelected = value; }
     }
 
     #endregion
@@ -72,26 +82,24 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
     {
         GameObject dropped = eventData.pointerDrag;
         ItemActions item = dropped.GetComponent<ItemActions>();
-        item.SetParentBack();
-        SwapItems(item);
+
+        SetSlot(item);
     }
 
-    // Swap is bad, but no better ideas
-    public void SwapItems(ItemActions _item)
+    public void SetSlot(ItemActions item)
     {
-        InventorySlotManager itemSlotManager = _item.GetComponentInParent<InventorySlotManager>();
-
-        InventorySlot slot1 = _assignedInventoryItem;
-        InventorySlot slot2 = itemSlotManager.AssignedInventorySlot;
-
+        MouseItem mouse = GetComponentInParent<CanvasManager>().MouseItem;
         InventorySystem invSys = GetComponentInParent<StaticInventoryDisplay>().InventorySystem;
-        InventorySystem invSys1 = itemSlotManager.GetComponentInParent<StaticInventoryDisplay>().InventorySystem;
 
-        invSys.GetSlotIndex(_assignedInventoryItem, out int slot1Index);
-        invSys1.GetSlotIndex(itemSlotManager.AssignedInventorySlot, out int slot2Index);
+        if (_assignedInventoryItem.ID == -1)
+        {
+            invSys.GetSlotIndex(_assignedInventoryItem, out int index);
+            invSys.SetSlotByIndex(new InventorySlot(GameManager.Instance.Database.GetItem[mouse.Slot.ID], mouse.Slot.StackSize), index);
+        }
+        else
+        {
 
-        invSys.SetSlotByIndex(slot2, slot1Index);
-        invSys1.SetSlotByIndex(slot1, slot2Index);
+        }
     }
 
     #endregion

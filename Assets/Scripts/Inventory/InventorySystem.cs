@@ -92,13 +92,17 @@ public class InventorySystem
         return true;
     }
 
-    public void RemoveFromInventory(InventorySlot slotToRemove)
+    public void RemoveFromInventory(InventorySlot slotToRemove, bool isHalf)
     {
         foreach (var _slot in _inventorySlots)
         {
             if (_slot.Equals(slotToRemove))
             {
-                _slot.SetEmptySlot();
+                if (isHalf && _slot.StackSize > 1)
+                    _slot.SetSlot(_slot.ID, _slot.StackSize / 2 + _slot.StackSize % 2);
+                else
+                    _slot.SetEmptySlot();
+
                 _onInventorySlotChanged?.Invoke(_slot);
                 return;
             }

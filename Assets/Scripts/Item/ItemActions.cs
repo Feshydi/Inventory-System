@@ -11,7 +11,7 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     #region Fields
 
     [SerializeField]
-    private Transform _parentAfterDrag;
+    private Transform _parentGrabbedItem;
 
     [SerializeField]
     private Image _image;
@@ -20,9 +20,9 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     #region Properties
 
-    public Transform ParentAfterDrag
+    public Transform ParentGrabbedItem
     {
-        get { return _parentAfterDrag; }
+        get { return _parentGrabbedItem; }
     }
 
     public Image Image
@@ -36,24 +36,17 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _parentAfterDrag = transform.parent;
-        transform.SetParent(transform.root);
-        transform.SetAsLastSibling();
+        _parentGrabbedItem = transform.parent;
+        InventorySlot selectedSlot = GetComponentInParent<InventorySlotManager>().AssignedInventorySlot;
 
-        _image.raycastTarget = false;
+        SetMouseActive(Input.GetKey(KeyCode.LeftShift), selectedSlot);
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = Mouse.current.position.ReadValue();
-    }
+    public void OnDrag(PointerEventData eventData) { }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (transform.parent != _parentAfterDrag)
-            transform.SetParent(_parentAfterDrag);
-
-        _image.raycastTarget = true;
+        GetComponentInParent<CanvasManager>().MouseItem.DisableMouse();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -61,13 +54,21 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if (Input.GetKey(KeyCode.B))
         {
             InventorySystem _invSys = GetComponentInParent<StaticInventoryDisplay>().InventorySystem;
-            _invSys.RemoveFromInventory(GetComponentInParent<InventorySlotManager>().AssignedInventorySlot);
+            _invSys.RemoveFromInventory(GetComponentInParent<InventorySlotManager>().AssignedInventorySlot, false);
         }
     }
 
     public void SetParentBack()
     {
-        transform.SetParent(_parentAfterDrag);
+        transform.SetParent(_parentGrabbedItem);
+    }
+
+    public void SetMouseActive(bool isHalf, InventorySlot slot)
+    {
+        if (slot.StackSize == 1)
+            isHalf = false;
+        GetComponentInParent<CanvasManager>().MouseItem.SetMouseItem(isHalf, slot);
+        GetComponentInParent<StaticInventoryDisplay>().InventorySystem.RemoveFromInventory(slot, isHalf);
     }
 
     #endregion
