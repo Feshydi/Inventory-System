@@ -58,6 +58,12 @@ public class InventorySlot
 
     #region Methods
 
+    public void SetSlot(int id, int amount)
+    {
+        _id = id;
+        _stackSize = amount;
+    }
+
     public void SetEmptySlot()
     {
         _id = -1;

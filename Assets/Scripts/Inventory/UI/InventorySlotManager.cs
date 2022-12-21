@@ -28,6 +28,7 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
     public InventorySlot AssignedInventorySlot
     {
         get { return _assignedInventoryItem; }
+        set { _assignedInventoryItem = value; }
     }
 
     #endregion
@@ -43,12 +44,12 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
 
     public void Init(InventorySlot slot)
     {
-        _assignedInventoryItem = slot;
         UpdateSlot(slot);
     }
 
     public void UpdateSlot(InventorySlot slot)
     {
+        _assignedInventoryItem = slot;
         if (slot.ID != -1)
             GetComponentInChildren<InventoryItemManager>().UpdateItem(slot);
         else
@@ -70,39 +71,29 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         GameObject dropped = eventData.pointerDrag;
-        ClickableItem clickable = dropped.GetComponent<ClickableItem>();
-        clickable.parentAfterDrag = transform;
+        ItemActions item = dropped.GetComponent<ItemActions>();
+        item.SetParentBack();
+        SwapItems(item);
+    }
 
+    // Swap is bad, but no better ideas
+    public void SwapItems(ItemActions _item)
+    {
+        InventorySlotManager itemSlotManager = _item.GetComponentInParent<InventorySlotManager>();
+
+        InventorySlot slot1 = _assignedInventoryItem;
+        InventorySlot slot2 = itemSlotManager.AssignedInventorySlot;
+
+        InventorySystem invSys = GetComponentInParent<StaticInventoryDisplay>().InventorySystem;
+        InventorySystem invSys1 = itemSlotManager.GetComponentInParent<StaticInventoryDisplay>().InventorySystem;
+
+        invSys.GetSlotIndex(_assignedInventoryItem, out int slot1Index);
+        invSys1.GetSlotIndex(itemSlotManager.AssignedInventorySlot, out int slot2Index);
+
+        invSys.SetSlotByIndex(slot2, slot1Index);
+        invSys1.SetSlotByIndex(slot1, slot2Index);
     }
 
     #endregion
 
-
-
-    //public void OnDrop(PointerEventData eventData)
-    //{
-    //    GameObject dropped = eventData.pointerDrag;
-    //    InventoryItemManager inventoryItemManager = dropped.GetComponent<InventoryItemManager>();
-    //    if (transform.childCount == 0)
-    //    {
-    //        inventoryItemManager.parentAfterDrag = transform;
-    //    }
-    //    else
-    //    {
-    //        //InventorySlot slot = inventoryItemManager.inventoryManager.GetSlotByTransform(transform);
-    //        //ItemObject itemObject = inventoryItemManager.inventoryManager.inventory.database.GetItem[slot.item.Id];
-
-
-    //        Transform slot2 = transform;
-    //        transform.GetChild(0).SetParent(inventoryItemManager.parentAfterDrag);
-    //        inventoryItemManager.parentAfterDrag = slot2;
-    //    }
-    //}
-
-    //private bool EqualsType(ItemObject item) {
-    //    if (slotType == "" ||  )
-    //        return true;
-    //    else
-    //        return false;
-    //}
 }

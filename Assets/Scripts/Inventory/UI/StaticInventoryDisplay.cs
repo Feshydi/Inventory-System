@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StaticInventoryDisplay : InventoryDisplay
 {
@@ -39,6 +40,7 @@ public class StaticInventoryDisplay : InventoryDisplay
         {
             _inventorySystem = _inventoryHolder.InventorySystem;
             _inventorySystem.OnInventorySlotChanged += UpdateSlot;
+            _inventorySystem.OnInventorySlotChanged += AssignSlot;
         }
         else
             Debug.LogWarning($"No inventory assigned to {gameObject}");
@@ -46,17 +48,22 @@ public class StaticInventoryDisplay : InventoryDisplay
         AssignSlot(_inventorySystem);
     }
 
+    public override void AssignSlot(InventorySlot slot)
+    {
+        AssignSlot(_inventorySystem);
+    }
+
     public override void AssignSlot(InventorySystem inventoryToDisplay)
     {
         _slotDictionary = new Dictionary<InventorySlotManager, InventorySlot>();
 
-        if (_slots.Length != _inventorySystem.InventorySize)
+        if (_slots.Length != inventoryToDisplay.InventorySize)
             Debug.Log($"Inventory slots out of sync on {gameObject}");
 
-        for (int i = 0; i < _inventorySystem.InventorySize; i++)
+        for (int i = 0; i < inventoryToDisplay.InventorySize; i++)
         {
-            _slotDictionary.Add(_slots[i], _inventorySystem.InventorySlots[i]);
-            _slots[i].Init(_inventorySystem.InventorySlots[i]);
+            _slotDictionary.Add(_slots[i], inventoryToDisplay.InventorySlots[i]);
+            _slots[i].Init(inventoryToDisplay.InventorySlots[i]);
         }
     }
 

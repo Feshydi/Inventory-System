@@ -92,16 +92,44 @@ public class InventorySystem
         return true;
     }
 
-    public void RemoveFromInventory(InventorySlot slot)
+    public void RemoveFromInventory(InventorySlot slotToRemove)
     {
-        for (int i = 0; i < _inventorySlots.Count; i++)
+        foreach (var _slot in _inventorySlots)
         {
-            if (_inventorySlots[i].Equals(slot))
+            if (_slot.Equals(slotToRemove))
             {
-                _inventorySlots[i] = new InventorySlot();
-                _onInventorySlotChanged?.Invoke(_inventorySlots[i]);
+                _slot.SetEmptySlot();
+                _onInventorySlotChanged?.Invoke(_slot);
+                return;
             }
         }
+    }
+
+    public void ReplaceItem(InventorySlot slotToReplace, InventorySlot slotToSet, out InventorySlot replacedSlot)
+    {
+        replacedSlot = null;
+
+        foreach (var _slot in _inventorySlots)
+        {
+            if (_slot.Equals(slotToReplace))
+            {
+                replacedSlot = _slot;
+                _slot.SetSlot(slotToSet.ID, slotToSet.StackSize);
+                _onInventorySlotChanged?.Invoke(_slot);
+                return;
+            }
+        }
+    }
+
+    public void SetSlotByIndex(InventorySlot slotToSet, int index)
+    {
+        _inventorySlots[index] = slotToSet;
+        _onInventorySlotChanged?.Invoke(slotToSet);
+    }
+
+    public void GetSlotIndex(InventorySlot slot, out int index)
+    {
+        index = _inventorySlots.IndexOf(slot);
     }
 
     public bool ContainsItem(ItemObject itemToAdd, out List<InventorySlot> inventorySlots)
@@ -115,11 +143,6 @@ public class InventorySystem
         freeSlot = InventorySlots.FirstOrDefault(slot => slot.ID == -1);
         return freeSlot != null ? true : false;
     }
-
-    //public void ReplaceSlotItem(InventorySlot slot, out InventorySlot replacedItem)
-    //{
-
-    //}
 
     #endregion
 

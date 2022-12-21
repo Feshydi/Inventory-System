@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class ClickableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
 
     #region Fields
@@ -14,16 +14,20 @@ public class ClickableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private Transform _parentAfterDrag;
 
     [SerializeField]
-    private Image image;
+    private Image _image;
 
     #endregion
 
     #region Properties
 
-    public Transform parentAfterDrag
+    public Transform ParentAfterDrag
     {
         get { return _parentAfterDrag; }
-        set { _parentAfterDrag = value; }
+    }
+
+    public Image Image
+    {
+        get { return _image; }
     }
 
     #endregion
@@ -33,11 +37,10 @@ public class ClickableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnBeginDrag(PointerEventData eventData)
     {
         _parentAfterDrag = transform.parent;
-
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
 
-        image.raycastTarget = false;
+        _image.raycastTarget = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -47,9 +50,10 @@ public class ClickableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.SetParent(_parentAfterDrag);
+        if (transform.parent != _parentAfterDrag)
+            transform.SetParent(_parentAfterDrag);
 
-        image.raycastTarget = true;
+        _image.raycastTarget = true;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -59,6 +63,11 @@ public class ClickableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             InventorySystem _invSys = GetComponentInParent<StaticInventoryDisplay>().InventorySystem;
             _invSys.RemoveFromInventory(GetComponentInParent<InventorySlotManager>().AssignedInventorySlot);
         }
+    }
+
+    public void SetParentBack()
+    {
+        transform.SetParent(_parentAfterDrag);
     }
 
     #endregion
