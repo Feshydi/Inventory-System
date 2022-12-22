@@ -17,9 +17,6 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
     [SerializeField]
     private InventorySlot _assignedInventoryItem;
 
-    [SerializeField]
-    private UnityAction<InventorySlot, Image> _onItemSelected;
-
     #endregion
 
     #region Properties
@@ -33,12 +30,6 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
     {
         get { return _assignedInventoryItem; }
         set { _assignedInventoryItem = value; }
-    }
-
-    public UnityAction<InventorySlot, Image> OnItemSelected
-    {
-        get { return _onItemSelected; }
-        set { _onItemSelected = value; }
     }
 
     #endregion
@@ -83,23 +74,51 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
         GameObject dropped = eventData.pointerDrag;
         ItemActions item = dropped.GetComponent<ItemActions>();
 
-        SetSlot(item);
+
+        SetSlot(item.ActionWithShift);
     }
 
-    public void SetSlot(ItemActions item)
+    public void SetSlot(bool shifted)
     {
         MouseItem mouse = GetComponentInParent<CanvasManager>().MouseItem;
         InventorySystem invSys = GetComponentInParent<StaticInventoryDisplay>().InventorySystem;
 
+        // Is slot empty?
         if (_assignedInventoryItem.ID == -1)
         {
-            invSys.GetSlotIndex(_assignedInventoryItem, out int index);
-            invSys.SetSlotByIndex(new InventorySlot(GameManager.Instance.Database.GetItem[mouse.Slot.ID], mouse.Slot.StackSize), index);
+            invSys.ReplaceSlot(_assignedInventoryItem, new InventorySlot(mouse.Slot.ID, mouse.Slot.StackSize));
         }
         else
         {
+            // Are both slot items are same?
+            if (mouse.Slot.ID == _assignedInventoryItem.ID)
+            {
+                invSys.FillSlot(_assignedInventoryItem, mouse.Slot.StackSize, out int itemCountLeftInMouse);
+                mouse.Slot.StackSize = itemCountLeftInMouse;
 
+                // Does mouse have items?
+                if (itemCountLeftInMouse != 0)
+                    invSys.AddToInventory(GameManager.Instance.Database.GetItem[mouse.Slot.ID], mouse.Slot.StackSize, out int amountLeft);
+                //                                 *** in ideal situation there should be 0 amountLeft... ***
+                // #to do: add auto drop item with amountLeft
+            }
+            else
+            {
+                // if taken half of item, then put it in first founded slot(s)
+                if (shifted)
+                {
+                    invSys.AddToInventory(GameManager.Instance.Database.GetItem[mouse.Slot.ID], mouse.Slot.StackSize, out int amountLeft);
+                }
+                else
+                {
+                    InventorySlot tempSlot = new InventorySlot(_assignedInventoryItem.ID, _assignedInventoryItem.StackSize);
+                    invSys.ReplaceSlot(_assignedInventoryItem, new InventorySlot(mouse.Slot.ID, mouse.Slot.StackSize));
+                    mouse.Slot = tempSlot;
+                    return;
+                }
+            }
         }
+        mouse.DisableMouse();
     }
 
     #endregion

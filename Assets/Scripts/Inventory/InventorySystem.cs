@@ -92,6 +92,21 @@ public class InventorySystem
         return true;
     }
 
+    public void FillSlot(InventorySlot slot, int amountToAdd, out int amountRemaining)
+    {
+        if (slot.RoomLeftInStack(amountToAdd, out amountRemaining))
+        {
+            slot.AddToStack(amountToAdd);
+            amountRemaining = 0;
+        }
+        else
+        {
+            slot.AddToStack(amountRemaining);
+            amountRemaining = amountToAdd - amountRemaining;
+        }
+        _onInventorySlotChanged?.Invoke(slot);
+    }
+
     public void RemoveFromInventory(InventorySlot slotToRemove, bool isHalf)
     {
         foreach (var _slot in _inventorySlots)
@@ -109,15 +124,12 @@ public class InventorySystem
         }
     }
 
-    public void ReplaceItem(InventorySlot slotToReplace, InventorySlot slotToSet, out InventorySlot replacedSlot)
+    public void ReplaceSlot(InventorySlot slotToReplace, InventorySlot slotToSet)
     {
-        replacedSlot = null;
-
         foreach (var _slot in _inventorySlots)
         {
             if (_slot.Equals(slotToReplace))
             {
-                replacedSlot = _slot;
                 _slot.SetSlot(slotToSet.ID, slotToSet.StackSize);
                 _onInventorySlotChanged?.Invoke(_slot);
                 return;

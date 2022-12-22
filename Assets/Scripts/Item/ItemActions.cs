@@ -16,6 +16,9 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     [SerializeField]
     private Image _image;
 
+    [SerializeField]
+    private bool _actionWithShift;
+
     #endregion
 
     #region Properties
@@ -30,13 +33,22 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         get { return _image; }
     }
 
+    public bool ActionWithShift
+    {
+        get { return _actionWithShift; }
+    }
+
     #endregion
 
     #region Methods
 
-    public void OnBeginDrag(PointerEventData eventData)
+    private void Awake()
     {
         _parentGrabbedItem = transform.parent;
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
         InventorySlot selectedSlot = GetComponentInParent<InventorySlotManager>().AssignedInventorySlot;
 
         SetMouseActive(Input.GetKey(KeyCode.LeftShift), selectedSlot);
@@ -46,7 +58,9 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        GetComponentInParent<CanvasManager>().MouseItem.DisableMouse();
+        // if not shifting, setting slot from mouse
+        if (!_actionWithShift)
+            GetComponentInParent<InventorySlotManager>().SetSlot(_actionWithShift);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -67,6 +81,9 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         if (slot.StackSize == 1)
             isHalf = false;
+
+        _actionWithShift = isHalf;
+
         GetComponentInParent<CanvasManager>().MouseItem.SetMouseItem(isHalf, slot);
         GetComponentInParent<StaticInventoryDisplay>().InventorySystem.RemoveFromInventory(slot, isHalf);
     }

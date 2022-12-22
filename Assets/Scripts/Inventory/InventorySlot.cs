@@ -43,6 +43,11 @@ public class InventorySlot
 
     #region Constructors
 
+    public InventorySlot()
+    {
+        SetEmptySlot();
+    }
+
     public InventorySlot(ItemObject objectItem, int amount)
     {
         _id = objectItem.ID;
@@ -50,9 +55,9 @@ public class InventorySlot
         _stats = new Dictionary<string, string>();
     }
 
-    public InventorySlot()
+    public InventorySlot(int id, int amount)
     {
-        SetEmptySlot();
+        SetSlot(id, amount);
     }
 
     #endregion

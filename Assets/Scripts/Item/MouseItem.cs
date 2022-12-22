@@ -56,21 +56,34 @@ public class MouseItem : MonoBehaviour
         transform.position = Mouse.current.position.ReadValue();
     }
 
+
     public void SetMouseItem(bool isHalf, InventorySlot slot)
     {
-        _itemSprite.sprite = GameManager.Instance.Database.GetItem[slot.ID].Icon;
-        _itemSprite.color = Color.white;
-        _slot.SetSlot(slot.ID, slot.StackSize / (isHalf ? 2 : 1));
+        _slot = new InventorySlot(slot.ID, slot.StackSize / (isHalf ? 2 : 1));
 
-        _itemCount.text = _slot.StackSize == 1 ? "" : _slot.StackSize.ToString();
+        UpdateItemDisplay();
+    }
+
+    public void UpdateItemDisplay()
+    {
+        if (_slot.ID != -1)
+        {
+            _itemSprite.sprite = GameManager.Instance.Database.GetItem[_slot.ID].Icon;
+            _itemSprite.color = Color.white;
+            _itemCount.text = _slot.StackSize == 1 ? "" : _slot.StackSize.ToString();
+        }
+        else
+        {
+            _itemSprite.sprite = null;
+            _itemSprite.color = Color.clear;
+            _itemCount.text = "";
+        }
     }
 
     public void DisableMouse()
     {
-        _itemSprite.sprite = null;
-        _itemSprite.color = Color.clear;
-        _itemCount.text = "";
         _slot = new InventorySlot();
+        UpdateItemDisplay();
     }
 
     #endregion
