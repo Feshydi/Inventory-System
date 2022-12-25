@@ -9,7 +9,7 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     #region Fields
 
-    [HideInInspector]
+    [SerializeField]
     protected InventorySystem _inventorySystem;
 
     [SerializeField]
@@ -22,11 +22,13 @@ public abstract class InventoryDisplay : MonoBehaviour
     public InventorySystem InventorySystem
     {
         get { return _inventorySystem; }
+        set { _inventorySystem = value; }
     }
 
     public Dictionary<InventorySlotManager, InventorySlot> SlotDictionary
     {
         get { return _slotDictionary; }
+        set { _slotDictionary = value; }
     }
 
     #endregion
@@ -38,7 +40,10 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     }
 
-    public abstract void AssignSlot(InventorySlot slot);
+    public virtual void AssignSlot(InventorySlot slot)
+    {
+        AssignSlot(_inventorySystem);
+    }
 
     public abstract void AssignSlot(InventorySystem inventoryToDisplay);
 

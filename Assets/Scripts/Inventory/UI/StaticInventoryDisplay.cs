@@ -48,11 +48,6 @@ public class StaticInventoryDisplay : InventoryDisplay
         AssignSlot(_inventorySystem);
     }
 
-    public override void AssignSlot(InventorySlot slot)
-    {
-        AssignSlot(_inventorySystem);
-    }
-
     public override void AssignSlot(InventorySystem inventoryToDisplay)
     {
         _slotDictionary = new Dictionary<InventorySlotManager, InventorySlot>();

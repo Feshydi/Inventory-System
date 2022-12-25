@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
+[System.Serializable]
 public class InventorySlotManager : MonoBehaviour, IDropHandler
 {
 
@@ -80,8 +81,8 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
 
     public void SetSlot(bool shifted)
     {
-        MouseItem mouse = GetComponentInParent<CanvasManager>().MouseItem;
-        InventorySystem invSys = GetComponentInParent<StaticInventoryDisplay>().InventorySystem;
+        MouseItem mouse = GetComponentInParent<InventoryController>().MouseItem;
+        InventorySystem invSys = GetComponentInParent<InventoryDisplay>().InventorySystem;
 
         // Is slot empty?
         if (_assignedInventoryItem.ID == -1)

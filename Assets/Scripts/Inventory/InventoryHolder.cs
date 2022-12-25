@@ -40,6 +40,7 @@ public class InventoryHolder : MonoBehaviour
     public static UnityAction<InventorySystem> OnDynamicInventoryDisplayRequested
     {
         get { return _onDynamicInventoryDisplayRequested; }
+        set { _onDynamicInventoryDisplayRequested = value; }
     }
 
     #endregion

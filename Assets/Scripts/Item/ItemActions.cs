@@ -51,7 +51,7 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         InventorySlot selectedSlot = GetComponentInParent<InventorySlotManager>().AssignedInventorySlot;
 
-        SetMouseActive(Input.GetKey(KeyCode.LeftShift), selectedSlot);
+        SetMouseActive(Keyboard.current.shiftKey.isPressed, selectedSlot);
     }
 
     public void OnDrag(PointerEventData eventData) { }
@@ -65,9 +65,9 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (Input.GetKey(KeyCode.B))
+        if (Keyboard.current.bKey.IsPressed())
         {
-            InventorySystem _invSys = GetComponentInParent<StaticInventoryDisplay>().InventorySystem;
+            InventorySystem _invSys = GetComponentInParent<InventoryDisplay>().InventorySystem;
             _invSys.RemoveFromInventory(GetComponentInParent<InventorySlotManager>().AssignedInventorySlot, false);
         }
     }
@@ -84,8 +84,8 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         _actionWithShift = isHalf;
 
-        GetComponentInParent<CanvasManager>().MouseItem.SetMouseItem(isHalf, slot);
-        GetComponentInParent<StaticInventoryDisplay>().InventorySystem.RemoveFromInventory(slot, isHalf);
+        GetComponentInParent<InventoryController>().MouseItem.SetMouseItem(isHalf, slot);
+        GetComponentInParent<InventoryDisplay>().InventorySystem.RemoveFromInventory(slot, isHalf);
     }
 
     #endregion
