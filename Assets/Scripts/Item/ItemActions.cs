@@ -11,9 +11,6 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     #region Fields
 
     [SerializeField]
-    private Transform _parentGrabbedItem;
-
-    [SerializeField]
     private Image _image;
 
     [SerializeField]
@@ -22,11 +19,6 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     #endregion
 
     #region Properties
-
-    public Transform ParentGrabbedItem
-    {
-        get { return _parentGrabbedItem; }
-    }
 
     public Image Image
     {
@@ -41,11 +33,6 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     #endregion
 
     #region Methods
-
-    private void Awake()
-    {
-        _parentGrabbedItem = transform.parent;
-    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -67,14 +54,9 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         if (Keyboard.current.bKey.IsPressed())
         {
-            InventorySystem _invSys = GetComponentInParent<InventoryDisplay>().InventorySystem;
-            _invSys.RemoveFromInventory(GetComponentInParent<InventorySlotManager>().AssignedInventorySlot, false);
+            InventorySystem invSys = GetComponentInParent<InventoryDisplay>().InventorySystem;
+            invSys.RemoveFromInventory(GetComponentInParent<InventorySlotManager>().AssignedInventorySlot, false);
         }
-    }
-
-    public void SetParentBack()
-    {
-        transform.SetParent(_parentGrabbedItem);
     }
 
     public void SetMouseActive(bool isHalf, InventorySlot slot)

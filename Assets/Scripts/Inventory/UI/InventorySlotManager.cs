@@ -119,6 +119,7 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
                 }
             }
         }
+
         mouse.DisableMouse();
     }
 

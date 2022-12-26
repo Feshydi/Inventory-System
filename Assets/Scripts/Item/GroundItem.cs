@@ -8,6 +8,7 @@ public class GroundItem : MonoBehaviour
 
     #region Fields
 
+    [SerializeField]
     private SphereCollider _sphereCollider;
 
     [SerializeField]
@@ -17,16 +18,11 @@ public class GroundItem : MonoBehaviour
     private int _stackSize;
 
     [SerializeField]
-    private float _pickUpRadius = 1f;
+    private float _pickUpRadius = 0.5f;
 
     #endregion
 
     #region Properties
-
-    public SphereCollider SphereCollider
-    {
-        get { return _sphereCollider; }
-    }
 
     public ItemObject ObjectItem
     {
@@ -36,11 +32,6 @@ public class GroundItem : MonoBehaviour
     public int StackSize
     {
         get { return _stackSize; }
-    }
-
-    public float PickUpRadius
-    {
-        get { return _pickUpRadius; }
     }
 
     #endregion
@@ -62,14 +53,9 @@ public class GroundItem : MonoBehaviour
             return;
 
         if (inventory.InventorySystem.AddToInventory(_itemObject, _stackSize, out int amountLeft))
-        {
             Destroy(gameObject);
-            return;
-        }
         else
-        {
             _stackSize = amountLeft;
-        }
     }
 
     #endregion

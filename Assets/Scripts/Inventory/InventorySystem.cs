@@ -59,51 +59,40 @@ public class InventorySystem
     {
         amountLeft = amountToAdd;
 
-        if (ContainsItem(itemToAdd, out List<InventorySlot> inventorySlots))    // putting items in existed slots
+        // put items in existed slots
+        if (ContainsItem(itemToAdd, out List<InventorySlot> inventorySlots))
         {
             foreach (var slot in inventorySlots)
             {
-                if (slot.RoomLeftInStack(amountLeft, out int amountRemaining))
-                {
-                    slot.AddToStack(amountLeft);
-                    _onInventorySlotChanged?.Invoke(slot);
+                FillSlot(slot, amountLeft, out amountLeft);
+
+                if (amountLeft <= 0)
                     return true;
-                }
-                else
-                {
-                    amountLeft -= amountRemaining;
-                    slot.AddToStack(amountRemaining);
-                    _onInventorySlotChanged?.Invoke(slot);
-                }
             }
         }
 
-        while (amountLeft > 0)                  // while have items creating new slots 
+        // while have items creat new slots 
+        while (amountLeft > 0)
         {
-            if (HasFreeSlot(out InventorySlot freeSlot))
-            {
-                freeSlot.SetInventorySlotWithItem(itemToAdd, amountLeft, out amountLeft);
-                _onInventorySlotChanged?.Invoke(freeSlot);
-            }
-            else
+            if (!HasFreeSlot(out InventorySlot freeSlot))
                 return false;
+
+            freeSlot.SetSlot(itemToAdd, amountLeft, out amountLeft);
+            _onInventorySlotChanged?.Invoke(freeSlot);
         }
 
         return true;
     }
 
-    public void FillSlot(InventorySlot slot, int amountToAdd, out int amountRemaining)
+    public void FillSlot(InventorySlot slot, int amountToAdd, out int amountLeft)
     {
-        if (slot.RoomLeftInStack(amountToAdd, out amountRemaining))
-        {
+        if (slot.RoomLeftInStack(amountToAdd, out int amountRemaining))
             slot.AddToStack(amountToAdd);
-            amountRemaining = 0;
-        }
         else
-        {
             slot.AddToStack(amountRemaining);
-            amountRemaining = amountToAdd - amountRemaining;
-        }
+
+        amountLeft = amountToAdd <= amountRemaining ? 0 : amountToAdd - amountRemaining;
+
         _onInventorySlotChanged?.Invoke(slot);
     }
 
@@ -135,17 +124,6 @@ public class InventorySystem
                 return;
             }
         }
-    }
-
-    public void SetSlotByIndex(InventorySlot slotToSet, int index)
-    {
-        _inventorySlots[index] = slotToSet;
-        _onInventorySlotChanged?.Invoke(slotToSet);
-    }
-
-    public void GetSlotIndex(InventorySlot slot, out int index)
-    {
-        index = _inventorySlots.IndexOf(slot);
     }
 
     public bool ContainsItem(ItemObject itemToAdd, out List<InventorySlot> inventorySlots)

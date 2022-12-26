@@ -43,16 +43,9 @@ public class InventorySlot
 
     #region Constructors
 
-    public InventorySlot()
-    {
-        SetEmptySlot();
-    }
-
     public InventorySlot(ItemObject objectItem, int amount)
     {
-        _id = objectItem.ID;
-        _stackSize = amount;
-        _stats = new Dictionary<string, string>();
+        SetSlot(objectItem.ID, amount);
     }
 
     public InventorySlot(int id, int amount)
@@ -60,16 +53,14 @@ public class InventorySlot
         SetSlot(id, amount);
     }
 
+    public InventorySlot()
+    {
+        SetEmptySlot();
+    }
+
     #endregion
 
     #region Methods
-
-    public void SetSlot(int id, int amount)
-    {
-        _id = id;
-        _stackSize = amount;
-        _stats = new Dictionary<string, string>();
-    }
 
     public void SetEmptySlot()
     {
@@ -78,38 +69,32 @@ public class InventorySlot
         _stats = new Dictionary<string, string>();
     }
 
-    public void SetInventorySlotWithItem(ItemObject item, int amount, out int amountLeft)
+    public void SetSlot(int id, int amount)
     {
-        int MaxStackSize = GameManager.Instance.Database.GetItem[item.ID].MaxStackSize;
-        amountLeft = amount - MaxStackSize;
-
-        _id = item.ID;
-
-        if (amountLeft > 0)
-            _stackSize = MaxStackSize;
-        else
-            _stackSize = amount;
+        _id = id;
+        _stackSize = amount;
+        _stats = new Dictionary<string, string>();
     }
 
-    public bool RoomLeftInStack(int amountToAdd, out int amountRemaining)
+    public void SetSlot(ItemObject item, int amount, out int amountLeft)
     {
-        ItemObject item = GameManager.Instance.Database.GetItem[_id];
+        SetSlot(item.ID, amount < item.MaxStackSize ? amount : item.MaxStackSize);
 
-        amountRemaining = item.MaxStackSize - _stackSize;
-
-        return RoomLeftInStack(amountToAdd);
-    }
-
-    public bool RoomLeftInStack(int amountToAdd)
-    {
-        ItemObject item = GameManager.Instance.Database.GetItem[_id];
-
-        return _stackSize + amountToAdd <= item.MaxStackSize;
+        amountLeft = amount - item.MaxStackSize;
     }
 
     public void AddToStack(int amount)
     {
         _stackSize += amount;
+    }
+
+    public bool RoomLeftInStack(int amountToAdd, out int roomLeft)
+    {
+        ItemObject item = GameManager.Instance.Database.GetItem[_id];
+
+        roomLeft = item.MaxStackSize - _stackSize;
+
+        return _stackSize + amountToAdd <= item.MaxStackSize;
     }
 
     public override string ToString()

@@ -20,6 +20,7 @@ public class InventoryHolder : MonoBehaviour
     [SerializeField]
     protected InventorySystem _inventorySystem;
 
+    [System.NonSerialized]
     private static UnityAction<InventorySystem> _onDynamicInventoryDisplayRequested;
 
     #endregion
@@ -29,7 +30,6 @@ public class InventoryHolder : MonoBehaviour
     public int InvetorySize
     {
         get { return _inventorySize; }
-        set { _inventorySize = value; }
     }
 
     public InventorySystem InventorySystem

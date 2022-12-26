@@ -36,13 +36,12 @@ public class DynamicInventoryDisplay : InventoryDisplay
     {
         InventorySystem = inventoryToDisplay;
 
+        ClearSlots();
         AssignSlot(_inventorySystem);
     }
 
     public override void AssignSlot(InventorySystem inventoryToDisplay)
     {
-        ClearSlots();
-
         SlotDictionary = new Dictionary<InventorySlotManager, InventorySlot>();
 
         if (inventoryToDisplay == null)
