@@ -25,24 +25,40 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
     #region Methods
 
-    protected override void Start()
+    private void OnDisable()
     {
-        base.Start();
-
-        InventorySystem.OnInventorySlotChanged += UpdateSlot;
+        _inventorySystem.OnInventorySlotChanged -= UpdateSlot;
+        _inventorySystem.OnInventorySlotChanged -= AssignSlot;
     }
 
     public void RefreshDynamicInventory(InventorySystem inventoryToDisplay)
     {
-        InventorySystem = inventoryToDisplay;
+        _inventorySystem = inventoryToDisplay;
+
+        _inventorySystem.OnInventorySlotChanged += UpdateSlot;
+        _inventorySystem.OnInventorySlotChanged += AssignSlot;
 
         ClearSlots();
         AssignSlot(_inventorySystem);
     }
 
+    public override void AssignSlot(InventorySlot slot)
+    {
+        _slotDictionary = new Dictionary<InventorySlotManager, InventorySlot>();
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var slotToDisplay = transform.GetChild(i).GetComponent<InventorySlotManager>();
+            var inventorySlot = _inventorySystem.InventorySlots[i];
+
+            _slotDictionary.Add(slotToDisplay, inventorySlot);
+            slotToDisplay.Init(inventorySlot);
+        }
+    }
+
     public override void AssignSlot(InventorySystem inventoryToDisplay)
     {
-        SlotDictionary = new Dictionary<InventorySlotManager, InventorySlot>();
+        _slotDictionary = new Dictionary<InventorySlotManager, InventorySlot>();
 
         if (inventoryToDisplay == null)
             return;
@@ -52,7 +68,7 @@ public class DynamicInventoryDisplay : InventoryDisplay
             var slot = Instantiate(_slotPrefab, transform);
             slot.Init(inventoryToDisplay.InventorySlots[i]);
 
-            SlotDictionary.Add(slot, inventoryToDisplay.InventorySlots[i]);
+            _slotDictionary.Add(slot, inventoryToDisplay.InventorySlots[i]);
         }
     }
 
@@ -63,8 +79,8 @@ public class DynamicInventoryDisplay : InventoryDisplay
             Destroy(_transform.gameObject);
         }
 
-        if (SlotDictionary != null)
-            SlotDictionary.Clear();
+        if (_slotDictionary != null)
+            _slotDictionary.Clear();
     }
 
     #endregion

@@ -24,10 +24,9 @@ public class InventoryController : MonoBehaviour
         set { _mouseItem = value; }
     }
 
-    public DynamicInventoryDisplay dynamicInventoryDisplay
+    public DynamicInventoryDisplay DynamicInventoryDisplay
     {
         get { return _dynamicInventory; }
-        set { _dynamicInventory = value; }
     }
 
     #endregion
@@ -37,15 +36,6 @@ public class InventoryController : MonoBehaviour
     private void Awake()
     {
         DynamicInventorySetActive(false);
-    }
-
-    private void Update()
-    {
-        if (Keyboard.current.bKey.wasPressedThisFrame)
-            DisplayInventory(new InventorySystem(20));
-
-        if (_dynamicInventory.gameObject.activeInHierarchy && Keyboard.current.escapeKey.wasPressedThisFrame)
-            DynamicInventorySetActive(false);
     }
 
     private void OnEnable()
@@ -60,8 +50,14 @@ public class InventoryController : MonoBehaviour
 
     private void DisplayInventory(InventorySystem inventoryToDisplay)
     {
-        DynamicInventorySetActive(true);
-        _dynamicInventory.RefreshDynamicInventory(inventoryToDisplay);
+        if (!_dynamicInventory.gameObject.activeInHierarchy)
+        {
+            DynamicInventorySetActive(true);
+            _dynamicInventory.RefreshDynamicInventory(inventoryToDisplay);
+            return;
+        }
+
+        DynamicInventorySetActive(false);
     }
 
     private void DynamicInventorySetActive(bool value)

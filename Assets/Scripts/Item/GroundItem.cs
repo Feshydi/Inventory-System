@@ -47,6 +47,16 @@ public class GroundItem : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        AddItem(other);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        AddItem(other);
+    }
+
+    private void AddItem(Collider other)
+    {
         var inventory = other.transform.GetComponent<InventoryHolder>();
 
         if (!inventory)
