@@ -84,6 +84,10 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
         MouseItem mouse = GetComponentInParent<InventoryController>().MouseItem;
         InventorySystem invSys = GetComponentInParent<InventoryDisplay>().InventorySystem;
 
+        // if no items in mouse
+        if (mouse.Slot.ID == -1)
+            return;
+
         // Is slot empty?
         if (_assignedInventoryItem.ID == -1)
         {
@@ -115,6 +119,7 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
                     InventorySlot tempSlot = new InventorySlot(_assignedInventoryItem.ID, _assignedInventoryItem.StackSize);
                     invSys.ReplaceSlot(_assignedInventoryItem, new InventorySlot(mouse.Slot.ID, mouse.Slot.StackSize));
                     mouse.Slot = tempSlot;
+                    mouse.UpdateItemDisplay();
                     return;
                 }
             }

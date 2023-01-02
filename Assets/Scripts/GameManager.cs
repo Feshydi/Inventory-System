@@ -42,4 +42,13 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    #region Methods
+
+    private void Awake()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    #endregion
+
 }
