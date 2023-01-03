@@ -44,6 +44,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private bool _isInventoryOpened;
 
+    [SerializeField]
+    private InventoryController _inventoryController;
+
     #endregion
 
     #region Properties
@@ -123,6 +126,9 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
+        if (_isInventoryOpened)
+            return;
+
         _isGrounded = _controller.isGrounded;
         if (_isGrounded && _velocity.y < 0)
             _velocity.y = 0f;
@@ -166,16 +172,19 @@ public class PlayerController : MonoBehaviour
         RaycastHit raycastHit = new RaycastHit();
         bool hit = Physics.Raycast(Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f)), out raycastHit, _rayRange);
 
-        if (hit)
+        if (_inputActions.Player.Interact.WasPressedThisFrame())
         {
-            var hitObject = raycastHit.transform.gameObject;
-
-            if (_inputActions.Player.Interact.WasPressedThisFrame() && hitObject.CompareTag("Chest"))
+            if (hit)
             {
-                hitObject.GetComponent<ChestController>().Interact();
-                _isInventoryOpened = !_isInventoryOpened;
-                Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
+                var hitObject = raycastHit.transform.gameObject;
+
+                if (hitObject.CompareTag("Chest"))
+                    hitObject.GetComponent<ChestInventory>().Interact();
             }
+
+            _isInventoryOpened = !_isInventoryOpened;
+            _inventoryController.InventorySetActive(_isInventoryOpened);
+            Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
         }
     }
 

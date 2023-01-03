@@ -9,10 +9,13 @@ public class StaticInventoryDisplay : InventoryDisplay
     #region Fields
 
     [SerializeField]
-    private InventoryHolder _inventoryHolder;
+    private PlayerInventory _inventoryHolder;
 
     [SerializeField]
     private InventorySlotManager[] _slots;
+
+    [SerializeField]
+    private string _inventoryName;
 
     #endregion
 
@@ -38,9 +41,27 @@ public class StaticInventoryDisplay : InventoryDisplay
 
         if (_inventoryHolder != null)
         {
-            _inventorySystem = _inventoryHolder.InventorySystem;
-            _inventorySystem.OnInventorySlotChanged += UpdateSlot;
-            _inventorySystem.OnInventorySlotChanged += AssignSlot;
+            switch (_inventoryName)
+            {
+                case "primary":
+                    _inventorySystem = _inventoryHolder.PrimaryInventorySystem;
+                    break;
+                case "backpack":
+                    _inventorySystem = _inventoryHolder.BackpackInventorySystem;
+                    break;
+                case "equipment":
+                    _inventorySystem = _inventoryHolder.EquipmentInventorySystem;
+                    break;
+                default:
+                    _inventorySystem = null;
+                    break;
+            }
+
+            if (_inventorySystem != null)
+            {
+                _inventorySystem.OnInventorySlotChanged += UpdateSlot;
+                _inventorySystem.OnInventorySlotChanged += AssignSlot;
+            }
         }
         else
             Debug.LogWarning($"No inventory assigned to {gameObject}");

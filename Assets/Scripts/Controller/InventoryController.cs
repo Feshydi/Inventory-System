@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class InventoryController : MonoBehaviour
 {
@@ -9,10 +10,28 @@ public class InventoryController : MonoBehaviour
     #region Fields
 
     [SerializeField]
+    private GameObject _dynamicInventoryUI;
+
+    [SerializeField]
+    private GameObject _inventoryUI;
+
+    [SerializeField]
+    private GameObject _backpackUI;
+
+    [SerializeField]
+    private GameObject _equipmentUI;
+
+    [SerializeField]
+    private GameObject _hotbarUI;
+
+    [SerializeField]
     private MouseItem _mouseItem;
 
     [SerializeField]
     private DynamicInventoryDisplay _dynamicInventory;
+
+    [SerializeField]
+    private GameObject _hotbar;
 
     #endregion
 
@@ -35,7 +54,12 @@ public class InventoryController : MonoBehaviour
 
     private void Awake()
     {
-        DynamicInventorySetActive(false);
+        _dynamicInventory = GetComponentInChildren<DynamicInventoryDisplay>();
+        _dynamicInventoryUI.SetActive(false);
+        _inventoryUI.SetActive(false);
+        _backpackUI.SetActive(false);
+        _equipmentUI.SetActive(false);
+        GetComponent<Image>().enabled = false;
     }
 
     private void OnEnable()
@@ -50,19 +74,22 @@ public class InventoryController : MonoBehaviour
 
     private void DisplayInventory(InventorySystem inventoryToDisplay)
     {
-        if (!_dynamicInventory.gameObject.activeInHierarchy)
+        if (!_dynamicInventoryUI.activeInHierarchy)
         {
-            DynamicInventorySetActive(true);
+            _dynamicInventoryUI.SetActive(true);
             _dynamicInventory.RefreshDynamicInventory(inventoryToDisplay);
             return;
         }
 
-        DynamicInventorySetActive(false);
+        _dynamicInventoryUI.SetActive(false);
     }
 
-    private void DynamicInventorySetActive(bool value)
+    public void InventorySetActive(bool value)
     {
-        _dynamicInventory.transform.parent.parent.gameObject.SetActive(value);
+        GetComponent<Image>().enabled = value;
+        _inventoryUI.SetActive(value);
+        _backpackUI.SetActive(value);
+        _equipmentUI.SetActive(value);
     }
 
     #endregion
