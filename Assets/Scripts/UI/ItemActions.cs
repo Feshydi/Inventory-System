@@ -45,9 +45,8 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // if not shifting, setting slot from mouse
-        if (!_actionWithShift)
-            GetComponentInParent<InventorySlotManager>().SetSlot(_actionWithShift);
+        // if mouse not empty place from it back
+        GetComponentInParent<InventorySlotManager>().SetSlot(_actionWithShift);
     }
 
     public void OnPointerClick(PointerEventData eventData)

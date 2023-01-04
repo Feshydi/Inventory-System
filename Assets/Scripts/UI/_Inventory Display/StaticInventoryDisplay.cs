@@ -52,19 +52,19 @@ public class StaticInventoryDisplay : InventoryDisplay
                 case "equipment":
                     _inventorySystem = _inventoryHolder.EquipmentInventorySystem;
                     break;
+                case "hotbar":
+                    _inventorySystem = _inventoryHolder.HotbarInventorySystem;
+                    break;
                 default:
                     _inventorySystem = null;
                     break;
             }
-
-            if (_inventorySystem != null)
-            {
-                _inventorySystem.OnInventorySlotChanged += UpdateSlot;
-                _inventorySystem.OnInventorySlotChanged += AssignSlot;
-            }
         }
         else
             Debug.LogWarning($"No inventory assigned to {gameObject}");
+
+        if (_inventorySystem != null)
+            _inventorySystem.OnInventorySlotChanged += UpdateSlot;
 
         AssignSlot(_inventorySystem);
     }

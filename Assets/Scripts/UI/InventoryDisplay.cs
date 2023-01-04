@@ -40,11 +40,6 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     }
 
-    public virtual void AssignSlot(InventorySlot slot)
-    {
-        AssignSlot(_inventorySystem);
-    }
-
     public abstract void AssignSlot(InventorySystem inventoryToDisplay);
 
     protected virtual void UpdateSlot(InventorySlot updatedSlot)

@@ -63,7 +63,12 @@ public class GroundItem : MonoBehaviour
             return;
 
         int amountLeft;
-        if (inventory.PrimaryInventorySystem.AddToInventory(_itemObject, _stackSize, out amountLeft))
+        if (inventory.HotbarInventorySystem.AddToInventory(_itemObject, _stackSize, out amountLeft))
+        {
+            Destroy(gameObject);
+            return;
+        }
+        if (inventory.PrimaryInventorySystem.AddToInventory(_itemObject, amountLeft, out amountLeft))
         {
             Destroy(gameObject);
             return;

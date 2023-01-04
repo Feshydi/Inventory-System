@@ -10,7 +10,7 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
     #region Fields
 
     [SerializeField]
-    private string _slotType;
+    private ItemObject _slotType;
 
     [SerializeField]
     private InventorySlot _assignedInventoryItem;
@@ -19,7 +19,7 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
 
     #region Properties
 
-    public string SlotType
+    public ItemObject SlotType
     {
         get { return _slotType; }
     }
@@ -38,7 +38,6 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
     {
         _assignedInventoryItem?.SetEmptySlot();
         ClearSlot();
-        //  _slotType = GetComponentInChildren<InventoryItemManager>().AssignedInventorySlot.ToString();
     }
 
     public void Init(InventorySlot slot)
@@ -70,10 +69,47 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         GameObject dropped = eventData.pointerDrag;
-        ItemActions item = dropped.GetComponent<ItemActions>();
+        var item = dropped.GetComponent<ItemActions>();
+        var mouseSlot = GetComponentInParent<InventoryController>().MouseItem.Slot;
+        var fromSlotType = item.GetComponentInParent<InventorySlotManager>()._slotType;
 
+        // if mouse slot empty return
+        if (mouseSlot.ID == -1)
+            return;
 
-        SetSlot(item.ActionWithShift);
+        // if slots have no type
+        if (_slotType == null && fromSlotType == null)
+        {
+            SetSlot(item.ActionWithShift);
+            return;
+        }
+        else
+        // if slots have same type
+        if (_slotType != null)
+        {
+            if (_slotType.GetType().Name == mouseSlot.ToString())
+            {
+                SetSlot(item.ActionWithShift);
+                return;
+            }
+        }
+        else
+        // if slot-in have no type and no item
+        if (_slotType == null && _assignedInventoryItem.ID == -1)
+        {
+            SetSlot(item.ActionWithShift);
+            return;
+        }
+        else
+        // if slot-in have no type, but item have same type as slot-out
+        if (fromSlotType != null)
+        {
+            if (_slotType == null && fromSlotType.GetType().Name == _assignedInventoryItem.ToString())
+            {
+                SetSlot(item.ActionWithShift);
+                return;
+            }
+        }
     }
 
     public void SetSlot(bool shifted)
@@ -92,8 +128,8 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
         }
         else
         {
-            // Are both slot items are same?
-            if (mouse.Slot.ID == _assignedInventoryItem.ID)
+            // Are both slot items are same and their maxstacksize not zero?
+            if (mouse.Slot.ID == _assignedInventoryItem.ID && GameManager.Instance.Database.GetItem[mouse.Slot.ID].MaxStackSize > 1)
             {
                 invSys.FillSlot(_assignedInventoryItem, mouse.Slot.StackSize, out int itemCountLeftInMouse);
                 mouse.Slot.StackSize = itemCountLeftInMouse;

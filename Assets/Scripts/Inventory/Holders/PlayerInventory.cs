@@ -22,6 +22,12 @@ public class PlayerInventory : InventoryHolder
     [SerializeField]
     protected InventorySystem _equipmentInventorySystem;
 
+    [SerializeField]
+    protected int _hotbarInventorySize;
+
+    [SerializeField]
+    protected InventorySystem _hotbarInventorySystem;
+
     #endregion
 
     #region Properties
@@ -46,6 +52,16 @@ public class PlayerInventory : InventoryHolder
         get { return _equipmentInventorySystem; }
     }
 
+    public int HotbarInventorySize
+    {
+        get { return _hotbarInventorySize; }
+    }
+
+    public InventorySystem HotbarInventorySystem
+    {
+        get { return _hotbarInventorySystem; }
+    }
+
     #endregion
 
     #region Methods
@@ -56,7 +72,8 @@ public class PlayerInventory : InventoryHolder
 
         if (_primaryInventorySystem.InventorySize != _primaryInventorySize ||
             _backpackInventorySystem.InventorySize != _backpackInventorySize ||
-            _equipmentInventorySystem.InventorySize != _equipmentInventorySize)
+            _equipmentInventorySystem.InventorySize != _equipmentInventorySize ||
+            _hotbarInventorySystem.InventorySize != _hotbarInventorySize)
             Clear();
     }
 
@@ -68,6 +85,7 @@ public class PlayerInventory : InventoryHolder
         inventorySystems.Add(_primaryInventorySystem);
         inventorySystems.Add(_backpackInventorySystem);
         inventorySystems.Add(_equipmentInventorySystem);
+        inventorySystems.Add(_hotbarInventorySystem);
 
         IFormatter formatter = new BinaryFormatter();
         Stream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
@@ -92,6 +110,7 @@ public class PlayerInventory : InventoryHolder
             _primaryInventorySystem = inventorySystems[0];
             _backpackInventorySystem = inventorySystems[1];
             _equipmentInventorySystem = inventorySystems[2];
+            _hotbarInventorySystem = inventorySystems[3];
         }
     }
 
@@ -101,6 +120,7 @@ public class PlayerInventory : InventoryHolder
 
         _backpackInventorySystem = new InventorySystem(_backpackInventorySize);
         _equipmentInventorySystem = new InventorySystem(_equipmentInventorySize);
+        _hotbarInventorySystem = new InventorySystem(_hotbarInventorySize);
     }
 
     #endregion

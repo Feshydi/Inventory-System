@@ -27,33 +27,19 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
     private void OnDisable()
     {
-        _inventorySystem.OnInventorySlotChanged -= UpdateSlot;
-        _inventorySystem.OnInventorySlotChanged -= AssignSlot;
+        if (_inventorySystem != null)
+            _inventorySystem.OnInventorySlotChanged -= UpdateSlot;
     }
 
     public void RefreshDynamicInventory(InventorySystem inventoryToDisplay)
     {
         _inventorySystem = inventoryToDisplay;
 
-        _inventorySystem.OnInventorySlotChanged += UpdateSlot;
-        _inventorySystem.OnInventorySlotChanged += AssignSlot;
+        if (_inventorySystem != null)
+            _inventorySystem.OnInventorySlotChanged += UpdateSlot;
 
         ClearSlots();
         AssignSlot(_inventorySystem);
-    }
-
-    public override void AssignSlot(InventorySlot slot)
-    {
-        _slotDictionary = new Dictionary<InventorySlotManager, InventorySlot>();
-
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            var slotToDisplay = transform.GetChild(i).GetComponent<InventorySlotManager>();
-            var inventorySlot = _inventorySystem.InventorySlots[i];
-
-            _slotDictionary.Add(slotToDisplay, inventorySlot);
-            slotToDisplay.Init(inventorySlot);
-        }
     }
 
     public override void AssignSlot(InventorySystem inventoryToDisplay)
