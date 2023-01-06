@@ -70,7 +70,7 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
     {
         GameObject dropped = eventData.pointerDrag;
         var item = dropped.GetComponent<ItemActions>();
-        var mouseSlot = GetComponentInParent<InventoryController>().MouseItem.Slot;
+        var mouseSlot = InventoryController.Instance.MouseItem.Slot;
         var fromSlotType = item.GetComponentInParent<InventorySlotManager>()._slotType;
 
         // if mouse slot empty return
@@ -114,8 +114,8 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
 
     public void SetSlot(bool shifted)
     {
-        MouseItem mouse = GetComponentInParent<InventoryController>().MouseItem;
-        InventorySystem invSys = GetComponentInParent<InventoryDisplay>().InventorySystem;
+        var mouse = InventoryController.Instance.MouseItem;
+        var invSys = GetComponentInParent<InventoryDisplay>().InventorySystem;
 
         // if no items in mouse
         if (mouse.Slot.ID == -1)

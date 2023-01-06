@@ -65,7 +65,7 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         _actionWithShift = isHalf;
 
-        GetComponentInParent<InventoryController>().MouseItem.SetMouseItem(isHalf, slot);
+        InventoryController.Instance.MouseItem.SetMouseItem(isHalf, slot);
         GetComponentInParent<InventoryDisplay>().InventorySystem.RemoveFromInventory(slot, isHalf);
     }
 

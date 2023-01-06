@@ -45,17 +45,17 @@ public class GroundItem : MonoBehaviour
         _sphereCollider.radius = _pickUpRadius;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        AddItem(other);
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    AddItem(other);
+    //}
 
-    private void OnTriggerStay(Collider other)
-    {
-        AddItem(other);
-    }
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    AddItem(other);
+    //}
 
-    private void AddItem(Collider other)
+    public void AddItem(Collider other)
     {
         int amountLeft;
 

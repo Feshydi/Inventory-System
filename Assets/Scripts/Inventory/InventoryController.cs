@@ -9,6 +9,8 @@ public class InventoryController : MonoBehaviour
 
     #region Fields
 
+    private static InventoryController _instance;
+
     [SerializeField]
     private GameObject _dynamicInventoryUI;
 
@@ -37,6 +39,16 @@ public class InventoryController : MonoBehaviour
 
     #region Properties
 
+    public static InventoryController Instance
+    {
+        get
+        {
+            if (_instance == null)
+                new InventoryController();
+            return _instance;
+        }
+    }
+
     public MouseItem MouseItem
     {
         get { return _mouseItem; }
@@ -46,6 +58,15 @@ public class InventoryController : MonoBehaviour
     public DynamicInventoryDisplay DynamicInventoryDisplay
     {
         get { return _dynamicInventory; }
+    }
+
+    #endregion
+
+    #region Constructors
+
+    private InventoryController()
+    {
+        _instance = this;
     }
 
     #endregion

@@ -10,7 +10,7 @@ public class StaticInventoryDisplay : InventoryDisplay
     #region Fields
 
     [SerializeField]
-    private InventoryHolder _inventoryHolder;
+    private PlayerController _inventoryHolder;
 
     [SerializeField]
     private string _holderName;
@@ -22,7 +22,7 @@ public class StaticInventoryDisplay : InventoryDisplay
 
     #region Properties
 
-    public InventoryHolder InventoryHolder
+    public PlayerController InventoryHolder
     {
         get { return _inventoryHolder; }
     }
