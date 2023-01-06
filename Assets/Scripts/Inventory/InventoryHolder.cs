@@ -13,16 +13,13 @@ public class InventoryHolder : MonoBehaviour
     #region Fields
 
     [SerializeField]
-    private string _name;
-
-    [SerializeField]
     protected string _savePath;
 
     [SerializeField]
-    protected int _primaryInventorySize;
+    protected int _inventorySize;
 
     [SerializeField]
-    protected InventorySystem _primaryInventorySystem;
+    protected InventorySystem _inventorySystem;
 
     [System.NonSerialized]
     private static UnityAction<InventorySystem> _onDynamicInventoryDisplayRequested;
@@ -31,19 +28,14 @@ public class InventoryHolder : MonoBehaviour
 
     #region Properties
 
-    public string Name
+    public int InvetorySize
     {
-        get { return _name; }
+        get { return _inventorySize; }
     }
 
-    public int PrimaryInvetorySize
+    public InventorySystem InventorySystem
     {
-        get { return _primaryInventorySize; }
-    }
-
-    public InventorySystem PrimaryInventorySystem
-    {
-        get { return _primaryInventorySystem; }
+        get { return _inventorySystem; }
     }
 
     public static UnityAction<InventorySystem> OnDynamicInventoryDisplayRequested
@@ -60,7 +52,7 @@ public class InventoryHolder : MonoBehaviour
     {
         Load();
 
-        if (_primaryInventorySystem.InventorySize != _primaryInventorySize)
+        if (_inventorySystem.InventorySize != _inventorySize)
             Clear();
     }
 
@@ -76,7 +68,7 @@ public class InventoryHolder : MonoBehaviour
 
         IFormatter formatter = new BinaryFormatter();
         Stream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
-        formatter.Serialize(stream, _primaryInventorySystem);
+        formatter.Serialize(stream, _inventorySystem);
         stream.Close();
     }
 
@@ -89,7 +81,7 @@ public class InventoryHolder : MonoBehaviour
         {
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(string.Concat(path), FileMode.Open, FileAccess.Read);
-            _primaryInventorySystem = (InventorySystem)formatter.Deserialize(stream);
+            _inventorySystem = (InventorySystem)formatter.Deserialize(stream);
             stream.Close();
         }
     }
@@ -97,7 +89,7 @@ public class InventoryHolder : MonoBehaviour
     [ContextMenu("Clear")]
     protected virtual void Clear()
     {
-        _primaryInventorySystem = new InventorySystem(_primaryInventorySize);
+        _inventorySystem = new InventorySystem(_inventorySize);
     }
 
     #endregion

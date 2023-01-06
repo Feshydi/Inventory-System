@@ -1826,10 +1826,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ea84aa31dfed4fb38561d94b8d3d1ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Big Chest
   _savePath: BigChest.Save
-  _primaryInventorySize: 25
-  _primaryInventorySystem:
+  _inventorySize: 20
+  _inventorySystem:
     _inventorySlots: []
 --- !u!1 &397927619
 GameObject:
@@ -1952,14 +1951,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySystem:
     _inventorySlots: []
-  _inventoryHolder: {fileID: 530855824}
+  _inventoryHolder: {fileID: 530855825}
+  _holderName: hotbar
   _slots:
   - {fileID: 1478334314}
   - {fileID: 172962931}
   - {fileID: 1184708878}
   - {fileID: 1124401435}
   - {fileID: 1326690932}
-  _inventoryName: hotbar
 --- !u!1 &403855334
 GameObject:
   m_ObjectHideFlags: 0
@@ -3052,7 +3051,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySystem:
     _inventorySlots: []
-  _inventoryHolder: {fileID: 530855824}
+  _inventoryHolder: {fileID: 530855825}
+  _holderName: inventory
   _slots:
   - {fileID: 1204091363}
   - {fileID: 126304958}
@@ -3069,7 +3069,6 @@ MonoBehaviour:
   - {fileID: 933559533}
   - {fileID: 1123128302}
   - {fileID: 465103525}
-  _inventoryName: primary
 --- !u!1 &530855817
 GameObject:
   m_ObjectHideFlags: 0
@@ -3082,7 +3081,10 @@ GameObject:
   - component: {fileID: 530855819}
   - component: {fileID: 530855823}
   - component: {fileID: 530855822}
+  - component: {fileID: 530855825}
   - component: {fileID: 530855824}
+  - component: {fileID: 530855827}
+  - component: {fileID: 530855826}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3177,19 +3179,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ca2b9f3e16c46459df1535a43b4675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Feshydi
   _savePath: Inventory.Save
-  _primaryInventorySize: 15
-  _primaryInventorySystem:
+  _inventorySize: 15
+  _inventorySystem:
     _inventorySlots: []
-  _backpackInventorySize: 15
-  _backpackInventorySystem:
+--- !u!114 &530855825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530855817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d81167425194d268db0f0ac3154126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _savePath: Hotbar.Save
+  _inventorySize: 5
+  _inventorySystem:
     _inventorySlots: []
-  _equipmentInventorySize: 3
-  _equipmentInventorySystem:
+--- !u!114 &530855826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530855817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f8a27d4d1c540e2833312b97372146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _savePath: Equipment.Save
+  _inventorySize: 3
+  _inventorySystem:
     _inventorySlots: []
-  _hotbarInventorySize: 5
-  _hotbarInventorySystem:
+--- !u!114 &530855827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530855817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b4f07277492c4abb9d48a68008ae691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _savePath: Backpack.Save
+  _inventorySize: 15
+  _inventorySystem:
     _inventorySlots: []
 --- !u!1001 &533870267
 PrefabInstance:
@@ -5282,12 +5322,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySystem:
     _inventorySlots: []
-  _inventoryHolder: {fileID: 530855824}
+  _inventoryHolder: {fileID: 530855825}
+  _holderName: equipment
   _slots:
   - {fileID: 1963406136}
   - {fileID: 837702385}
   - {fileID: 1398532140}
-  _inventoryName: equipment
 --- !u!114 &785832746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9458,10 +9498,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ea84aa31dfed4fb38561d94b8d3d1ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Small Chest
   _savePath: SmallChest.Save
-  _primaryInventorySize: 10
-  _primaryInventorySystem:
+  _inventorySize: 10
+  _inventorySystem:
     _inventorySlots: []
 --- !u!1001 &1595033802
 PrefabInstance:
@@ -13004,7 +13043,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySystem:
     _inventorySlots: []
-  _inventoryHolder: {fileID: 530855824}
+  _inventoryHolder: {fileID: 530855825}
+  _holderName: backpack
   _slots:
   - {fileID: 1530990796}
   - {fileID: 1361935207}
@@ -13021,7 +13061,6 @@ MonoBehaviour:
   - {fileID: 909673139}
   - {fileID: 1760702322}
   - {fileID: 715911002}
-  _inventoryName: backpack
 --- !u!114 &2055268166
 MonoBehaviour:
   m_ObjectHideFlags: 0

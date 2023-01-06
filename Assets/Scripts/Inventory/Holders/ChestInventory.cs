@@ -17,7 +17,7 @@ public class ChestInventory : InventoryHolder, IInteractable
 
     public void Interact()
     {
-        InventoryHolder.OnDynamicInventoryDisplayRequested.Invoke(_primaryInventorySystem);
+        InventoryHolder.OnDynamicInventoryDisplayRequested.Invoke(_inventorySystem);
     }
 
     #endregion

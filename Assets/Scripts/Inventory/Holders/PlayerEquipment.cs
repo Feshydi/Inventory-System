@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : InventoryHolder
+public class PlayerEquipment : InventoryHolder
 {
 
-    #region Fields
+    #region
 
-    #endregion
+    #endregion Fields
 
     #region Properties
 

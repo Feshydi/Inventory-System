@@ -57,23 +57,27 @@ public class GroundItem : MonoBehaviour
 
     private void AddItem(Collider other)
     {
-        var inventory = other.transform.GetComponent<PlayerInventory>();
-
-        if (!inventory)
-            return;
-
         int amountLeft;
-        if (inventory.HotbarInventorySystem.AddToInventory(_itemObject, _stackSize, out amountLeft))
+
+        var hotbar = other.GetComponent<PlayerHotbar>();
+        if (!hotbar) return;
+        if (hotbar.InventorySystem.AddToInventory(_itemObject, _stackSize, out amountLeft))
         {
             Destroy(gameObject);
             return;
         }
-        if (inventory.PrimaryInventorySystem.AddToInventory(_itemObject, amountLeft, out amountLeft))
+
+        var inventory = other.GetComponent<PlayerInventory>();
+        if (!inventory) return;
+        if (inventory.InventorySystem.AddToInventory(_itemObject, amountLeft, out amountLeft))
         {
             Destroy(gameObject);
             return;
         }
-        if (inventory.BackpackInventorySystem.AddToInventory(_itemObject, amountLeft, out amountLeft))
+
+        var backpack = other.GetComponent<PlayerBackpack>();
+        if (!backpack) return;
+        if (backpack.InventorySystem.AddToInventory(_itemObject, amountLeft, out amountLeft))
         {
             Destroy(gameObject);
             return;

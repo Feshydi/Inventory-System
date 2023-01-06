@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,13 +10,13 @@ public class StaticInventoryDisplay : InventoryDisplay
     #region Fields
 
     [SerializeField]
-    private PlayerInventory _inventoryHolder;
+    private InventoryHolder _inventoryHolder;
+
+    [SerializeField]
+    private string _holderName;
 
     [SerializeField]
     private InventorySlotManager[] _slots;
-
-    [SerializeField]
-    private string _inventoryName;
 
     #endregion
 
@@ -41,32 +42,33 @@ public class StaticInventoryDisplay : InventoryDisplay
 
         if (_inventoryHolder != null)
         {
-            switch (_inventoryName)
+            switch (_holderName)
             {
-                case "primary":
-                    _inventorySystem = _inventoryHolder.PrimaryInventorySystem;
+                case "hotbar":
+                    _inventorySystem = _inventoryHolder.GetComponent<PlayerHotbar>().InventorySystem;
                     break;
-                case "backpack":
-                    _inventorySystem = _inventoryHolder.BackpackInventorySystem;
+                case "inventory":
+                    _inventorySystem = _inventoryHolder.GetComponent<PlayerInventory>().InventorySystem;
                     break;
                 case "equipment":
-                    _inventorySystem = _inventoryHolder.EquipmentInventorySystem;
+                    _inventorySystem = _inventoryHolder.GetComponent<PlayerEquipment>().InventorySystem;
                     break;
-                case "hotbar":
-                    _inventorySystem = _inventoryHolder.HotbarInventorySystem;
+                case "backpack":
+                    _inventorySystem = _inventoryHolder.GetComponent<PlayerBackpack>().InventorySystem;
                     break;
                 default:
                     _inventorySystem = null;
                     break;
             }
+
+            if (_inventorySystem != null)
+            {
+                _inventorySystem.OnInventorySlotChanged += UpdateSlot;
+                AssignSlot(_inventorySystem);
+            }
         }
         else
             Debug.LogWarning($"No inventory assigned to {gameObject}");
-
-        if (_inventorySystem != null)
-            _inventorySystem.OnInventorySlotChanged += UpdateSlot;
-
-        AssignSlot(_inventorySystem);
     }
 
     public override void AssignSlot(InventorySystem inventoryToDisplay)
