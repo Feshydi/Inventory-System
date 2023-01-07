@@ -21,19 +21,25 @@ public class PlayerController : MonoBehaviour
     private string _name;
 
     [SerializeField]
-    private float _speed = 5.0f;
+    private float _speed;
 
     [SerializeField]
-    private float _jumpHeight = 1.0f;
+    private float _jumpHeight;
+
+    [SerializeField]
+    private float _rayRange;
 
     [SerializeField]
     private Vector3 _velocity;
 
     [SerializeField]
-    private float _gravity = -9.81f;
+    private float _gravity;
 
     [SerializeField]
-    private float _rayRange = 1.5f;
+    private float _gravityModifier;
+
+    [SerializeField]
+    private Vector2 _inputMove;
 
     [SerializeField]
     private bool _isGrounded;
@@ -50,31 +56,6 @@ public class PlayerController : MonoBehaviour
         get { return _name; }
     }
 
-    public float Speed
-    {
-        get { return _speed; }
-    }
-
-    public float JumpHeight
-    {
-        get { return _jumpHeight; }
-    }
-
-    public Vector3 Velocity
-    {
-        get { return _velocity; }
-    }
-
-    public float Gravity
-    {
-        get { return _gravity; }
-    }
-
-    public float RayRange
-    {
-        get { return _rayRange; }
-    }
-
     public bool IsGrounded
     {
         get { return _isGrounded; }
@@ -89,28 +70,41 @@ public class PlayerController : MonoBehaviour
 
     #region Methods
 
-    private void OnEnable()
+    private void Awake()
     {
         _controller = GetComponent<CharacterController>();
         _inputActions = new PlayerControls();
+
+        _speed = 5f;
+        _jumpHeight = 1f;
+        _rayRange = 2f;
+        _velocity = Vector3.zero;
+        _gravity = -9.81f;
+        _gravityModifier = 0.01f;
+        _inputMove = Vector2.zero;
+    }
+
+    private void OnEnable()
+    {
         _inputActions.Player.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _inputActions.Player.Disable();
-    }
-
-    private void Start()
-    {
         _inputActions.Player.Move.performed += Move_Performed;
         _inputActions.Player.Interact.performed += Interact_Performed;
         _inputActions.Player.Jump.performed += Jump_Performed;
         _inputActions.Player.Inventory.performed += Inventory_performed;
     }
 
+    private void OnDisable()
+    {
+        _inputActions.Player.Move.performed -= Move_Performed;
+        _inputActions.Player.Interact.performed -= Interact_Performed;
+        _inputActions.Player.Jump.performed -= Jump_Performed;
+        _inputActions.Player.Inventory.performed -= Inventory_performed;
+        _inputActions.Player.Disable();
+    }
+
     private void Update()
     {
+        Move();
         ApplyGravity();
     }
 
@@ -118,20 +112,26 @@ public class PlayerController : MonoBehaviour
     {
         _isGrounded = _controller.isGrounded;
         if (_isGrounded && _velocity.y < 0)
-            _velocity.y = 0f;
+            _velocity.y = _gravity * _gravityModifier;
+        else
+            _velocity.y += _gravity * Time.deltaTime;
 
-        _velocity.y += _gravity * Time.deltaTime;
         _controller.Move(_velocity * Time.deltaTime);
+    }
+
+    private void Move()
+    {
+        if (_isGrounded && !_isInventoryOpened)
+        {
+            Vector3 move = (transform.right * _inputMove.x + transform.forward * _inputMove.y) * _speed;
+            _velocity.x = move.x;
+            _velocity.z = move.z;
+        }
     }
 
     private void Move_Performed(InputAction.CallbackContext context)
     {
-        if (_isInventoryOpened)
-            return;
-
-        Vector2 inputMove = context.ReadValue<Vector2>() * Time.deltaTime;
-        var move = transform.right * inputMove.x + transform.forward * inputMove.y;
-        _controller.Move(move * _speed);
+        _inputMove = context.ReadValue<Vector2>();
     }
 
     private void Jump_Performed(InputAction.CallbackContext context)

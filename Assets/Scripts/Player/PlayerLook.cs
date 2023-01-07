@@ -14,42 +14,58 @@ public class PlayerLook : MonoBehaviour
     private PlayerController _playerController;
 
     [SerializeField]
-    private float _sensitivity = 1.0f;
+    [Range(0.01f, 1f)]
+    private float _verticalSensitivity;
 
     [SerializeField]
-    private float _rotationRange = 75f;
+    [Range(0.01f, 1f)]
+    private float _horizontalSensitivity;
 
     [SerializeField]
-    private float _xRotation = 0f;
+    private float _rotationRange;
 
+    [SerializeField]
+    private float _xRotation;
+
+    [SerializeField]
+    private float _sensetivityModifier;
     #endregion
 
     #region Properties
 
-    public float Sensitivity
+    public float VerticalSensitivity
     {
-        get { return _sensitivity; }
+        get { return _verticalSensitivity; }
+        set { _verticalSensitivity = value; }
     }
 
-    public float RotationRange
+    public float HorizontalSensitivity
     {
-        get { return _rotationRange; }
+        get { return _horizontalSensitivity; }
+        set { _horizontalSensitivity = value; }
     }
 
     #endregion
 
     #region Methods
 
-    private void OnEnable()
+    private void Awake()
     {
         _inputActions = new PlayerControls();
-        _inputActions.Player.Enable();
 
+        _sensetivityModifier = 10f;
+        _xRotation = 0f;
+    }
+
+    private void OnEnable()
+    {
+        _inputActions.Player.Enable();
         _inputActions.Player.Look.performed += Look_performed;
     }
 
     private void OnDisable()
     {
+        _inputActions.Player.Look.performed -= Look_performed;
         _inputActions.Player.Disable();
     }
 
@@ -58,27 +74,12 @@ public class PlayerLook : MonoBehaviour
         if (_playerController.IsInventoryOpened)
             return;
 
-        Vector2 inputLook = context.ReadValue<Vector2>() * _sensitivity * Time.deltaTime;
+        Vector2 inputLook = context.ReadValue<Vector2>();
 
-        _xRotation -= inputLook.y;
+        _xRotation -= inputLook.y * _verticalSensitivity * Time.deltaTime * _sensetivityModifier;
         _xRotation = Mathf.Clamp(_xRotation, -_rotationRange, _rotationRange);
-
         transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
-        _playerController.transform.Rotate(Vector3.up * inputLook.x);
-
-        //transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.LookRotation(new Vector3(inputLook.x, 0f, 0f)), Time.deltaTime * _sensitivity);
-
-        //var head = transform.GetChild(0);
-        //head.rotation = Quaternion.Slerp(head.rotation, Quaternion.LookRotation(inputLook), Time.deltaTime * _sensitivity);
-        //LimitRotation(head, _rotationRange);
-    }
-
-    private void LimitRotation(Transform _transform, float range)
-    {
-        var playerEulerAngles = _transform.rotation.eulerAngles;
-        playerEulerAngles.x = (playerEulerAngles.x > 180) ? playerEulerAngles.x - 360 : playerEulerAngles.x;
-        playerEulerAngles.x = Mathf.Clamp(playerEulerAngles.x, -range, range);
-        _transform.rotation = Quaternion.Euler(playerEulerAngles);
+        _playerController.transform.Rotate(Vector3.up * inputLook.x * _horizontalSensitivity * Time.deltaTime * _sensetivityModifier);
     }
 
     #endregion
