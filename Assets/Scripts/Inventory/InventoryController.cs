@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using TMPro;
 
 public class InventoryController : MonoBehaviour
 {
@@ -27,7 +28,19 @@ public class InventoryController : MonoBehaviour
     private GameObject _hotbarUI;
 
     [SerializeField]
+    private GameObject _descriptionUI;
+
+    [SerializeField]
+    private GameObject _interactUI;
+
+    [SerializeField]
     private MouseItem _mouseItem;
+
+    [SerializeField]
+    private TextMeshProUGUI _descriptionText;
+
+    [SerializeField]
+    private TextMeshProUGUI _interactText;
 
     [SerializeField]
     private DynamicInventoryDisplay _dynamicInventory;
@@ -55,6 +68,18 @@ public class InventoryController : MonoBehaviour
         set { _mouseItem = value; }
     }
 
+    public TextMeshProUGUI DescriptionText
+    {
+        get { return _descriptionText; }
+        set { _descriptionText = value; }
+    }
+
+    public TextMeshProUGUI InteractText
+    {
+        get { return _interactText; }
+        set { _interactText = value; }
+    }
+
     public DynamicInventoryDisplay DynamicInventoryDisplay
     {
         get { return _dynamicInventory; }
@@ -76,11 +101,14 @@ public class InventoryController : MonoBehaviour
     private void Awake()
     {
         _dynamicInventory = GetComponentInChildren<DynamicInventoryDisplay>();
+
         _dynamicInventoryUI.SetActive(false);
         _inventoryUI.SetActive(false);
         _backpackUI.SetActive(false);
         _equipmentUI.SetActive(false);
         GetComponent<Image>().enabled = false;
+
+        _descriptionUI.SetActive(false);
     }
 
     private void OnEnable()
@@ -95,22 +123,54 @@ public class InventoryController : MonoBehaviour
 
     private void DisplayInventory(InventorySystem inventoryToDisplay)
     {
-        if (!_dynamicInventoryUI.activeInHierarchy)
+        if (!IsDynamicInventoryActive())
         {
-            _dynamicInventoryUI.SetActive(true);
+            SetDynamicInventoryActive(true);
+            SetStaticInventoryActive(true);
             _dynamicInventory.RefreshDynamicInventory(inventoryToDisplay);
             return;
         }
 
-        _dynamicInventoryUI.SetActive(false);
+        SetDynamicInventoryActive(false);
     }
 
-    public void InventorySetActive(bool value)
+    public void SetStaticInventoryActive(bool value)
     {
+        // background dim
         GetComponent<Image>().enabled = value;
+
+        // set bool to all static inventories
         _inventoryUI.SetActive(value);
         _backpackUI.SetActive(value);
         _equipmentUI.SetActive(value);
+    }
+
+    public void SetDynamicInventoryActive(bool value)
+    {
+        // set bool to dynamic inventory
+        _dynamicInventoryUI.SetActive(value);
+    }
+
+    public bool IsStaticInventoryActive()
+    {
+        return _inventoryUI.activeInHierarchy
+            && _backpackUI.activeInHierarchy
+            && _equipmentUI.activeInHierarchy;
+    }
+
+    public bool IsDynamicInventoryActive()
+    {
+        return _dynamicInventoryUI.activeInHierarchy;
+    }
+
+    public void SetDescriptionTextActive(bool value)
+    {
+        _descriptionUI.SetActive(value);
+    }
+
+    public void SetInteractTextActive(bool value)
+    {
+        _interactUI.SetActive(value);
     }
 
     #endregion

@@ -163,6 +163,54 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Inventory",
+            "id": "9a3e902c-ef04-47a0-8b7e-691326236ea7",
+            "actions": [
+                {
+                    "name": "Split",
+                    "type": "Button",
+                    "id": "e7d21432-c8e9-42c2-ae00-a2bf9acde2f0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Remove",
+                    "type": "Button",
+                    "id": "7023341a-a728-4586-9039-aa2cf5a3f763",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e71ce61a-cb21-4bc7-be82-a4bcd0221691",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Split",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "400ae1b8-b6a3-4c68-a46a-ecab7ba93041",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Remove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

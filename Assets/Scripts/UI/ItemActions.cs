@@ -11,6 +11,9 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     #region Fields
 
     [SerializeField]
+    private PlayerControls _inputActions;
+
+    [SerializeField]
     private Image _image;
 
     [SerializeField]
@@ -34,11 +37,26 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     #region Methods
 
+    private void Awake()
+    {
+        _inputActions = new PlayerControls();
+    }
+
+    private void OnEnable()
+    {
+        _inputActions.Inventory.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _inputActions.Inventory.Disable();
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         InventorySlot selectedSlot = GetComponentInParent<InventorySlotManager>().AssignedInventorySlot;
 
-        SetMouseActive(Keyboard.current.shiftKey.isPressed, selectedSlot);
+        SetMouseActive(_inputActions.Inventory.Split.IsPressed(), selectedSlot);
     }
 
     public void OnDrag(PointerEventData eventData) { }
@@ -51,7 +69,7 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (Keyboard.current.bKey.IsPressed())
+        if (_inputActions.Inventory.Remove.IsPressed())
         {
             InventorySystem invSys = GetComponentInParent<InventoryDisplay>().InventorySystem;
             invSys.RemoveFromInventory(GetComponentInParent<InventorySlotManager>().AssignedInventorySlot, false);

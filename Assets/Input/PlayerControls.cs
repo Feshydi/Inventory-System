@@ -185,6 +185,54 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Inventory"",
+            ""id"": ""9a3e902c-ef04-47a0-8b7e-691326236ea7"",
+            ""actions"": [
+                {
+                    ""name"": ""Split"",
+                    ""type"": ""Button"",
+                    ""id"": ""e7d21432-c8e9-42c2-ae00-a2bf9acde2f0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Remove"",
+                    ""type"": ""Button"",
+                    ""id"": ""7023341a-a728-4586-9039-aa2cf5a3f763"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e71ce61a-cb21-4bc7-be82-a4bcd0221691"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Split"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""400ae1b8-b6a3-4c68-a46a-ecab7ba93041"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Remove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -196,6 +244,10 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
+        // Inventory
+        m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
+        m_Inventory_Split = m_Inventory.FindAction("Split", throwIfNotFound: true);
+        m_Inventory_Remove = m_Inventory.FindAction("Remove", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -316,6 +368,47 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Inventory
+    private readonly InputActionMap m_Inventory;
+    private IInventoryActions m_InventoryActionsCallbackInterface;
+    private readonly InputAction m_Inventory_Split;
+    private readonly InputAction m_Inventory_Remove;
+    public struct InventoryActions
+    {
+        private @PlayerControls m_Wrapper;
+        public InventoryActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Split => m_Wrapper.m_Inventory_Split;
+        public InputAction @Remove => m_Wrapper.m_Inventory_Remove;
+        public InputActionMap Get() { return m_Wrapper.m_Inventory; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InventoryActions set) { return set.Get(); }
+        public void SetCallbacks(IInventoryActions instance)
+        {
+            if (m_Wrapper.m_InventoryActionsCallbackInterface != null)
+            {
+                @Split.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnSplit;
+                @Split.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnSplit;
+                @Split.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnSplit;
+                @Remove.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnRemove;
+                @Remove.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnRemove;
+                @Remove.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnRemove;
+            }
+            m_Wrapper.m_InventoryActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Split.started += instance.OnSplit;
+                @Split.performed += instance.OnSplit;
+                @Split.canceled += instance.OnSplit;
+                @Remove.started += instance.OnRemove;
+                @Remove.performed += instance.OnRemove;
+                @Remove.canceled += instance.OnRemove;
+            }
+        }
+    }
+    public InventoryActions @Inventory => new InventoryActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -323,5 +416,10 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+    }
+    public interface IInventoryActions
+    {
+        void OnSplit(InputAction.CallbackContext context);
+        void OnRemove(InputAction.CallbackContext context);
     }
 }

@@ -49,6 +49,12 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus)
+            Cursor.lockState = CursorLockMode.Locked;
+    }
+
     #endregion
 
 }

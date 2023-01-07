@@ -38,4 +38,17 @@ public class BootsType : ItemObject
 
     #endregion
 
+    #region Methods
+
+    public override string ToString()
+    {
+        return string.Concat(
+            base.ToString(), "\n",
+            "Defense ", _defense, "\n",
+            "Speed ", _speed
+            );
+    }
+
+    #endregion
+
 }

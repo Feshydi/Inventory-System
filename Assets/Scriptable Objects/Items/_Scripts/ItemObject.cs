@@ -96,4 +96,16 @@ public abstract class ItemObject : ScriptableObject
 
     #endregion
 
+    #region Methods
+
+    public override string ToString()
+    {
+        return string.Concat(
+            Title, "\n",
+            Description
+            );
+    }
+
+    #endregion
+
 }
