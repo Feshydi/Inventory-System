@@ -16,15 +16,7 @@ public class GameManager : MonoBehaviour
 
     #region Properties
 
-    public static GameManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-                new GameManager();
-            return _instance;
-        }
-    }
+    public static GameManager Instance => _instance == null ? new GameManager() : _instance;
 
     public ItemDatabaseObject Database
     {
@@ -35,10 +27,7 @@ public class GameManager : MonoBehaviour
 
     #region Constructors
 
-    private GameManager()
-    {
-        _instance = this;
-    }
+    private GameManager() => _instance = this;
 
     #endregion
 

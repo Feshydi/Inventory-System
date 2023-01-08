@@ -52,20 +52,11 @@ public class PlayerController : MonoBehaviour
 
     #region Properties
 
-    public string Name
-    {
-        get { return _name; }
-    }
+    public string Name => _name;
 
-    public bool IsGrounded
-    {
-        get { return _isGrounded; }
-    }
+    public bool IsGrounded => _isGrounded;
 
-    public bool IsInventoryOpened
-    {
-        get { return _isInventoryOpened; }
-    }
+    public bool IsInventoryOpened => _isInventoryOpened;
 
     #endregion
 

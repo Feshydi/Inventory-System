@@ -20,21 +20,18 @@ public class InventorySystem
 
     #region Properties
 
-    public List<InventorySlot> InventorySlots
-    {
-        get { return _inventorySlots; }
-    }
+    public List<InventorySlot> InventorySlots => _inventorySlots;
 
     public int InventorySize
     {
-        get { return InventorySlots.Count; }
-        set { _inventorySlots = new List<InventorySlot>(value); }
+        get => InventorySlots.Count;
+        set => _inventorySlots = new List<InventorySlot>(value);
     }
 
     public UnityAction<InventorySlot> OnInventorySlotChanged
     {
-        get { return _onInventorySlotChanged; }
-        set { _onInventorySlotChanged = value; }
+        get => _onInventorySlotChanged;
+        set => _onInventorySlotChanged = value;
     }
 
     #endregion

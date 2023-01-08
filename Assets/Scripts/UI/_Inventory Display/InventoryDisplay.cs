@@ -19,26 +19,15 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     #region Properties
 
-    public InventorySystem InventorySystem
-    {
-        get { return _inventorySystem; }
-        set { _inventorySystem = value; }
-    }
+    public InventorySystem InventorySystem => _inventorySystem;
 
-    public Dictionary<InventorySlotManager, InventorySlot> SlotDictionary
-    {
-        get { return _slotDictionary; }
-        set { _slotDictionary = value; }
-    }
+    public Dictionary<InventorySlotManager, InventorySlot> SlotDictionary => _slotDictionary;
 
     #endregion
 
     #region Methods
 
-    protected virtual void Start()
-    {
-
-    }
+    protected virtual void Start() { }
 
     public abstract void AssignSlot(InventorySystem inventoryToDisplay);
 

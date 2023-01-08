@@ -52,47 +52,21 @@ public class InventoryController : MonoBehaviour
 
     #region Properties
 
-    public static InventoryController Instance
-    {
-        get
-        {
-            if (_instance == null)
-                new InventoryController();
-            return _instance;
-        }
-    }
+    public static InventoryController Instance => _instance == null ? new InventoryController() : _instance;
 
-    public MouseItem MouseItem
-    {
-        get { return _mouseItem; }
-        set { _mouseItem = value; }
-    }
+    public MouseItem MouseItem => _mouseItem;
 
-    public TextMeshProUGUI DescriptionText
-    {
-        get { return _descriptionText; }
-        set { _descriptionText = value; }
-    }
+    public TextMeshProUGUI DescriptionText => _descriptionText;
 
-    public TextMeshProUGUI InteractText
-    {
-        get { return _interactText; }
-        set { _interactText = value; }
-    }
+    public TextMeshProUGUI InteractText => _interactText;
 
-    public DynamicInventoryDisplay DynamicInventoryDisplay
-    {
-        get { return _dynamicInventory; }
-    }
+    public DynamicInventoryDisplay DynamicInventoryDisplay => _dynamicInventory;
 
     #endregion
 
     #region Constructors
 
-    private InventoryController()
-    {
-        _instance = this;
-    }
+    private InventoryController() => _instance = this;
 
     #endregion
 

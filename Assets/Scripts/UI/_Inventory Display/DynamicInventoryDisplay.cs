@@ -17,8 +17,8 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
     public InventorySlotManager SlotPrefab
     {
-        get { return _slotPrefab; }
-        set { _slotPrefab = value; }
+        get => _slotPrefab;
+        set => _slotPrefab = value;
     }
 
     #endregion

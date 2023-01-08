@@ -34,29 +34,17 @@ public class InventorySlot
 
     // #to do:
     // Create class for Stats
-    public Dictionary<string, string> Stats
-    {
-        get { return _stats; }
-    }
+    public Dictionary<string, string> Stats => _stats;
 
     #endregion
 
     #region Constructors
 
-    public InventorySlot(ItemObject objectItem, int amount)
-    {
-        SetSlot(objectItem.ID, amount);
-    }
+    public InventorySlot(ItemObject objectItem, int amount) => SetSlot(objectItem.ID, amount);
 
-    public InventorySlot(int id, int amount)
-    {
-        SetSlot(id, amount);
-    }
+    public InventorySlot(int id, int amount) => SetSlot(id, amount);
 
-    public InventorySlot()
-    {
-        SetEmptySlot();
-    }
+    public InventorySlot() => SetEmptySlot();
 
     #endregion
 
@@ -66,6 +54,13 @@ public class InventorySlot
     {
         _id = -1;
         _stackSize = -1;
+        _stats = new Dictionary<string, string>();
+    }
+
+    public void SetSlot(InventorySlot slot)
+    {
+        _id = slot._id;
+        _stackSize = slot._stackSize;
         _stats = new Dictionary<string, string>();
     }
 
@@ -83,10 +78,7 @@ public class InventorySlot
         amountLeft = amount - item.MaxStackSize;
     }
 
-    public void AddToStack(int amount)
-    {
-        _stackSize += amount;
-    }
+    public void AddToStack(int amount) => _stackSize += amount;
 
     public bool RoomLeftInStack(int amountToAdd, out int roomLeft)
     {

@@ -33,17 +33,9 @@ public class PlayerLook : MonoBehaviour
 
     #region Properties
 
-    public float VerticalSensitivity
-    {
-        get { return _verticalSensitivity; }
-        set { _verticalSensitivity = value; }
-    }
+    public float VerticalSensitivity => _verticalSensitivity;
 
-    public float HorizontalSensitivity
-    {
-        get { return _horizontalSensitivity; }
-        set { _horizontalSensitivity = value; }
-    }
+    public float HorizontalSensitivity => _horizontalSensitivity;
 
     #endregion
 
@@ -71,15 +63,15 @@ public class PlayerLook : MonoBehaviour
 
     private void Look_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        if (_playerController.IsInventoryOpened)
-            return;
+        if (!_playerController.IsInventoryOpened)
+        {
+            Vector2 inputLook = context.ReadValue<Vector2>();
 
-        Vector2 inputLook = context.ReadValue<Vector2>();
-
-        _xRotation -= inputLook.y * _verticalSensitivity * Time.deltaTime * _sensetivityModifier;
-        _xRotation = Mathf.Clamp(_xRotation, -_rotationRange, _rotationRange);
-        transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
-        _playerController.transform.Rotate(Vector3.up * inputLook.x * _horizontalSensitivity * Time.deltaTime * _sensetivityModifier);
+            _xRotation -= inputLook.y * _verticalSensitivity * Time.deltaTime * _sensetivityModifier;
+            _xRotation = Mathf.Clamp(_xRotation, -_rotationRange, _rotationRange);
+            transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
+            _playerController.transform.Rotate(Vector3.up * inputLook.x * _horizontalSensitivity * Time.deltaTime * _sensetivityModifier);
+        }
     }
 
     #endregion

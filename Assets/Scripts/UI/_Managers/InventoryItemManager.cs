@@ -36,13 +36,14 @@ public class InventoryItemManager : MonoBehaviour
     {
         ItemObject item = GameManager.Instance.Database.GetItem[slot.ID];
 
-        _itemSprite.sprite = item.Icon;
-        _itemSprite.color = Color.white;
+        SetItem(item.Icon, slot.StackSize);
+    }
 
-        if (slot.StackSize > 1)
-            ItemCount.text = slot.StackSize.ToString();
-        else
-            ItemCount.text = "";
+    public void SetItem(Sprite sprite, int amount)
+    {
+        _itemSprite.sprite = sprite;
+        _itemSprite.color = Color.white;
+        _itemCount.text = amount > 1 ? amount.ToString() : "";
     }
 
     public void ClearItem()

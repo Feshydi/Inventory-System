@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [System.Serializable]
-public class InventorySlotManager : MonoBehaviour, IDropHandler
+public class InventorySlotManager : BaseSlotManager, IDropHandler
 {
 
     #region Fields
@@ -12,59 +12,25 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
     [SerializeField]
     private ItemObject _slotType;
 
-    [SerializeField]
-    private InventorySlot _assignedInventoryItem;
-
     #endregion
 
     #region Properties
 
-    public ItemObject SlotType
-    {
-        get { return _slotType; }
-    }
-
-    public InventorySlot AssignedInventorySlot
-    {
-        get { return _assignedInventoryItem; }
-        set { _assignedInventoryItem = value; }
-    }
+    public ItemObject SlotType => _slotType;
 
     #endregion
 
     #region Methods
 
-    private void Awake()
-    {
-        _assignedInventoryItem?.SetEmptySlot();
-        ClearSlot();
-    }
+    protected override void Awake() => base.Awake();
 
-    public void Init(InventorySlot slot)
-    {
-        UpdateSlot(slot);
-    }
+    public override void Init(InventorySlot slot) => base.Init(slot);
 
-    public void UpdateSlot(InventorySlot slot)
-    {
-        _assignedInventoryItem = slot;
-        if (slot.ID != -1)
-            GetComponentInChildren<InventoryItemManager>().UpdateItem(slot);
-        else
-            ClearSlot();
-    }
+    public override void UpdateSlot(InventorySlot slot) => base.UpdateSlot(slot);
 
-    public void UpdateSlot()
-    {
-        if (_assignedInventoryItem != null)
-            UpdateSlot(_assignedInventoryItem);
-    }
+    public override void UpdateSlot() => base.UpdateSlot();
 
-    public void ClearSlot()
-    {
-        _assignedInventoryItem?.SetEmptySlot();
-        GetComponentInChildren<InventoryItemManager>().ClearItem();
-    }
+    public override void ClearSlot() => base.ClearSlot();
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -151,7 +117,7 @@ public class InventorySlotManager : MonoBehaviour, IDropHandler
                 {
                     InventorySlot tempSlot = new InventorySlot(_assignedInventoryItem.ID, _assignedInventoryItem.StackSize);
                     invSys.ReplaceSlot(_assignedInventoryItem, new InventorySlot(mouse.Slot.ID, mouse.Slot.StackSize));
-                    mouse.Slot = tempSlot;
+                    mouse.Slot.SetSlot(tempSlot);
                     mouse.UpdateItemDisplay();
                     return;
                 }

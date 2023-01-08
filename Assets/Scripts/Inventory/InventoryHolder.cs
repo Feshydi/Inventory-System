@@ -28,20 +28,14 @@ public class InventoryHolder : MonoBehaviour
 
     #region Properties
 
-    public int InvetorySize
-    {
-        get { return _inventorySize; }
-    }
+    public int InvetorySize => _inventorySize;
 
-    public InventorySystem InventorySystem
-    {
-        get { return _inventorySystem; }
-    }
+    public InventorySystem InventorySystem => _inventorySystem;
 
     public static UnityAction<InventorySystem> OnDynamicInventoryDisplayRequested
     {
-        get { return _onDynamicInventoryDisplayRequested; }
-        set { _onDynamicInventoryDisplayRequested = value; }
+        get => _onDynamicInventoryDisplayRequested;
+        set => _onDynamicInventoryDisplayRequested = value;
     }
 
     #endregion

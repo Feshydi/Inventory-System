@@ -2,19 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
-public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class ItemActions : BaseItemActions, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
 
     #region Fields
-
-    [SerializeField]
-    private PlayerControls _inputActions;
-
-    [SerializeField]
-    private Image _image;
 
     [SerializeField]
     private bool _actionWithShift;
@@ -23,32 +15,23 @@ public class ItemActions : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     #region Properties
 
-    public Image Image
-    {
-        get { return _image; }
-    }
-
-    public bool ActionWithShift
-    {
-        get { return _actionWithShift; }
-    }
+    public bool ActionWithShift => _actionWithShift;
 
     #endregion
 
     #region Methods
 
-    private void Awake()
-    {
-        _inputActions = new PlayerControls();
-    }
+    protected override void Awake() => base.Awake();
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         _inputActions.Inventory.Enable();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _inputActions.Inventory.Disable();
     }
 

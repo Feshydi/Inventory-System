@@ -23,23 +23,11 @@ public class MouseItem : MonoBehaviour
 
     #region Properties
 
-    public Image ItemSprite
-    {
-        get { return _itemSprite; }
-        set { _itemSprite = value; }
-    }
+    public Image ItemSprite => _itemSprite;
 
-    public TextMeshProUGUI ItemCount
-    {
-        get { return _itemCount; }
-        set { _itemCount = value; }
-    }
+    public TextMeshProUGUI ItemCount => _itemCount;
 
-    public InventorySlot Slot
-    {
-        get { return _slot; }
-        set { _slot = value; }
-    }
+    public InventorySlot Slot => _slot;
 
     #endregion
 
