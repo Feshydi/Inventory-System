@@ -34,7 +34,7 @@ public class BaseSlotManager : MonoBehaviour
     public virtual void UpdateSlot(InventorySlot slot)
     {
         _assignedInventoryItem = slot;
-        if (slot.ID != -1)
+        if (slot.ID != -1 && slot.StackSize != 0)
             GetComponentInChildren<InventoryItemManager>().UpdateItem(slot);
         else
             ClearSlot();

@@ -34,6 +34,9 @@ public class InventoryController : MonoBehaviour
     private GameObject _interactUI;
 
     [SerializeField]
+    private GameObject _craftingUI;
+
+    [SerializeField]
     private MouseItem _mouseItem;
 
     [SerializeField]
@@ -145,6 +148,11 @@ public class InventoryController : MonoBehaviour
     public void SetInteractTextActive(bool value)
     {
         _interactUI.SetActive(value);
+    }
+
+    public void SetCraftingActive(bool value)
+    {
+        _craftingUI.SetActive(value);
     }
 
     #endregion

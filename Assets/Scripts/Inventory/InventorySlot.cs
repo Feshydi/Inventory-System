@@ -80,6 +80,8 @@ public class InventorySlot
 
     public void AddToStack(int amount) => _stackSize += amount;
 
+    public void removeFromStack(int amount) => _stackSize -= amount;
+
     public bool RoomLeftInStack(int amountToAdd, out int roomLeft)
     {
         ItemObject item = GameManager.Instance.Database.GetItem[_id];

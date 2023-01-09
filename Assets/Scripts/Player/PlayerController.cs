@@ -119,12 +119,21 @@ public class PlayerController : MonoBehaviour
     // apply x & z velocity if grounded and inventories closed
     private void Move()
     {
-        if (_isGrounded && !_isInventoryOpened)
+        if (_isGrounded)
         {
-            Vector3 move = (transform.right * _inputMove.x + transform.forward * _inputMove.y) * _speed;
-            _velocity.x = move.x;
-            _velocity.z = move.z;
+            if (!_isInventoryOpened)
+            {
+                Vector3 move = (transform.right * _inputMove.x + transform.forward * _inputMove.y) * _speed;
+                _velocity.x = move.x;
+                _velocity.z = move.z;
+            }
+            else
+            {
+                _velocity.x = 0;
+                _velocity.z = 0;
+            }
         }
+
     }
 
     // read move input
@@ -156,13 +165,19 @@ public class PlayerController : MonoBehaviour
                 // open static and dynamic UIs
                 hitObject.GetComponent<ChestInventory>().Interact();
 
-                // if static and dynamic UIs active, then set true, otherwise false
                 Inventory_performed(context);
             }
             // if ray hits an item
             else if (hitObject.CompareTag("Item"))
             {
                 hitObject.GetComponent<GroundItem>().AddItem(GetComponent<Collider>());
+            }
+            // if ray hits a craft keeper
+            else if (hitObject.CompareTag("CraftKeeper"))
+            {
+                hitObject.GetComponent<CraftKeeper>().Interact();
+
+                Inventory_performed(context);
             }
         }
     }
@@ -181,7 +196,10 @@ public class PlayerController : MonoBehaviour
 
         // if close static UI, then close other
         if (!_isInventoryOpened)
+        {
             InventoryController.Instance.SetDynamicInventoryActive(false);
+            InventoryController.Instance.SetCraftingActive(false);
+        }
     }
 
     // update ray check for everything

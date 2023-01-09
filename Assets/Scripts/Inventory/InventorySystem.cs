@@ -123,9 +123,9 @@ public class InventorySystem
         }
     }
 
-    public bool ContainsItem(ItemObject itemToAdd, out List<InventorySlot> inventorySlots)
+    public bool ContainsItem(ItemObject searchItem, out List<InventorySlot> inventorySlots)
     {
-        inventorySlots = _inventorySlots.Where(slot => slot.ID == itemToAdd.ID).ToList();
+        inventorySlots = _inventorySlots.Where(slot => slot.ID == searchItem.ID).ToList();
         return inventorySlots != null ? true : false;
     }
 
@@ -133,6 +133,25 @@ public class InventorySystem
     {
         freeSlot = InventorySlots.FirstOrDefault(slot => slot.ID == -1);
         return freeSlot != null ? true : false;
+    }
+
+    public void RemoveItemAmount(ItemObject itemToRemove, int amount, out int amountLeft)
+    {
+        amountLeft = amount;
+
+        if (ContainsItem(itemToRemove, out List<InventorySlot> inventorySlots))
+        {
+            foreach (var slot in inventorySlots)
+            {
+                while (slot.StackSize > 0 && amountLeft > 0)
+                {
+                    slot.removeFromStack(1);
+                    amountLeft -= 1;
+                }
+
+                _onInventorySlotChanged?.Invoke(slot);
+            }
+        }
     }
 
     #endregion
