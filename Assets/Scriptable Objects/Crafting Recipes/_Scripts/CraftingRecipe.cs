@@ -44,8 +44,14 @@ public class CraftingRecipe : ScriptableObject
     // check inventory for materials
     public bool CanCraft(PlayerController player)
     {
+        InventoryHolder[] inventoryHolders = player.GetComponents<InventoryHolder>();
+
         // add check for enough place in inventories
 
+        if (!inventoryHolders.Any(inventory => inventory.InventorySystem.HasFreeSlot(out InventorySlot slot)))
+        {
+            return false;
+        }
         // create dictionary with needed items ID
         Dictionary<int, int> items = new Dictionary<int, int>();
         foreach (var item in _materials.Select(material => material.ItemObject).ToList())
@@ -53,7 +59,6 @@ public class CraftingRecipe : ScriptableObject
             items.Add(item.ID, 0);
         }
 
-        InventoryHolder[] inventoryHolders = player.GetComponents<InventoryHolder>();
         // iterate static inventories
         foreach (var inventory in inventoryHolders)
         {
@@ -71,9 +76,6 @@ public class CraftingRecipe : ScriptableObject
         // if one of items less, instantly return false
         foreach (var material in _materials)
         {
-            Debug.Log("need " + material.Amount + " of " + material.ItemObject.Title);
-            Debug.Log("have " + items[material.ItemObject.ID]);
-
             if (items[material.ItemObject.ID] < material.Amount)
                 return false;
         }

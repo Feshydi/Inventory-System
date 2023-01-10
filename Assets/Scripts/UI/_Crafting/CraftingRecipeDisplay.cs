@@ -98,7 +98,21 @@ public class CraftingRecipeDisplay : MonoBehaviour
         if (_buttonForCraft[button].CanCraft(_player))
         {
             _buttonForCraft[button].Craft(_player);
+            StartCoroutine(ShowWarning("Сompleted"));
         }
+        else
+        {
+            StartCoroutine(ShowWarning("Not enough items or space"));
+        }
+    }
+
+    IEnumerator ShowWarning(string message)
+    {
+        InventoryController.Instance.SetDescriptionTextActive(true);
+        InventoryController.Instance.DescriptionText.text = message;
+        yield return new WaitForSeconds(1);
+        InventoryController.Instance.DescriptionText.text = "";
+        InventoryController.Instance.SetDescriptionTextActive(false);
     }
 
     private void Clear()
