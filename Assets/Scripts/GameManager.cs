@@ -33,11 +33,6 @@ public class GameManager : MonoBehaviour
 
     #region Methods
 
-    private void Awake()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
     void OnApplicationFocus(bool hasFocus)
     {
         if (hasFocus)

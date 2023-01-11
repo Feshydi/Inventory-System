@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0841e9c92f44691bc2c9030caeb3cd, type: 3}
+  m_Name: Player Data
+  m_EditorClassIdentifier: 
+  _name: Player
+  _speed: 5
+  _jumpHeight: 1
+  _gravity: -9.81
+  _gravityModifier: 0.01
+  _isGrounded: 1
+  _isInventoryOpened: 1
+  _verticalSensitivity: 1
+  _horizontalSensitivity: 1
+  _sensetivityModifier: 10
+  _verticalRotationRange: 75

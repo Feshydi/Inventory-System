@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]
-public class GroundItem : MonoBehaviour
+public class GroundItem : MonoBehaviour, IInteractable
 {
 
     #region Fields
@@ -83,6 +83,36 @@ public class GroundItem : MonoBehaviour
             return;
         }
         _stackSize = amountLeft;
+    }
+
+    public void Interact()
+    {
+        //int amountLeft;
+
+        //var hotbar = other.GetComponent<PlayerHotbar>();
+        //if (!hotbar) return;
+        //if (hotbar.InventorySystem.AddToInventory(_itemObject, _stackSize, out amountLeft))
+        //{
+        //    Destroy(gameObject);
+        //    return;
+        //}
+
+        //var inventory = other.GetComponent<PlayerInventory>();
+        //if (!inventory) return;
+        //if (inventory.InventorySystem.AddToInventory(_itemObject, amountLeft, out amountLeft))
+        //{
+        //    Destroy(gameObject);
+        //    return;
+        //}
+
+        //var backpack = other.GetComponent<PlayerBackpack>();
+        //if (!backpack) return;
+        //if (backpack.InventorySystem.AddToInventory(_itemObject, amountLeft, out amountLeft))
+        //{
+        //    Destroy(gameObject);
+        //    return;
+        //}
+        //_stackSize = amountLeft;
     }
 
     #endregion

@@ -9,10 +9,6 @@ public class ChestInventory : InventoryHolder, IInteractable
 
     #endregion
 
-    #region Properties
-
-    #endregion
-
     #region Methods
 
     public void Interact()

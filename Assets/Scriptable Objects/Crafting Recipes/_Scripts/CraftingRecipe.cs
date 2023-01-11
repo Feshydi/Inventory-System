@@ -42,7 +42,7 @@ public class CraftingRecipe : ScriptableObject
     #region Methods
 
     // check inventory for materials
-    public bool CanCraft(PlayerController player)
+    public bool CanCraft(PlayerControllerHolder player)
     {
         InventoryHolder[] inventoryHolders = player.GetComponents<InventoryHolder>();
 
@@ -84,7 +84,7 @@ public class CraftingRecipe : ScriptableObject
     }
 
     // put results in inventory
-    public void Craft(PlayerController player)
+    public void Craft(PlayerControllerHolder player)
     {
         InventoryHolder[] inventoryHolders = player.GetComponents<InventoryHolder>();
 

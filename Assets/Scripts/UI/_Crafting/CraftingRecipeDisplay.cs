@@ -10,7 +10,7 @@ public class CraftingRecipeDisplay : MonoBehaviour
     #region Fields
 
     [SerializeField]
-    private PlayerController _player;
+    private PlayerControllerHolder _player;
 
     [SerializeField]
     private GameObject _recipePrefab;

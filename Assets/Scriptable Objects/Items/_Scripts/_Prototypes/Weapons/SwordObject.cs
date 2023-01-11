@@ -24,7 +24,7 @@ public class SwordObject : MonoBehaviour
 
     #region Methods
 
-    public virtual void DamageMessage(PlayerController target)
+    public virtual void DamageMessage(PlayerControllerHolder target)
     {
         Debug.Log("You hit " + target.ToString());
     }

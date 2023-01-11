@@ -2182,7 +2182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySystem:
     _inventorySlots: []
-  _inventoryHolder: {fileID: 530855822}
+  _inventoryHolder: {fileID: 530855829}
   _holderName: hotbar
   _slots:
   - {fileID: 1478334314}
@@ -3345,7 +3345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySystem:
     _inventorySlots: []
-  _inventoryHolder: {fileID: 530855822}
+  _inventoryHolder: {fileID: 530855829}
   _holderName: inventory
   _slots:
   - {fileID: 1204091363}
@@ -3436,7 +3436,9 @@ GameObject:
   m_Component:
   - component: {fileID: 530855821}
   - component: {fileID: 530855823}
-  - component: {fileID: 530855822}
+  - component: {fileID: 530855828}
+  - component: {fileID: 530855830}
+  - component: {fileID: 530855829}
   - component: {fileID: 530855825}
   - component: {fileID: 530855824}
   - component: {fileID: 530855827}
@@ -3467,29 +3469,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 54.521, z: 0}
---- !u!114 &530855822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 530855817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f805db7ab22cf4ae1875c43de6a756c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _controller: {fileID: 530855823}
-  _name: Feshydi
-  _speed: 5
-  _jumpHeight: 1
-  _rayRange: 2
-  _velocity: {x: 0, y: 0, z: 0}
-  _gravity: -9.81
-  _gravityModifier: 0
-  _inputMove: {x: 0, y: 0}
-  _isGrounded: 0
-  _isInventoryOpened: 0
 --- !u!143 &530855823
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3572,6 +3551,51 @@ MonoBehaviour:
   _inventorySize: 15
   _inventorySystem:
     _inventorySlots: []
+--- !u!114 &530855828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530855817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64af50e4a07ed4a5a8320b95b1f4d0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerData: {fileID: 11400000, guid: d2b7e7d8083644f0a9f683fc476b082b, type: 2}
+  _characterController: {fileID: 530855823}
+  _inputMove: {x: 0, y: 0}
+  _velocity: {x: 0, y: 0, z: 0}
+--- !u!114 &530855829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530855817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f805db7ab22cf4ae1875c43de6a756c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerData: {fileID: 11400000, guid: d2b7e7d8083644f0a9f683fc476b082b, type: 2}
+  _rayData: {fileID: 11400000, guid: 1f53d4775566c4929a2cbe3b8654d2bc, type: 2}
+--- !u!114 &530855830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530855817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f51dbcd0a88448528ef4535e57c8c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerData: {fileID: 11400000, guid: d2b7e7d8083644f0a9f683fc476b082b, type: 2}
+  _playerCamera: {fileID: 963194227}
+  _xRotation: 0
 --- !u!1001 &533870267
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5746,7 +5770,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySystem:
     _inventorySlots: []
-  _inventoryHolder: {fileID: 530855822}
+  _inventoryHolder: {fileID: 530855829}
   _holderName: equipment
   _slots:
   - {fileID: 1963406136}
@@ -6930,7 +6954,6 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
-  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -7004,24 +7027,6 @@ Transform:
   m_Father: {fileID: 530855821}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &963194229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f51dbcd0a88448528ef4535e57c8c25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerController: {fileID: 530855822}
-  _verticalSensitivity: 1
-  _horizontalSensitivity: 1
-  _rotationRange: 75
-  _xRotation: 0
-  _sensetivityModifier: 0
 --- !u!1 &975340741
 GameObject:
   m_ObjectHideFlags: 0
@@ -9891,7 +9896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6392947d49c034a6b9b00d9dec91fc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 530855822}
+  _player: {fileID: 530855829}
   _recipePrefab: {fileID: 952533107495791641, guid: 404c2d223798e4b5d83bad5220f799ce, type: 3}
   _slotPrefab: {fileID: 332762873262421391, guid: b9612519aba094ec08a30d022159831f, type: 3}
   _buttonPrefab: {fileID: 6383252612532226411, guid: c6fa4196dd21f43f088ea5154f4a6a45, type: 3}
@@ -15393,7 +15398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySystem:
     _inventorySlots: []
-  _inventoryHolder: {fileID: 530855822}
+  _inventoryHolder: {fileID: 530855829}
   _holderName: backpack
   _slots:
   - {fileID: 1530990796}
