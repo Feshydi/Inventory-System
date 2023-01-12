@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using UnityEngine;
-using UnityEngine.Events;
 
 [System.Serializable]
 public class InventoryHolder : MonoBehaviour
@@ -44,16 +44,10 @@ public class InventoryHolder : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Load();
-
-        if (_inventorySystem.InventorySize != _inventorySize)
-            Clear();
+        _inventorySystem = new InventorySystem(_inventorySize);
     }
 
-    private void OnApplicationQuit()
-    {
-        Save();
-    }
+    protected virtual void OnApplicationQuit() { }
 
     [ContextMenu("Save")]
     protected virtual void Save()

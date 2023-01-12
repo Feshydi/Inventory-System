@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class BaseItemActions : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -12,12 +13,18 @@ public class BaseItemActions : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField]
     protected PlayerControls _inputActions;
 
-    [SerializeField]
-    private Image _image;
+    [System.NonSerialized]
+    private static UnityAction<string, bool> _onPointedItem;
 
     #endregion
 
     #region Properties
+
+    public static UnityAction<string, bool> OnPointedItem
+    {
+        get => _onPointedItem;
+        set => _onPointedItem = value;
+    }
 
     #endregion
 
@@ -38,15 +45,13 @@ public class BaseItemActions : MonoBehaviour, IPointerEnterHandler, IPointerExit
         if (id != -1)
         {
             ItemObject itemObject = GameManager.Instance.Database.GetItem[id];
-            InventoryController.Instance.DescriptionText.text = itemObject.ToString();
-            InventoryController.Instance.SetDescriptionTextActive(true);
+            OnPointedItem.Invoke(itemObject.ToString(), true);
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        InventoryController.Instance.DescriptionText.text = "";
-        InventoryController.Instance.SetDescriptionTextActive(false);
+        OnPointedItem.Invoke("", false);
     }
 
     #endregion

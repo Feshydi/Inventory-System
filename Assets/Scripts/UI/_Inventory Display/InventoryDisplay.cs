@@ -15,6 +15,9 @@ public abstract class InventoryDisplay : MonoBehaviour
     [SerializeField]
     protected Dictionary<InventorySlotManager, InventorySlot> _slotDictionary;
 
+    [SerializeField]
+    private InventorySlotManager _slotPrefab;
+
     #endregion
 
     #region Properties
@@ -27,9 +30,17 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     #region Methods
 
-    protected virtual void Start() { }
+    protected virtual void AssignSlots(InventorySystem inventoryToDisplay)
+    {
+        _slotDictionary = new Dictionary<InventorySlotManager, InventorySlot>();
 
-    public abstract void AssignSlot(InventorySystem inventoryToDisplay);
+        for (int i = 0; i < inventoryToDisplay.InventorySize; i++)
+        {
+            var slot = Instantiate(_slotPrefab, transform);
+            _slotDictionary.Add(slot, inventoryToDisplay.InventorySlots[i]);
+            slot.Init(inventoryToDisplay.InventorySlots[i]);
+        }
+    }
 
     protected virtual void UpdateSlot(InventorySlot updatedSlot)
     {
@@ -40,6 +51,17 @@ public abstract class InventoryDisplay : MonoBehaviour
                 slot.Key.UpdateSlot(updatedSlot);
             }
         }
+    }
+
+    protected void ClearSlots()
+    {
+        foreach (Transform _transform in transform)
+        {
+            Destroy(_transform.gameObject);
+        }
+
+        if (_slotDictionary != null)
+            _slotDictionary.Clear();
     }
 
     #endregion

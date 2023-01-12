@@ -108,11 +108,9 @@ public class CraftingRecipeDisplay : MonoBehaviour
 
     IEnumerator ShowWarning(string message)
     {
-        InventoryController.Instance.SetDescriptionTextActive(true);
-        InventoryController.Instance.DescriptionText.text = message;
+        BaseItemActions.OnPointedItem.Invoke(message, true);
         yield return new WaitForSeconds(1);
-        InventoryController.Instance.DescriptionText.text = "";
-        InventoryController.Instance.SetDescriptionTextActive(false);
+        BaseItemActions.OnPointedItem.Invoke("", false);
     }
 
     private void Clear()

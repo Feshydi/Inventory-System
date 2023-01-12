@@ -80,7 +80,7 @@ public class InventoryController : MonoBehaviour
         _dynamicInventory = GetComponentInChildren<DynamicInventoryDisplay>();
 
         _dynamicInventoryUI.SetActive(false);
-        _inventoryUI.SetActive(false);
+       // _inventoryUI.SetActive(false);
         _backpackUI.SetActive(false);
         _equipmentUI.SetActive(false);
         GetComponent<Image>().enabled = false;
@@ -102,8 +102,6 @@ public class InventoryController : MonoBehaviour
     {
         if (!IsDynamicInventoryActive())
         {
-            SetDynamicInventoryActive(true);
-            SetStaticInventoryActive(true);
             _dynamicInventory.RefreshDynamicInventory(inventoryToDisplay);
             return;
         }

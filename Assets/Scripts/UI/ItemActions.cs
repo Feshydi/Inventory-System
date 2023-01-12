@@ -37,7 +37,7 @@ public class ItemActions : BaseItemActions, IBeginDragHandler, IDragHandler, IEn
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        InventorySlot selectedSlot = GetComponentInParent<InventorySlotManager>().AssignedInventorySlot;
+        InventorySlot selectedSlot = GetComponent<InventorySlotManager>().AssignedInventorySlot;
 
         SetMouseActive(_inputActions.Inventory.Split.IsPressed(), selectedSlot);
     }
@@ -47,7 +47,7 @@ public class ItemActions : BaseItemActions, IBeginDragHandler, IDragHandler, IEn
     public void OnEndDrag(PointerEventData eventData)
     {
         // if mouse not empty place from it back
-        GetComponentInParent<InventorySlotManager>().SetSlot(_actionWithShift);
+        GetComponent<InventorySlotManager>().SetSlot(_actionWithShift);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -55,7 +55,7 @@ public class ItemActions : BaseItemActions, IBeginDragHandler, IDragHandler, IEn
         if (_inputActions.Inventory.Remove.IsPressed())
         {
             InventorySystem invSys = GetComponentInParent<InventoryDisplay>().InventorySystem;
-            invSys.RemoveFromInventory(GetComponentInParent<InventorySlotManager>().AssignedInventorySlot, false);
+            invSys.RemoveFromInventory(GetComponent<InventorySlotManager>().AssignedInventorySlot, false);
         }
     }
 

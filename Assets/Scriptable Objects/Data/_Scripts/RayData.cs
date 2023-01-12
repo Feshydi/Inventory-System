@@ -8,6 +8,7 @@ public class RayData : ScriptableObject
 
     #region Fields
 
+    [Header("General")]
     [SerializeField]
     private float _rayRange;
 

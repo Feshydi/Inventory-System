@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(RayHolder))]
 public class PlayerInteractHolder : MonoBehaviour
 {
 
@@ -24,6 +23,7 @@ public class PlayerInteractHolder : MonoBehaviour
 
     private void Awake()
     {
+        _inputActions = new PlayerControls();
         _inputActions.Player.Enable();
         _inputActions.Player.Interact.performed += Interact_performed;
     }
@@ -34,6 +34,7 @@ public class PlayerInteractHolder : MonoBehaviour
         _inputActions.Player.Disable();
     }
 
+    // interact with smth, based on ray
     private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         if (_rayHolder.CastRay(out RaycastHit raycastHit))

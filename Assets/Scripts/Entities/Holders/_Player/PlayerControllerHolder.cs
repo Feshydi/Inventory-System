@@ -13,10 +13,10 @@ public class PlayerControllerHolder : MonoBehaviour
     private PlayerData _playerData;
 
     [SerializeField]
-    private RayData _rayData;
+    private PlayerControls _inputActions;
 
     [SerializeField]
-    private PlayerControls _inputActions;
+    private RayHolder _rayHolder;
 
     #endregion
 
@@ -28,13 +28,11 @@ public class PlayerControllerHolder : MonoBehaviour
 
         _inputActions = new PlayerControls();
         _inputActions.Player.Enable();
-        _inputActions.Player.Interact.performed += Interact_Performed;
         _inputActions.Player.Inventory.performed += Inventory_performed;
     }
 
     private void OnDisable()
     {
-        _inputActions.Player.Interact.performed -= Interact_Performed;
         _inputActions.Player.Inventory.performed -= Inventory_performed;
         _inputActions.Player.Disable();
     }
@@ -42,39 +40,6 @@ public class PlayerControllerHolder : MonoBehaviour
     private void Update()
     {
         RayHit();
-    }
-
-    // interact with smth, based on ray
-    private void Interact_Performed(InputAction.CallbackContext context)
-    {
-        if (_playerData.IsInventoryOpened)
-            return;
-
-        if (IsRayHit(out RaycastHit raycastHit))
-        {
-            var hitObject = raycastHit.transform.gameObject;
-
-            // if ray hits a chest
-            if (hitObject.CompareTag("Chest"))
-            {
-                // open static and dynamic UIs
-                hitObject.GetComponent<ChestInventory>().Interact();
-
-                Inventory_performed(context);
-            }
-            // if ray hits an item
-            else if (hitObject.CompareTag("Item"))
-            {
-                hitObject.GetComponent<GroundItem>().AddItem(GetComponent<Collider>());
-            }
-            // if ray hits a craft keeper
-            else if (hitObject.CompareTag("CraftKeeper"))
-            {
-                hitObject.GetComponent<CraftKeeper>().Interact();
-
-                Inventory_performed(context);
-            }
-        }
     }
 
     // open/close static and close only dynamic inventories
@@ -103,7 +68,7 @@ public class PlayerControllerHolder : MonoBehaviour
         if (_playerData.IsInventoryOpened)
             return;
 
-        if (IsRayHit(out RaycastHit raycastHit))
+        if (_rayHolder.CastRay(out RaycastHit raycastHit))
         {
             var hitObject = raycastHit.transform.gameObject;
 
@@ -111,9 +76,9 @@ public class PlayerControllerHolder : MonoBehaviour
             if (hitObject.CompareTag("Item"))
             {
                 InventoryController.Instance.InteractText.text = "e to grab";
-                InventoryController.Instance.DescriptionText.text = hitObject.GetComponent<GroundItem>().ObjectItem.ToString();
                 InventoryController.Instance.SetInteractTextActive(true);
-                InventoryController.Instance.SetDescriptionTextActive(true);
+
+                BaseItemActions.OnPointedItem.Invoke(hitObject.GetComponent<GroundItem>().ObjectItem.ToString(), true);
             }
             // if not compare, set default everything
             else
@@ -127,16 +92,9 @@ public class PlayerControllerHolder : MonoBehaviour
     private void RayHitDefault()
     {
         InventoryController.Instance.InteractText.text = "";
-        InventoryController.Instance.DescriptionText.text = "";
         InventoryController.Instance.SetInteractTextActive(false);
-        InventoryController.Instance.SetDescriptionTextActive(false);
-    }
 
-    // check ray hit
-    // if hit, then out
-    private bool IsRayHit(out RaycastHit raycastHit)
-    {
-        return Physics.Raycast(Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f)), out raycastHit, _rayData.RayRange);
+        BaseItemActions.OnPointedItem.Invoke("", false);
     }
 
     #endregion
