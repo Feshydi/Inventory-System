@@ -37,13 +37,13 @@ public class PlayerInteractHolder : MonoBehaviour
     // interact with smth, based on ray
     private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (_rayHolder.CastRay(out RaycastHit raycastHit))
+        if (_rayHolder.IsHit)
         {
-            var hitObject = raycastHit.transform.gameObject;
+            var hitObject = _rayHolder.RaycastHit.transform.gameObject;
 
             if (hitObject.TryGetComponent(out IInteractable interactable))
             {
-                interactable.Interact();
+                interactable.Interact(GetComponent<PlayerInventoryController>());
             }
         }
     }

@@ -42,11 +42,6 @@ public class InventoryHolder : MonoBehaviour
 
     #region Methods
 
-    protected virtual void Awake()
-    {
-        _inventorySystem = new InventorySystem(_inventorySize);
-    }
-
     protected virtual void OnApplicationQuit() { }
 
     [ContextMenu("Save")]
@@ -75,7 +70,7 @@ public class InventoryHolder : MonoBehaviour
     }
 
     [ContextMenu("Clear")]
-    protected virtual void Clear()
+    protected virtual void SetupNewInventorySystem()
     {
         _inventorySystem = new InventorySystem(_inventorySize);
     }

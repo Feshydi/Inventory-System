@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -10,20 +11,21 @@ public class BaseItemActions : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     #region Fields
 
+    [Header("Autosettings")]
     [SerializeField]
     protected PlayerControls _inputActions;
 
-    [System.NonSerialized]
-    private static UnityAction<string, bool> _onPointedItem;
+    [SerializeField]
+    protected Description _description;
 
     #endregion
 
     #region Properties
 
-    public static UnityAction<string, bool> OnPointedItem
+    public Description Description
     {
-        get => _onPointedItem;
-        set => _onPointedItem = value;
+        get => _description;
+        set => _description = value;
     }
 
     #endregion
@@ -33,6 +35,7 @@ public class BaseItemActions : MonoBehaviour, IPointerEnterHandler, IPointerExit
     protected virtual void Awake()
     {
         _inputActions = new PlayerControls();
+        _description = Resources.FindObjectsOfTypeAll<Description>().First();
     }
 
     protected virtual void OnEnable() { }
@@ -45,13 +48,13 @@ public class BaseItemActions : MonoBehaviour, IPointerEnterHandler, IPointerExit
         if (id != -1)
         {
             ItemObject itemObject = GameManager.Instance.Database.GetItem[id];
-            OnPointedItem.Invoke(itemObject.ToString(), true);
+            _description?.ShowDescription(itemObject.ToString(), true);
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        OnPointedItem.Invoke("", false);
+        _description?.ShowDescription("", false);
     }
 
     #endregion

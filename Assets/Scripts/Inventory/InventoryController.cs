@@ -28,9 +28,6 @@ public class InventoryController : MonoBehaviour
     private GameObject _hotbarUI;
 
     [SerializeField]
-    private GameObject _descriptionUI;
-
-    [SerializeField]
     private GameObject _interactUI;
 
     [SerializeField]
@@ -38,9 +35,6 @@ public class InventoryController : MonoBehaviour
 
     [SerializeField]
     private MouseItem _mouseItem;
-
-    [SerializeField]
-    private TextMeshProUGUI _descriptionText;
 
     [SerializeField]
     private TextMeshProUGUI _interactText;
@@ -58,8 +52,6 @@ public class InventoryController : MonoBehaviour
     public static InventoryController Instance => _instance == null ? new InventoryController() : _instance;
 
     public MouseItem MouseItem => _mouseItem;
-
-    public TextMeshProUGUI DescriptionText => _descriptionText;
 
     public TextMeshProUGUI InteractText => _interactText;
 
@@ -80,12 +72,10 @@ public class InventoryController : MonoBehaviour
         _dynamicInventory = GetComponentInChildren<DynamicInventoryDisplay>();
 
         _dynamicInventoryUI.SetActive(false);
-       // _inventoryUI.SetActive(false);
+        _inventoryUI.SetActive(true);
         _backpackUI.SetActive(false);
         _equipmentUI.SetActive(false);
         GetComponent<Image>().enabled = false;
-
-        _descriptionUI.SetActive(false);
     }
 
     private void OnEnable()
@@ -136,11 +126,6 @@ public class InventoryController : MonoBehaviour
     public bool IsDynamicInventoryActive()
     {
         return _dynamicInventoryUI.activeInHierarchy;
-    }
-
-    public void SetDescriptionTextActive(bool value)
-    {
-        _descriptionUI.SetActive(value);
     }
 
     public void SetInteractTextActive(bool value)

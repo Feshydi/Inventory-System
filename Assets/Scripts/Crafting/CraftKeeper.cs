@@ -30,6 +30,11 @@ public class CraftKeeper : MonoBehaviour, IInteractable
         _craftDisplay.SetCraftSystem(_craftSystem);
     }
 
+    public void Interact(PlayerInventoryController player)
+    {
+        Interact();
+    }
+
     #endregion
 
 }

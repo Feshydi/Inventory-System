@@ -9,12 +9,14 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     #region Fields
 
+    [Header("Auto settings")]
     [SerializeField]
     protected InventorySystem _inventorySystem;
 
     [SerializeField]
     protected Dictionary<InventorySlotManager, InventorySlot> _slotDictionary;
 
+    [Header("Customizable settings")]
     [SerializeField]
     private InventorySlotManager _slotPrefab;
 

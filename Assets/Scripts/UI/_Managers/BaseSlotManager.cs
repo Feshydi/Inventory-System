@@ -22,7 +22,6 @@ public class BaseSlotManager : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _assignedInventoryItem?.SetEmptySlot();
         ClearSlot();
     }
 
@@ -35,7 +34,7 @@ public class BaseSlotManager : MonoBehaviour
     {
         _assignedInventoryItem = slot;
         if (slot.ID != -1 && slot.StackSize != 0)
-            GetComponentInChildren<InventoryItemManager>().UpdateItem(slot);
+            GetComponent<InventoryItemManager>().UpdateItem(slot);
         else
             ClearSlot();
     }
@@ -49,7 +48,7 @@ public class BaseSlotManager : MonoBehaviour
     public virtual void ClearSlot()
     {
         _assignedInventoryItem?.SetEmptySlot();
-        GetComponentInChildren<InventoryItemManager>().ClearItem();
+        GetComponent<InventoryItemManager>().ClearItem();
     }
 
     #endregion

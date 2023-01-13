@@ -13,6 +13,7 @@ public class PlayerMovementHolder : MonoBehaviour
     [SerializeField]
     private PlayerData _playerData;
 
+    [Header("Autosettings")]
     [SerializeField]
     private CharacterController _characterController;
 

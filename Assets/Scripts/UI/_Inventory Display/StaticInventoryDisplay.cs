@@ -21,6 +21,11 @@ public class StaticInventoryDisplay : InventoryDisplay
 
     private void Awake()
     {
+        gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
         if (_inventoryHolder.TryGetComponent(out PlayerWeaponInventoryHolder player))
         {
             if (player.InventorySystem != null)

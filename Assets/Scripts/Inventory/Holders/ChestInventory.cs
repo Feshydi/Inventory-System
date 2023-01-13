@@ -28,6 +28,15 @@ public class ChestInventory : InventoryHolder, IInteractable
         _inventoryDisplay.gameObject.SetActive(false);
     }
 
+    public void Interact(PlayerInventoryController player)
+    {
+        Interact();
+    }
+
+    public override string ToString()
+    {
+        return gameObject.name;
+    }
     #endregion
 
 }

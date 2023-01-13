@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerControllerHolder : MonoBehaviour
+public class PlayerInventoryController : MonoBehaviour
 {
 
     #region Fields
@@ -12,11 +13,26 @@ public class PlayerControllerHolder : MonoBehaviour
     [SerializeField]
     private PlayerData _playerData;
 
+    [Header("Autosettings")]
     [SerializeField]
     private PlayerControls _inputActions;
 
+    [Header("Customizable settings")]
     [SerializeField]
-    private RayHolder _rayHolder;
+    private InventoryHolder[] _inventoryHolders;
+
+    [SerializeField]
+    private Dictionary<string, InventoryHolder> _inventoryHoldersNames;
+
+    #endregion
+
+    #region Properties
+
+    public Dictionary<string, InventoryHolder> InventoryHoldersNames
+    {
+        get => _inventoryHoldersNames;
+        set => _inventoryHoldersNames = value;
+    }
 
     #endregion
 
@@ -25,6 +41,10 @@ public class PlayerControllerHolder : MonoBehaviour
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
+        SetHoldersNames();
+
+        //   Debug.Log(_inventoryHoldersNames[typeof(PlayerWeaponInventoryHolder).Name]);
 
         _inputActions = new PlayerControls();
         _inputActions.Player.Enable();
@@ -35,11 +55,6 @@ public class PlayerControllerHolder : MonoBehaviour
     {
         _inputActions.Player.Inventory.performed -= Inventory_performed;
         _inputActions.Player.Disable();
-    }
-
-    private void Update()
-    {
-        RayHit();
     }
 
     // open/close static and close only dynamic inventories
@@ -62,39 +77,13 @@ public class PlayerControllerHolder : MonoBehaviour
         }
     }
 
-    // update ray check for everything
-    private void RayHit()
+    private void SetHoldersNames()
     {
-        if (_playerData.IsInventoryOpened)
-            return;
-
-        if (_rayHolder.CastRay(out RaycastHit raycastHit))
+        _inventoryHoldersNames = new Dictionary<string, InventoryHolder>();
+        foreach (var item in _inventoryHolders)
         {
-            var hitObject = raycastHit.transform.gameObject;
-
-            // if ray hits an item
-            if (hitObject.CompareTag("Item"))
-            {
-                InventoryController.Instance.InteractText.text = "e to grab";
-                InventoryController.Instance.SetInteractTextActive(true);
-
-                BaseItemActions.OnPointedItem.Invoke(hitObject.GetComponent<GroundItem>().ObjectItem.ToString(), true);
-            }
-            // if not compare, set default everything
-            else
-                RayHitDefault();
+            _inventoryHoldersNames.Add(item.GetType().Name, item);
         }
-        // if not hits, set default everything
-        else
-            RayHitDefault();
-    }
-
-    private void RayHitDefault()
-    {
-        InventoryController.Instance.InteractText.text = "";
-        InventoryController.Instance.SetInteractTextActive(false);
-
-        BaseItemActions.OnPointedItem.Invoke("", false);
     }
 
     #endregion

@@ -4,14 +4,14 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 
-public class Description : MonoBehaviour
+public class Interaction : MonoBehaviour
 {
 
     #region Fields
 
     [Header("Customizable settings")]
     [SerializeField]
-    private TextMeshProUGUI _description;
+    private TextMeshProUGUI _interaction;
 
     #endregion
 
@@ -19,12 +19,12 @@ public class Description : MonoBehaviour
 
     private void Awake()
     {
-        ShowDescription("", false);
+        ShowInteraction("", false);
     }
 
-    public void ShowDescription(string text, bool status)
+    public void ShowInteraction(string text, bool status)
     {
-        _description.text = text;
+        _interaction.text = text;
         gameObject.SetActive(status);
     }
 

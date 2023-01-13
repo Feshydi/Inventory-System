@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerWeaponInventoryHolder : InventoryHolder
 {
 
     #region Fields
 
+    [Header("Static Data")]
     [SerializeField]
     private PlayerData _playerData;
 
@@ -14,11 +16,10 @@ public class PlayerWeaponInventoryHolder : InventoryHolder
 
     #region Methods
 
-    protected override void Awake()
+    private void Awake()
     {
         _inventorySize = _playerData.WeaponInventorySize;
-
-        base.Awake();
+        SetupNewInventorySystem();
     }
 
     #endregion

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class CraftingRecipeDisplay : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class CraftingRecipeDisplay : MonoBehaviour
     #region Fields
 
     [SerializeField]
-    private PlayerControllerHolder _player;
+    private PlayerInventoryController _player;
 
     [SerializeField]
     private GameObject _recipePrefab;
@@ -27,6 +28,10 @@ public class CraftingRecipeDisplay : MonoBehaviour
     [SerializeField]
     private Dictionary<Button, CraftingRecipe> _buttonForCraft;
 
+    [Header("Customizable settings")]
+    [SerializeField]
+    private Description _description;
+
     #endregion
 
     #region Properties
@@ -42,6 +47,7 @@ public class CraftingRecipeDisplay : MonoBehaviour
     private void Awake()
     {
         _buttonForCraft = new Dictionary<Button, CraftingRecipe>();
+
         InventoryController.Instance.SetCraftingActive(false);
     }
 
@@ -108,9 +114,9 @@ public class CraftingRecipeDisplay : MonoBehaviour
 
     IEnumerator ShowWarning(string message)
     {
-        BaseItemActions.OnPointedItem.Invoke(message, true);
+        _description.ShowDescription(message, true);
         yield return new WaitForSeconds(1);
-        BaseItemActions.OnPointedItem.Invoke("", false);
+        _description.ShowDescription("", false);
     }
 
     private void Clear()
