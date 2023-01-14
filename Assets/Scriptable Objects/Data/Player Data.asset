@@ -18,15 +18,15 @@ MonoBehaviour:
   _gravity: -9.81
   _gravityModifier: 0.01
   _isGrounded: 1
-  _isInventoryOpened: 0
+  _isInventoryOpened: 1
   _verticalSensitivity: 1
   _horizontalSensitivity: 1
   _sensetivityModifier: 10
   _verticalRotationRange: 75
   _weaponInventorySize: 5
-  _bowAndArrowInventorySize: 5
-  _shieldInventorySize: 5
-  _armorInventorySize: 20
-  _materialInventorySize: 20
-  _foodInventorySize: 20
+  _bowAndArrowInventorySize: 7
+  _shieldInventorySize: 9
+  _armorInventorySize: 14
+  _materialInventorySize: 18
+  _foodInventorySize: 19
   _keyItemsInventorySize: 20

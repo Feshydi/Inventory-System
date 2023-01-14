@@ -8,16 +8,16 @@ public class SwordObject : MonoBehaviour
     #region Fields
 
     [SerializeField]
-    private SwordType _swordType;
+    private Sword _sword;
 
     #endregion
 
     #region Properties
 
-    public SwordType SwordType
+    public Sword Sword
     {
-        get { return _swordType; }
-        set { _swordType = value; }
+        get { return _sword; }
+        set { _sword = value; }
     }
 
     #endregion

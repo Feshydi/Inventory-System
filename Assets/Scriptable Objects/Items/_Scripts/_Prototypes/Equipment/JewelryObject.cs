@@ -8,16 +8,16 @@ public class JewelryObject : MonoBehaviour
     #region Fields
 
     [SerializeField]
-    private JewelryType _jewelryType;
+    private Jewelry _jewelry;
 
     #endregion
 
     #region Properties
 
-    public JewelryType JewelryType
+    public Jewelry Jewelry
     {
-        get { return _jewelryType; }
-        set { _jewelryType = value; }
+        get { return _jewelry; }
+        set { _jewelry = value; }
     }
 
     #endregion

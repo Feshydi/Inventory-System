@@ -67,13 +67,42 @@ public class GroundItem : MonoBehaviour, IInteractable
 
     public void Interact(PlayerInventoryController player)
     {
-        switch (_itemObject.GetType().Name)
+        switch (_itemObject)
         {
-            case var value when value == typeof(BootsType).Name:
-            case var value1 when value1 == typeof(ChestType).Name:
-            case var value2 when value2 == typeof(HelmetType).Name:
-                if (player.TryGetComponent(out PlayerWeaponInventoryHolder holder))
-                    if (holder.InventorySystem.AddToInventory(_itemObject, _stackSize, out _stackSize))
+            case var value when value.GetType().IsSubclassOf(typeof(Sword)):
+                if (player.TryGetComponent(out WeaponInventoryHolder weaponHolder))
+                    if (weaponHolder.InventorySystem.AddToInventory(_itemObject, _stackSize, out _stackSize))
+                        Destroy(gameObject);
+                return;
+            //case var value when value.GetType().IsSubclassOf(typeof(BowAndArrow)):
+            //    if (player.TryGetComponent(out BowAndArrowInventoryHolder bowAndArrowHolder))
+            //        if (bowAndArrowHolder.InventorySystem.AddToInventory(_itemObject, _stackSize, out _stackSize))
+            //            Destroy(gameObject);
+            //    return;
+            //case var value when value.GetType().IsSubclassOf(typeof(Shield)):
+            //    if (player.TryGetComponent(out ShieldInventoryHolder shieldHolder))
+            //        if (shieldHolder.InventorySystem.AddToInventory(_itemObject, _stackSize, out _stackSize))
+            //            Destroy(gameObject);
+            //    return;
+            case var value when value.GetType().IsSubclassOf(typeof(Equipment)):
+                if (player.TryGetComponent(out ArmorInventoryHolder armorHolder))
+                    if (armorHolder.InventorySystem.AddToInventory(_itemObject, _stackSize, out _stackSize))
+                        Destroy(gameObject);
+                return;
+            //case var value when value.GetType().IsSubclassOf(typeof(Material)):
+            //    if (player.TryGetComponent(out MaterialInventoryHolder materialHolder))
+            //        if (materialHolder.InventorySystem.AddToInventory(_itemObject, _stackSize, out _stackSize))
+            //            Destroy(gameObject);
+            //    return;
+            //case var value when value.GetType().IsSubclassOf(typeof(Food)):
+            //case var value1 when value1.GetType().IsSubclassOf(typeof(Potion)):
+            //    if (player.TryGetComponent(out FoodInventoryHolder foodHolder))
+            //        if (foodHolder.InventorySystem.AddToInventory(_itemObject, _stackSize, out _stackSize))
+            //            Destroy(gameObject);
+            //    return;
+            case var value when value.GetType().IsSubclassOf(typeof(Default)):
+                if (player.TryGetComponent(out KeyItemsInventoryHolder keyItemsHolder))
+                    if (keyItemsHolder.InventorySystem.AddToInventory(_itemObject, _stackSize, out _stackSize))
                         Destroy(gameObject);
                 return;
         }

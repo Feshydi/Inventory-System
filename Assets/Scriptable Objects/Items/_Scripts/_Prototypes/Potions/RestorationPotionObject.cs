@@ -8,13 +8,13 @@ public class RestorationPotionObject : MonoBehaviour
     #region Fields
 
     [SerializeField]
-    private RestorationPotionType _restorationPotionType;
+    private RestorationPotion _restorationPotionType;
 
     #endregion
 
     #region Properties
 
-    public RestorationPotionType RestorationPotionType
+    public RestorationPotion RestorationPotion
     {
         get { return _restorationPotionType; }
         set { _restorationPotionType = value; }

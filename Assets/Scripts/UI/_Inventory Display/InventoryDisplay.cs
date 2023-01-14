@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
-public abstract class InventoryDisplay : MonoBehaviour
+public class InventoryDisplay : MonoBehaviour
 {
 
     #region Fields
@@ -26,21 +24,26 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     public InventorySystem InventorySystem => _inventorySystem;
 
-    public Dictionary<InventorySlotManager, InventorySlot> SlotDictionary => _slotDictionary;
-
     #endregion
 
     #region Methods
 
-    protected virtual void AssignSlots(InventorySystem inventoryToDisplay)
+    public void Init(InventorySystem inventoryToDisplay)
     {
+        _inventorySystem = inventoryToDisplay;
+    }
+
+    public void AssignSlots()
+    {
+        _inventorySystem.OnInventorySlotChanged += UpdateSlot;
+
         _slotDictionary = new Dictionary<InventorySlotManager, InventorySlot>();
 
-        for (int i = 0; i < inventoryToDisplay.InventorySize; i++)
+        for (int i = 0; i < _inventorySystem.InventorySize; i++)
         {
             var slot = Instantiate(_slotPrefab, transform);
-            _slotDictionary.Add(slot, inventoryToDisplay.InventorySlots[i]);
-            slot.Init(inventoryToDisplay.InventorySlots[i]);
+            _slotDictionary.Add(slot, _inventorySystem.InventorySlots[i]);
+            slot.Init(_inventorySystem.InventorySlots[i]);
         }
     }
 
@@ -55,15 +58,19 @@ public abstract class InventoryDisplay : MonoBehaviour
         }
     }
 
-    protected void ClearSlots()
+    protected virtual void ClearSlots()
+    {
+        RemoveSlots();
+        if (_slotDictionary != null)
+            _slotDictionary.Clear();
+    }
+
+    protected void RemoveSlots()
     {
         foreach (Transform _transform in transform)
         {
             Destroy(_transform.gameObject);
         }
-
-        if (_slotDictionary != null)
-            _slotDictionary.Clear();
     }
 
     #endregion

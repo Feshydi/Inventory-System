@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Sword", menuName = "Inventory System/Items/Weapons/Sword")]
-public class SwordType : ItemObject
+public class Sword : ItemObject
 {
 
     #region Fields

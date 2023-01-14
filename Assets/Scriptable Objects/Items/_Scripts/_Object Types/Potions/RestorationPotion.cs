@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Restoration Potion", menuName = "Inventory System/Items/Potions/Restoration")]
-public class RestorationPotionType : ItemObject
+public class RestorationPotion : ItemObject
 {
 
     #region Fields

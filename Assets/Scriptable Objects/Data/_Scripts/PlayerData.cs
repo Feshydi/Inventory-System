@@ -68,9 +68,6 @@ public class PlayerData : IData
     [SerializeField]
     private int _keyItemsInventorySize;
 
-
-    [SerializeField]
-
     #endregion
 
     #region Properties

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.InputSystem;
 
 public class PlayerInventoryController : MonoBehaviour
@@ -13,26 +13,18 @@ public class PlayerInventoryController : MonoBehaviour
     [SerializeField]
     private PlayerData _playerData;
 
-    [Header("Autosettings")]
     [SerializeField]
     private PlayerControls _inputActions;
 
-    [Header("Customizable settings")]
+    [Header("Auto Settings")]
     [SerializeField]
-    private InventoryHolder[] _inventoryHolders;
-
-    [SerializeField]
-    private Dictionary<string, InventoryHolder> _inventoryHoldersNames;
+    private List<InventoryHolder> _inventoryHolders;
 
     #endregion
 
     #region Properties
 
-    public Dictionary<string, InventoryHolder> InventoryHoldersNames
-    {
-        get => _inventoryHoldersNames;
-        set => _inventoryHoldersNames = value;
-    }
+    public List<InventoryHolder> InventoryHolders => _inventoryHolders;
 
     #endregion
 
@@ -41,12 +33,16 @@ public class PlayerInventoryController : MonoBehaviour
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        _playerData.IsInventoryOpened = false;
 
-        SetHoldersNames();
+        GetInventoryHolders();
 
         //   Debug.Log(_inventoryHoldersNames[typeof(PlayerWeaponInventoryHolder).Name]);
-
         _inputActions = new PlayerControls();
+    }
+
+    private void OnEnable()
+    {
         _inputActions.Player.Enable();
         _inputActions.Player.Inventory.performed += Inventory_performed;
     }
@@ -77,13 +73,31 @@ public class PlayerInventoryController : MonoBehaviour
         }
     }
 
-    private void SetHoldersNames()
+    private void GetInventoryHolders()
     {
-        _inventoryHoldersNames = new Dictionary<string, InventoryHolder>();
-        foreach (var item in _inventoryHolders)
+        _inventoryHolders = new List<InventoryHolder>();
+        foreach (var component in GetComponents<InventoryHolder>())
         {
-            _inventoryHoldersNames.Add(item.GetType().Name, item);
+            _inventoryHolders.Add(component);
         }
+    }
+
+    public InventoryHolder GetPreviousInventoryHolder(InventoryHolder previousOfThis)
+    {
+        return
+            _inventoryHolders
+            .TakeWhile(x => x != previousOfThis)
+            .DefaultIfEmpty(_inventoryHolders[0])
+            .LastOrDefault();
+    }
+
+    public InventoryHolder GetNextInventoryHolder(InventoryHolder nextOfThis)
+    {
+        return
+            _inventoryHolders
+            .SkipWhile(x => x != nextOfThis).Skip(1)
+            .DefaultIfEmpty(_inventoryHolders[_inventoryHolders.Count - 1])
+            .FirstOrDefault();
     }
 
     #endregion

@@ -23,7 +23,7 @@ public class Logger : MonoBehaviour
 
     #region Methods
 
-    private void OnValidate()
+    private void Awake()
     {
         _hexColor = "#" + ColorUtility.ToHtmlStringRGBA(_prefixColor);
     }
@@ -33,7 +33,7 @@ public class Logger : MonoBehaviour
         if (!_showLogs)
             return;
 
-        Debug.Log($"<color={_prefixColor}>{_prefix}: {message}", sender);
+        Debug.Log($"<color={_hexColor}>{_prefix}</color>: {message}", sender);
     }
 
     #endregion

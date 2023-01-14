@@ -12,21 +12,12 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
     #region Methods
 
-    private void OnDisable()
-    {
-        if (_inventorySystem != null)
-            _inventorySystem.OnInventorySlotChanged -= UpdateSlot;
-    }
-
     public void RefreshDynamicInventory(InventorySystem inventoryToDisplay)
     {
-        _inventorySystem = inventoryToDisplay;
-
-        if (_inventorySystem != null)
-            _inventorySystem.OnInventorySlotChanged += UpdateSlot;
+        Init(_inventorySystem);
 
         ClearSlots();
-        AssignSlots(_inventorySystem);
+        AssignSlots();
     }
 
     #endregion

@@ -8,16 +8,16 @@ public class HelmetObject : MonoBehaviour
     #region Fields
 
     [SerializeField]
-    private HelmetType _helmetType;
+    private Helmet _helmet;
 
     #endregion
 
     #region Properties
 
-    public HelmetType HelmetType
+    public Helmet Helmet
     {
-        get { return _helmetType; }
-        set { _helmetType = value; }
+        get { return _helmet; }
+        set { _helmet = value; }
     }
 
     #endregion

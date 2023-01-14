@@ -39,6 +39,10 @@ public class PlayerMovementHolder : MonoBehaviour
         _velocity = Vector3.zero;
 
         _inputActions = new PlayerControls();
+    }
+
+    private void OnEnable()
+    {
         _inputActions.Player.Enable();
         _inputActions.Player.Move.performed += Move_Performed;
         _inputActions.Player.Jump.performed += Jump_Performed;

@@ -17,6 +17,9 @@ public class PlayerInteractHolder : MonoBehaviour
     [SerializeField]
     private PlayerControls _inputActions;
 
+    [SerializeField]
+    private Logger _logger;
+
     #endregion
 
     #region Methods
@@ -24,6 +27,10 @@ public class PlayerInteractHolder : MonoBehaviour
     private void Awake()
     {
         _inputActions = new PlayerControls();
+    }
+
+    private void OnEnable()
+    {
         _inputActions.Player.Enable();
         _inputActions.Player.Interact.performed += Interact_performed;
     }
@@ -43,6 +50,7 @@ public class PlayerInteractHolder : MonoBehaviour
 
             if (hitObject.TryGetComponent(out IInteractable interactable))
             {
+                _logger.Log($"Interacting with {interactable}", this);
                 interactable.Interact(GetComponent<PlayerInventoryController>());
             }
         }

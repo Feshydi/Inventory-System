@@ -28,6 +28,10 @@ public class PlayerCameraMovementHolder : MonoBehaviour
     private void Awake()
     {
         _inputActions = new PlayerControls();
+    }
+
+    private void OnEnable()
+    {
         _inputActions.Player.Enable();
         _inputActions.Player.Camera.performed += Camera_performed;
     }

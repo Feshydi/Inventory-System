@@ -1,9 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class PlayerWeaponInventoryHolder : InventoryHolder
+public class BowAndArrowInventoryHolder : InventoryHolder
 {
 
     #region Fields
@@ -18,7 +17,7 @@ public class PlayerWeaponInventoryHolder : InventoryHolder
 
     private void Awake()
     {
-        _inventorySize = _playerData.WeaponInventorySize;
+        _inventorySize = _playerData.BowAndArrowInventorySize;
         SetupNewInventorySystem();
     }
 
