@@ -44,6 +44,9 @@ public class PlayerInteractHolder : MonoBehaviour
     // interact with smth, based on ray
     private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
+        if (GameManager.Instance.IsInventoryOpened)
+            return;
+
         if (_rayHolder.IsHit)
         {
             var hitObject = _rayHolder.RaycastHit.transform.gameObject;

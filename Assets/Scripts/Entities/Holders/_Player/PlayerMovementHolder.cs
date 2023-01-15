@@ -27,6 +27,9 @@ public class PlayerMovementHolder : MonoBehaviour
     [SerializeField]
     private Vector3 _velocity;
 
+    [SerializeField]
+    private bool _isGrounded;
+
     #endregion
 
     #region Methods
@@ -62,7 +65,7 @@ public class PlayerMovementHolder : MonoBehaviour
 
     private void ApplyVelocity()
     {
-        _playerData.IsGrounded = _characterController.isGrounded;
+        _isGrounded = _characterController.isGrounded;
 
         InputVelocity();
 
@@ -74,7 +77,7 @@ public class PlayerMovementHolder : MonoBehaviour
     // apply gravity
     private void GravityVelocity()
     {
-        if (_playerData.IsGrounded && _velocity.y < 0)
+        if (_isGrounded && _velocity.y < 0)
             _velocity.y = _playerData.Gravity * _playerData.GravityModifier;
         else
             _velocity.y += _playerData.Gravity * Time.deltaTime;
@@ -83,9 +86,9 @@ public class PlayerMovementHolder : MonoBehaviour
     // apply x & z velocity if grounded and inventories closed
     private void InputVelocity()
     {
-        if (_playerData.IsGrounded)
+        if (_isGrounded)
         {
-            if (!_playerData.IsInventoryOpened)
+            if (!GameManager.Instance.IsInventoryOpened)
             {
                 Vector3 move = (transform.right * _inputMove.x + transform.forward * _inputMove.y) * _playerData.Speed;
                 _velocity.x = move.x;
@@ -108,7 +111,7 @@ public class PlayerMovementHolder : MonoBehaviour
     // if grounded and closed inventories, then jump
     private void Jump_Performed(InputAction.CallbackContext context)
     {
-        if (_playerData.IsGrounded && !_playerData.IsInventoryOpened)
+        if (_isGrounded && !GameManager.Instance.IsInventoryOpened)
             _velocity.y += Mathf.Sqrt(_playerData.JumpHeight * _playerData.Gravity * -2.0f);
     }
 

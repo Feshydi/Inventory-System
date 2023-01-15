@@ -37,9 +37,6 @@ public class InventoryController : MonoBehaviour
     private MouseItem _mouseItem;
 
     [SerializeField]
-    private TextMeshProUGUI _interactText;
-
-    [SerializeField]
     private DynamicInventoryDisplay _dynamicInventory;
 
     [SerializeField]
@@ -52,8 +49,6 @@ public class InventoryController : MonoBehaviour
     public static InventoryController Instance => _instance == null ? new InventoryController() : _instance;
 
     public MouseItem MouseItem => _mouseItem;
-
-    public TextMeshProUGUI InteractText => _interactText;
 
     public DynamicInventoryDisplay DynamicInventoryDisplay => _dynamicInventory;
 

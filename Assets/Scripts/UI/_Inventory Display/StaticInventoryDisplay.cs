@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using TMPro;
 
 public class StaticInventoryDisplay : MonoBehaviour
 {
 
     #region Fields
 
+    [Header("Static Data")]
     [SerializeField]
     private PlayerInventoryController _playerInventory;
 
@@ -22,16 +24,17 @@ public class StaticInventoryDisplay : MonoBehaviour
     private InventoryHolder _currentInventory;
 
     [SerializeField]
+    private TextMeshProUGUI _currentInventoryText;
+
+    [SerializeField]
+    private Vector2 _currentAnchoredPosition;
+
+    [SerializeField]
     private Logger _logger;
 
     #endregion
 
     #region Methods
-
-    private void Awake()
-    {
-        //gameObject.SetActive(false);
-    }
 
     private void Start()
     {
@@ -53,7 +56,7 @@ public class StaticInventoryDisplay : MonoBehaviour
                 slot.Init(inventorySystem);
                 slot.AssignSlots();
                 _inventoryHoldersDisplay.Add(slot, inventoryHolder);
-                slot.gameObject.SetActive(false);
+                // slot.gameObject.SetActive(false);
 
                 _logger.Log($"{inventoryHolder} instantiated as {slot} and added to dictionary", this);
             }
@@ -64,41 +67,61 @@ public class StaticInventoryDisplay : MonoBehaviour
         if (_inventoryHoldersDisplay.Count > 0)
         {
             _currentInventory = _inventoryHoldersDisplay.First().Value;
-            SetActiveCurrentInventory(true);
+            _currentInventoryText.text = _currentInventory.GetType().Name;
+            _currentAnchoredPosition = GetComponent<RectTransform>().anchoredPosition;
         }
     }
 
     private void Update()
     {
-        if (_playerInventory.InventoryHolders.Count <= 0)
+        if (_playerInventory.InventoryHolders.Count <= 0 || !GameManager.Instance.IsInventoryOpened)
             return;
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            DisplayPreviousInventory();
+            DisplayPreviousInventory(_currentInventory);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            DisplayNextInventory();
+            DisplayNextInventory(_currentInventory);
         }
     }
 
-    private void DisplayNextInventory()
+    private void DisplayNextInventory(InventoryHolder currentInventory)
     {
-        SetActiveCurrentInventory(false);
-        _currentInventory = _playerInventory.GetNextInventoryHolder(_currentInventory);
-        SetActiveCurrentInventory(true);
+        _currentInventory = _playerInventory.GetNextInventoryHolder(currentInventory);
+        if (!currentInventory.Equals(_currentInventory))
+        {
+            StartCoroutine(SmoothMove(new Vector2(-590, 0), 0.3f));
+            _currentInventoryText.text = _currentInventory.GetType().Name;
+        }
 
         _logger.Log($"Selected {_currentInventory}", this);
     }
 
-    private void DisplayPreviousInventory()
+    private void DisplayPreviousInventory(InventoryHolder currentInventory)
     {
-        SetActiveCurrentInventory(false);
-        _currentInventory = _playerInventory.GetPreviousInventoryHolder(_currentInventory);
-        SetActiveCurrentInventory(true);
+        _currentInventory = _playerInventory.GetPreviousInventoryHolder(currentInventory);
+        if (!currentInventory.Equals(_currentInventory))
+        {
+            StartCoroutine(SmoothMove(new Vector2(590, 0), 0.3f));
+            _currentInventoryText.text = _currentInventory.GetType().Name;
+        }
 
         _logger.Log($"Selected {_currentInventory}", this);
+    }
+
+    IEnumerator SmoothMove(Vector2 additionalPos, float seconds)
+    {
+        var startPos = GetComponent<RectTransform>().anchoredPosition;
+        _currentAnchoredPosition += additionalPos;
+        float t = 0f;
+        while (t <= 1)
+        {
+            t += Time.deltaTime / seconds;
+            GetComponent<RectTransform>().anchoredPosition = Vector3.Lerp(startPos, _currentAnchoredPosition, Mathf.SmoothStep(0, 1, t));
+            yield return null;
+        }
     }
 
     private void SetActiveCurrentInventory(bool value)

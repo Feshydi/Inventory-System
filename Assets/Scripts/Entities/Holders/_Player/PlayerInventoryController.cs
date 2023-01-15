@@ -16,6 +16,9 @@ public class PlayerInventoryController : MonoBehaviour
     [SerializeField]
     private PlayerControls _inputActions;
 
+    [SerializeField]
+    private Animator _inventoryAnimator;
+
     [Header("Auto Settings")]
     [SerializeField]
     private List<InventoryHolder> _inventoryHolders;
@@ -33,11 +36,9 @@ public class PlayerInventoryController : MonoBehaviour
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        _playerData.IsInventoryOpened = false;
 
         GetInventoryHolders();
 
-        //   Debug.Log(_inventoryHoldersNames[typeof(PlayerWeaponInventoryHolder).Name]);
         _inputActions = new PlayerControls();
     }
 
@@ -56,21 +57,15 @@ public class PlayerInventoryController : MonoBehaviour
     // open/close static and close only dynamic inventories
     private void Inventory_performed(InputAction.CallbackContext context)
     {
-        // set cursor
-        Cursor.lockState = _playerData.IsInventoryOpened ? CursorLockMode.Locked : CursorLockMode.None;
-        // need to fix screen flick after locked
+        var managerInstance = GameManager.Instance;
 
-        _playerData.IsInventoryOpened = !_playerData.IsInventoryOpened;
+        managerInstance.InventoryStatusChange();
+        if (managerInstance.IsInventoryOpened)
+            _inventoryAnimator.SetTrigger("Open");
+        else
+            _inventoryAnimator.SetTrigger("Close");
 
-        // close static UI
-        InventoryController.Instance.SetStaticInventoryActive(_playerData.IsInventoryOpened);
-
-        // if close static UI, then close other
-        if (!_playerData.IsInventoryOpened)
-        {
-            InventoryController.Instance.SetDynamicInventoryActive(false);
-            InventoryController.Instance.SetCraftingActive(false);
-        }
+        Cursor.lockState = managerInstance.IsInventoryOpened ? CursorLockMode.None : CursorLockMode.Locked;
     }
 
     private void GetInventoryHolders()

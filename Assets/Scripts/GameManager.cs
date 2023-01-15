@@ -5,29 +5,31 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    #region Fields
+    #region Singleton
 
     private static GameManager _instance;
 
+    public static GameManager Instance => _instance == null ? new GameManager() : _instance;
+
+    private GameManager() => _instance = this;
+
+    #endregion
+
+    #region Fields
+
     [SerializeField]
     private ItemDatabaseObject _database;
+
+    [SerializeField]
+    private bool _isInventoryOpened;
 
     #endregion
 
     #region Properties
 
-    public static GameManager Instance => _instance == null ? new GameManager() : _instance;
+    public ItemDatabaseObject Database => _database;
 
-    public ItemDatabaseObject Database
-    {
-        get { return _database; }
-    }
-
-    #endregion
-
-    #region Constructors
-
-    private GameManager() => _instance = this;
+    public bool IsInventoryOpened => _isInventoryOpened;
 
     #endregion
 
@@ -37,6 +39,11 @@ public class GameManager : MonoBehaviour
     {
         if (hasFocus)
             Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void InventoryStatusChange()
+    {
+        _isInventoryOpened = !_isInventoryOpened;
     }
 
     #endregion

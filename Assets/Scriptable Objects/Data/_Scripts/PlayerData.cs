@@ -25,12 +25,6 @@ public class PlayerData : IData
     [SerializeField]
     private float _gravityModifier;
 
-    [SerializeField]
-    private bool _isGrounded;
-
-    [SerializeField]
-    private bool _isInventoryOpened;
-
     [Header("Camera")]
     [SerializeField]
     [Range(0.01f, 1f)]
@@ -86,18 +80,6 @@ public class PlayerData : IData
     public float Gravity => _gravity;
 
     public float GravityModifier => _gravityModifier;
-
-    public bool IsGrounded
-    {
-        get => _isGrounded;
-        set => _isGrounded = value;
-    }
-
-    public bool IsInventoryOpened
-    {
-        get => _isInventoryOpened;
-        set => _isInventoryOpened = value;
-    }
 
 
     public float VerticalSensitivity => _verticalSensitivity;

@@ -44,7 +44,7 @@ public class PlayerCameraMovementHolder : MonoBehaviour
 
     private void Camera_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        if (_playerData.IsInventoryOpened)
+        if (GameManager.Instance.IsInventoryOpened)
             return;
 
         Vector2 inputCamera = context.ReadValue<Vector2>() * Time.deltaTime * _playerData.SensetivityModifier;
