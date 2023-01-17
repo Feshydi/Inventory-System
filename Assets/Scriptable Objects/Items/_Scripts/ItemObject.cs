@@ -100,10 +100,7 @@ public abstract class ItemObject : ScriptableObject
 
     public override string ToString()
     {
-        return string.Concat(
-            Title, "\n",
-            Description
-            );
+        return "";
     }
 
     #endregion

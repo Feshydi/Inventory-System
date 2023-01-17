@@ -12,14 +12,9 @@ public class StaticInventoryDisplay : MonoBehaviour
 
     [Header("Static Data")]
     [SerializeField]
-    private PlayerInventoryController _playerInventory;
+    private InventoryData _inventoryData;
 
-    [SerializeField]
-    private InventoryDisplay _inventoryDisplayPrefab;
-
-    [SerializeField]
-    private Dictionary<InventoryDisplay, InventoryHolder> _inventoryHoldersDisplay;
-
+    [Header("Auto Settings")]
     [SerializeField]
     private InventoryHolder _currentInventory;
 
@@ -30,7 +25,20 @@ public class StaticInventoryDisplay : MonoBehaviour
     private Vector2 _currentAnchoredPosition;
 
     [SerializeField]
+    private Dictionary<InventoryDisplay, InventoryHolder> _inventoryHoldersDisplay;
+
+    [Header("Customizable settings")]
+    [SerializeField]
+    private PlayerInventoryController _playerInventory;
+
+    [SerializeField]
+    private InventoryDisplay _inventoryDisplayPrefab;
+
+    [SerializeField]
     private Logger _logger;
+
+    [SerializeField]
+    private float _swipeRange;
 
     #endregion
 
@@ -56,7 +64,6 @@ public class StaticInventoryDisplay : MonoBehaviour
                 slot.Init(inventorySystem);
                 slot.AssignSlots();
                 _inventoryHoldersDisplay.Add(slot, inventoryHolder);
-                // slot.gameObject.SetActive(false);
 
                 _logger.Log($"{inventoryHolder} instantiated as {slot} and added to dictionary", this);
             }
@@ -91,10 +98,7 @@ public class StaticInventoryDisplay : MonoBehaviour
     {
         _currentInventory = _playerInventory.GetNextInventoryHolder(currentInventory);
         if (!currentInventory.Equals(_currentInventory))
-        {
-            StartCoroutine(SmoothMove(new Vector2(-590, 0), 0.3f));
-            _currentInventoryText.text = _currentInventory.GetType().Name;
-        }
+            SwipeInventoryByX(-_swipeRange);
 
         _logger.Log($"Selected {_currentInventory}", this);
     }
@@ -103,30 +107,20 @@ public class StaticInventoryDisplay : MonoBehaviour
     {
         _currentInventory = _playerInventory.GetPreviousInventoryHolder(currentInventory);
         if (!currentInventory.Equals(_currentInventory))
-        {
-            StartCoroutine(SmoothMove(new Vector2(590, 0), 0.3f));
-            _currentInventoryText.text = _currentInventory.GetType().Name;
-        }
+            SwipeInventoryByX(_swipeRange);
 
         _logger.Log($"Selected {_currentInventory}", this);
     }
 
-    IEnumerator SmoothMove(Vector2 additionalPos, float seconds)
+    private void SwipeInventoryByX(float xValue)
     {
         var startPos = GetComponent<RectTransform>().anchoredPosition;
-        _currentAnchoredPosition += additionalPos;
-        float t = 0f;
-        while (t <= 1)
-        {
-            t += Time.deltaTime / seconds;
-            GetComponent<RectTransform>().anchoredPosition = Vector3.Lerp(startPos, _currentAnchoredPosition, Mathf.SmoothStep(0, 1, t));
-            yield return null;
-        }
-    }
+        _currentAnchoredPosition += new Vector2(xValue, 0);
+        LeanTween
+            .moveX(GetComponent<RectTransform>(), _currentAnchoredPosition.x, _inventoryData.SwipeTime)
+            .setEase(_inventoryData.SwipeCurve);
 
-    private void SetActiveCurrentInventory(bool value)
-    {
-        _inventoryHoldersDisplay.FirstOrDefault(x => x.Value == _currentInventory).Key.gameObject.SetActive(value);
+        _currentInventoryText.text = _currentInventory.GetType().Name;
     }
 
     #endregion

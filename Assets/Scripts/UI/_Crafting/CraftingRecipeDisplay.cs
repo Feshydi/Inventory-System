@@ -4,15 +4,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using Palmmedia.ReportGenerator.Core.Logging;
 
 public class CraftingRecipeDisplay : MonoBehaviour
 {
 
     #region Fields
 
+    [Header("Auto Settings")]
     [SerializeField]
     private PlayerInventoryController _player;
 
+    [SerializeField]
+    private CraftKeeper _craftKeeper;
+
+    [SerializeField]
+    private CraftSystem _craftSystem;
+
+    [SerializeField]
+    private Dictionary<Button, CraftingRecipe> _buttonForCraft;
+
+    [Header("Customizable settings")]
     [SerializeField]
     private GameObject _recipePrefab;
 
@@ -23,14 +35,10 @@ public class CraftingRecipeDisplay : MonoBehaviour
     private Button _buttonPrefab;
 
     [SerializeField]
-    private CraftSystem _craftSystem;
-
-    [SerializeField]
-    private Dictionary<Button, CraftingRecipe> _buttonForCraft;
-
-    [Header("Customizable settings")]
-    [SerializeField]
     private Description _description;
+
+    [SerializeField]
+    private Logger _logger;
 
     #endregion
 
@@ -51,12 +59,12 @@ public class CraftingRecipeDisplay : MonoBehaviour
         InventoryController.Instance.SetCraftingActive(false);
     }
 
-    public void SetCraftSystem(CraftSystem craftSystem)
+    public void Init(PlayerInventoryController player, CraftKeeper craftKeeper)
     {
-        InventoryController.Instance.SetCraftingActive(true);
-
+        _player = player;
+        _craftKeeper = craftKeeper;
         _craftSystem = new CraftSystem();
-        foreach (var recipe in craftSystem.CraftingRecipes)
+        foreach (var recipe in _craftKeeper.CraftSystem.CraftingRecipes)
         {
             _craftSystem.CraftingRecipes.Add(recipe);
         }
@@ -81,8 +89,10 @@ public class CraftingRecipeDisplay : MonoBehaviour
                 slot.Init(new InventorySlot(material.ItemObject, material.Amount));
             }
 
-            // instantiate empty slot
-            Instantiate(_slotPrefab, recipe);
+            // instantiate button for craft
+            var button = Instantiate(_buttonPrefab, recipe);
+            _buttonForCraft.Add(button, craftingRecipe);
+            button.onClick.AddListener(delegate { CraftItem(EventSystem.current.currentSelectedGameObject.GetComponent<Button>()); });
 
             // instantiate every result
             foreach (var result in craftingRecipe.Results)
@@ -90,11 +100,6 @@ public class CraftingRecipeDisplay : MonoBehaviour
                 var slot = Instantiate(_slotPrefab, recipe);
                 slot.Init(new InventorySlot(result.ItemObject, result.Amount));
             }
-
-            // instantiate button for craft
-            var button = Instantiate(_buttonPrefab, recipe);
-            _buttonForCraft.Add(button, craftingRecipe);
-            button.onClick.AddListener(delegate { CraftItem(EventSystem.current.currentSelectedGameObject.GetComponent<Button>()); });
         }
         return true;
     }

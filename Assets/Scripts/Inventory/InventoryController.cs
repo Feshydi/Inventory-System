@@ -27,8 +27,6 @@ public class InventoryController : MonoBehaviour
     [SerializeField]
     private GameObject _hotbarUI;
 
-    [SerializeField]
-    private GameObject _interactUI;
 
     [SerializeField]
     private GameObject _craftingUI;
@@ -123,10 +121,6 @@ public class InventoryController : MonoBehaviour
         return _dynamicInventoryUI.activeInHierarchy;
     }
 
-    public void SetInteractTextActive(bool value)
-    {
-        _interactUI.SetActive(value);
-    }
 
     public void SetCraftingActive(bool value)
     {

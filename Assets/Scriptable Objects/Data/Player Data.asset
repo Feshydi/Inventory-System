@@ -17,16 +17,7 @@ MonoBehaviour:
   _jumpHeight: 1
   _gravity: -9.81
   _gravityModifier: 0.01
-  _isGrounded: 1
-  _isInventoryOpened: 1
   _verticalSensitivity: 1
   _horizontalSensitivity: 1
-  _sensetivityModifier: 10
+  _sensitivityModifier: 10
   _verticalRotationRange: 75
-  _weaponInventorySize: 5
-  _bowAndArrowInventorySize: 7
-  _shieldInventorySize: 9
-  _armorInventorySize: 14
-  _materialInventorySize: 18
-  _foodInventorySize: 19
-  _keyItemsInventorySize: 20

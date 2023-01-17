@@ -35,32 +35,10 @@ public class PlayerData : IData
     private float _horizontalSensitivity;
 
     [SerializeField]
-    private float _sensetivityModifier;
+    private float _sensitivityModifier;
 
     [SerializeField]
     private float _verticalRotationRange;
-
-    [Header("Inventory")]
-    [SerializeField]
-    private int _weaponInventorySize;
-
-    [SerializeField]
-    private int _bowAndArrowInventorySize;
-
-    [SerializeField]
-    private int _shieldInventorySize;
-
-    [SerializeField]
-    private int _armorInventorySize;
-
-    [SerializeField]
-    private int _materialInventorySize;
-
-    [SerializeField]
-    private int _foodInventorySize;
-
-    [SerializeField]
-    private int _keyItemsInventorySize;
 
     #endregion
 
@@ -86,52 +64,9 @@ public class PlayerData : IData
 
     public float HorizontalSensitivity => _horizontalSensitivity;
 
-    public float SensetivityModifier => _sensetivityModifier;
+    public float SensetivityModifier => _sensitivityModifier;
 
     public float VerticalRotationRange => _verticalRotationRange;
-
-
-    public int WeaponInventorySize
-    {
-        get => _weaponInventorySize;
-        set => _weaponInventorySize = value;
-    }
-
-    public int BowAndArrowInventorySize
-    {
-        get => _bowAndArrowInventorySize;
-        set => _bowAndArrowInventorySize = value;
-    }
-
-    public int ShieldInventorySize
-    {
-        get => _shieldInventorySize;
-        set => _shieldInventorySize = value;
-    }
-
-    public int ArmorInventorySize
-    {
-        get => _armorInventorySize;
-        set => _armorInventorySize = value;
-    }
-
-    public int MaterialInventorySize
-    {
-        get => _materialInventorySize;
-        set => _materialInventorySize = value;
-    }
-
-    public int FoodInventorySize
-    {
-        get => _foodInventorySize;
-        set => _foodInventorySize = value;
-    }
-
-    public int KeyItemsInventorySize
-    {
-        get => _keyItemsInventorySize;
-        set => _keyItemsInventorySize = value;
-    }
 
     #endregion
 

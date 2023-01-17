@@ -23,8 +23,8 @@ public class Equipment : ItemObject
     public override string ToString()
     {
         return string.Concat(
-            base.ToString(), "\n",
-            "Defense ", _defense
+            base.ToString(),
+            "Defense: ", _defense
             );
     }
 

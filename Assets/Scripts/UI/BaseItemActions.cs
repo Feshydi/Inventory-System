@@ -16,13 +16,13 @@ public class BaseItemActions : MonoBehaviour, IPointerEnterHandler, IPointerExit
     protected PlayerControls _inputActions;
 
     [SerializeField]
-    protected Description _description;
+    protected InventoryDescription _description;
 
     #endregion
 
     #region Properties
 
-    public Description Description
+    public InventoryDescription Description
     {
         get => _description;
         set => _description = value;
@@ -35,7 +35,7 @@ public class BaseItemActions : MonoBehaviour, IPointerEnterHandler, IPointerExit
     protected virtual void Awake()
     {
         _inputActions = new PlayerControls();
-        _description = Resources.FindObjectsOfTypeAll<Description>().First();
+        _description = GameObject.Find("Inventory Description").GetComponent<InventoryDescription>();
     }
 
     protected virtual void OnEnable() { }
@@ -44,17 +44,17 @@ public class BaseItemActions : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        var id = GetComponentInParent<BaseSlotManager>().AssignedInventorySlot.ID;
+        var id = GetComponent<BaseSlotManager>().AssignedInventorySlot.ID;
         if (id != -1)
         {
             ItemObject itemObject = GameManager.Instance.Database.GetItem[id];
-            _description?.ShowDescription(itemObject.ToString(), true);
+            _description.ShowDescription(itemObject.Title, itemObject.ToString(), itemObject.Description, itemObject.Icon, true);
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        _description?.ShowDescription("", false);
+        _description.ShowDescription("", false);
     }
 
     #endregion

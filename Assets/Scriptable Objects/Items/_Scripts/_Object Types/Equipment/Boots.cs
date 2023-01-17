@@ -25,7 +25,7 @@ public class Boots : Equipment
     {
         return string.Concat(
             base.ToString(), "\n",
-            "Speed ", _stamina
+            "Stamina: ", _stamina
             );
     }
 

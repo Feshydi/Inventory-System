@@ -24,8 +24,16 @@ public class Interaction : MonoBehaviour
 
     public void ShowInteraction(string text, bool status)
     {
-        _interaction.text = text;
-        gameObject.SetActive(status);
+        if (status)
+        {
+            LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, 0.3f);
+            _interaction.text = text;
+        }
+        else
+        {
+            if (!LeanTween.isTweening(gameObject))
+                LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, 0.3f);
+        }
     }
 
     #endregion

@@ -24,8 +24,16 @@ public class Description : MonoBehaviour
 
     public void ShowDescription(string text, bool status)
     {
-        _description.text = text;
-        gameObject.SetActive(status);
+        if (status)
+        {
+            LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, 0.3f);
+            _description.text = text;
+        }
+        else
+        {
+            if (!LeanTween.isTweening(gameObject))
+                LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, 0.3f);
+        }
     }
 
     #endregion

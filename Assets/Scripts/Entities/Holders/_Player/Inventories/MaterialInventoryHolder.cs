@@ -9,7 +9,7 @@ public class MaterialInventoryHolder : InventoryHolder
 
     [Header("Static Data")]
     [SerializeField]
-    private PlayerData _playerData;
+    private InventoryData _inventoryData;
 
     #endregion
 
@@ -17,7 +17,7 @@ public class MaterialInventoryHolder : InventoryHolder
 
     private void Awake()
     {
-        _inventorySize = _playerData.MaterialInventorySize;
+        _inventorySize = _inventoryData.MaterialInventorySize;
         SetupNewInventorySystem();
     }
 

@@ -11,18 +11,22 @@ public class RayHolder : MonoBehaviour
     [SerializeField]
     private RayData _rayData;
 
-    [SerializeField]
-    private Description _description;
-
     [Header("Auto settings")]
     [SerializeField]
     private RaycastHit _raycastHit;
 
     [SerializeField]
-    private Interaction _interaction;
+    private bool _isHit;
 
     [SerializeField]
-    private bool _isHit;
+    private GameObject _hitObject;
+
+    [Header("Customizable settings")]
+    [SerializeField]
+    private Description _description;
+
+    [SerializeField]
+    private Interaction _interaction;
 
     #endregion
 
@@ -43,35 +47,35 @@ public class RayHolder : MonoBehaviour
         RayHit();
     }
 
-    public bool CastRay()
+    public void CastRay()
     {
         var ray = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
 
         _isHit = Physics.Raycast(ray, out _raycastHit, _rayData.RayRange);
-
-        return _isHit;
     }
 
     private void RayHit()
     {
-        if (_isHit)
+        if (_isHit && !GameManager.Instance.IsInventoryOpened)
         {
             var hitObject = _raycastHit.transform.gameObject;
+
+            if (_hitObject != null)
+                if (_hitObject.Equals(hitObject))
+                    return;
 
             if (hitObject.TryGetComponent(out IInteractable interactable))
             {
                 _description.ShowDescription(interactable.ToString(), true);
                 _interaction.ShowInteraction("e", true);
+                _hitObject = hitObject;
                 return;
             }
         }
-        RayHitDefault();
-    }
 
-    private void RayHitDefault()
-    {
         _description.ShowDescription("", false);
         _interaction.ShowInteraction("", false);
+        _hitObject = null;
     }
 
     #endregion

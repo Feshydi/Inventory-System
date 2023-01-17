@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInteractHolder : MonoBehaviour
 {
 
     #region Fields
 
-    [Header("Static Data")]
-    [SerializeField]
-    private PlayerData _playerData;
-
-    [SerializeField]
-    private RayHolder _rayHolder;
-
+    [Header("Auto Settings")]
     [SerializeField]
     private PlayerControls _inputActions;
+
+    [Header("Customizable settings")]
+    [SerializeField]
+    private RayHolder _rayHolder;
 
     [SerializeField]
     private Logger _logger;
@@ -42,17 +41,16 @@ public class PlayerInteractHolder : MonoBehaviour
     }
 
     // interact with smth, based on ray
-    private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    private void Interact_performed(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.IsInventoryOpened)
-            return;
-
         if (_rayHolder.IsHit)
         {
             var hitObject = _rayHolder.RaycastHit.transform.gameObject;
 
             if (hitObject.TryGetComponent(out IInteractable interactable))
             {
+                GetComponent<PlayerInventoryController>().ChangeInventoryUIAlpha();
+
                 _logger.Log($"Interacting with {interactable}", this);
                 interactable.Interact(GetComponent<PlayerInventoryController>());
             }

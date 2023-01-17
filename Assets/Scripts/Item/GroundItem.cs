@@ -110,7 +110,10 @@ public class GroundItem : MonoBehaviour, IInteractable
 
     public override string ToString()
     {
-        return _itemObject.ToString();
+        return string.Concat(
+            _itemObject.Title, "\n",
+            _itemObject.ToString()
+            );
     }
 
     #endregion

@@ -11,23 +11,32 @@ public class PlayerInventoryController : MonoBehaviour
 
     [Header("Static Data")]
     [SerializeField]
-    private PlayerData _playerData;
+    private InventoryData _inventoryData;
 
+    [Header("Auto Settings")]
     [SerializeField]
     private PlayerControls _inputActions;
 
     [SerializeField]
-    private Animator _inventoryAnimator;
-
-    [Header("Auto Settings")]
-    [SerializeField]
     private List<InventoryHolder> _inventoryHolders;
+
+    [Header("Customizable settings")]
+    [SerializeField]
+    private CanvasGroup _inventoryUI;
+
+    [SerializeField]
+    private List<CanvasGroup> _canvasGroupUI;
+
+    [SerializeField]
+    private Logger _logger;
 
     #endregion
 
     #region Properties
 
     public List<InventoryHolder> InventoryHolders => _inventoryHolders;
+
+    public CanvasGroup InventoryUI => _inventoryUI;
 
     #endregion
 
@@ -36,6 +45,7 @@ public class PlayerInventoryController : MonoBehaviour
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        LeanTween.alphaCanvas(_inventoryUI, _inventoryData.StartInventoryAlpha, 0.1f);
 
         GetInventoryHolders();
 
@@ -54,16 +64,34 @@ public class PlayerInventoryController : MonoBehaviour
         _inputActions.Player.Disable();
     }
 
-    // open/close static and close only dynamic inventories
     private void Inventory_performed(InputAction.CallbackContext context)
+    {
+        if (LeanTween.isTweening(_inventoryUI.gameObject))
+        {
+            _logger.Log("Inventory is already showing/hiding", this);
+            return;
+        }
+        ChangeInventoryUIAlpha();
+    }
+
+    public void ChangeInventoryUIAlpha()
     {
         var managerInstance = GameManager.Instance;
 
         managerInstance.InventoryStatusChange();
         if (managerInstance.IsInventoryOpened)
-            _inventoryAnimator.SetTrigger("Open");
+        {
+            LeanTween.alphaCanvas(_inventoryUI, 1, _inventoryData.OpenFadeTime);
+            _logger.Log($"Showing {_inventoryUI}", this);
+        }
         else
-            _inventoryAnimator.SetTrigger("Close");
+        {
+            foreach (var item in _canvasGroupUI)
+            {
+                LeanTween.alphaCanvas(item, 0, _inventoryData.CloseFadeTime);
+                _logger.Log($"Hiding {item}", this);
+            }
+        }
 
         Cursor.lockState = managerInstance.IsInventoryOpened ? CursorLockMode.None : CursorLockMode.Locked;
     }

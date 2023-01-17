@@ -9,7 +9,7 @@ public class BowAndArrowInventoryHolder : InventoryHolder
 
     [Header("Static Data")]
     [SerializeField]
-    private PlayerData _playerData;
+    private InventoryData _inventoryData;
 
     #endregion
 
@@ -17,7 +17,7 @@ public class BowAndArrowInventoryHolder : InventoryHolder
 
     private void Awake()
     {
-        _inventorySize = _playerData.BowAndArrowInventorySize;
+        _inventorySize = _inventoryData.BowAndArrowInventorySize;
         SetupNewInventorySystem();
     }
 
