@@ -36,7 +36,7 @@ public class InventorySlotManager : BaseSlotManager, IDropHandler
     {
         GameObject dropped = eventData.pointerDrag;
         var item = dropped.GetComponent<ItemActions>();
-        var mouseSlot = InventoryController.Instance.MouseItem.Slot;
+        var mouseSlot = GameManager.Instance.MouseItem.Slot;
         var fromSlotType = item.GetComponent<InventorySlotManager>()._slotType;
 
         // if mouse slot empty return
@@ -80,7 +80,7 @@ public class InventorySlotManager : BaseSlotManager, IDropHandler
 
     public void SetSlot(bool shifted)
     {
-        var mouse = InventoryController.Instance.MouseItem;
+        var mouse = GameManager.Instance.MouseItem;
         var invSys = GetComponentInParent<InventoryDisplay>().InventorySystem;
 
         // if no items in mouse

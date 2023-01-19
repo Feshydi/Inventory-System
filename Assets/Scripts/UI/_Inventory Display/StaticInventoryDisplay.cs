@@ -5,14 +5,11 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using TMPro;
 
+[RequireComponent(typeof(SwipeEffect))]
 public class StaticInventoryDisplay : MonoBehaviour
 {
 
     #region Fields
-
-    [Header("Static Data")]
-    [SerializeField]
-    private InventoryData _inventoryData;
 
     [Header("Auto Settings")]
     [SerializeField]
@@ -22,12 +19,15 @@ public class StaticInventoryDisplay : MonoBehaviour
     private TextMeshProUGUI _currentInventoryText;
 
     [SerializeField]
-    private Vector2 _currentAnchoredPosition;
+    private SwipeEffect _swipeEffect;
 
     [SerializeField]
     private Dictionary<InventoryDisplay, InventoryHolder> _inventoryHoldersDisplay;
 
     [Header("Customizable settings")]
+    [SerializeField]
+    private UIManager _uIManager;
+
     [SerializeField]
     private PlayerInventoryController _playerInventory;
 
@@ -36,9 +36,6 @@ public class StaticInventoryDisplay : MonoBehaviour
 
     [SerializeField]
     private Logger _logger;
-
-    [SerializeField]
-    private float _swipeRange;
 
     #endregion
 
@@ -52,6 +49,8 @@ public class StaticInventoryDisplay : MonoBehaviour
             return;
         }
 
+        _swipeEffect = GetComponent<SwipeEffect>();
+
         _inventoryHoldersDisplay = new Dictionary<InventoryDisplay, InventoryHolder>();
 
         foreach (var inventoryHolder in _playerInventory.InventoryHolders)
@@ -60,12 +59,12 @@ public class StaticInventoryDisplay : MonoBehaviour
 
             if (inventorySystem != null)
             {
-                var slot = Instantiate(_inventoryDisplayPrefab, transform);
-                slot.Init(inventorySystem);
-                slot.AssignSlots();
-                _inventoryHoldersDisplay.Add(slot, inventoryHolder);
+                var inventory = Instantiate(_inventoryDisplayPrefab, transform);
+                inventory.Init(inventorySystem);
+                inventory.AssignSlots();
+                _inventoryHoldersDisplay.Add(inventory, inventoryHolder);
 
-                _logger.Log($"{inventoryHolder} instantiated as {slot} and added to dictionary", this);
+                _logger.Log($"{inventoryHolder} instantiated as {inventory} and added to dictionary", this);
             }
             else
                 _logger.Log($"No inventory assigned to {inventoryHolder}", this);
@@ -75,51 +74,35 @@ public class StaticInventoryDisplay : MonoBehaviour
         {
             _currentInventory = _inventoryHoldersDisplay.First().Value;
             _currentInventoryText.text = _currentInventory.GetType().Name;
-            _currentAnchoredPosition = GetComponent<RectTransform>().anchoredPosition;
         }
     }
 
     private void Update()
     {
-        if (_playerInventory.InventoryHolders.Count <= 0 || !GameManager.Instance.IsInventoryOpened)
+        if (_playerInventory.InventoryHolders.Count <= 0 || _uIManager.CurrentUIState.Equals(UIState.Close))
             return;
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            DisplayPreviousInventory(_currentInventory);
+            DisplayInventory(true, _currentInventory);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            DisplayNextInventory(_currentInventory);
+            DisplayInventory(false, _currentInventory);
         }
     }
 
-    private void DisplayNextInventory(InventoryHolder currentInventory)
+    private void DisplayInventory(bool right, InventoryHolder currentInventory)
     {
-        _currentInventory = _playerInventory.GetNextInventoryHolder(currentInventory);
+        if (right)
+            _currentInventory = _playerInventory.GetPreviousInventoryHolder(currentInventory);
+        else
+            _currentInventory = _playerInventory.GetNextInventoryHolder(currentInventory);
+
         if (!currentInventory.Equals(_currentInventory))
-            SwipeInventoryByX(-_swipeRange);
+            _swipeEffect.Swipe(right);
 
         _logger.Log($"Selected {_currentInventory}", this);
-    }
-
-    private void DisplayPreviousInventory(InventoryHolder currentInventory)
-    {
-        _currentInventory = _playerInventory.GetPreviousInventoryHolder(currentInventory);
-        if (!currentInventory.Equals(_currentInventory))
-            SwipeInventoryByX(_swipeRange);
-
-        _logger.Log($"Selected {_currentInventory}", this);
-    }
-
-    private void SwipeInventoryByX(float xValue)
-    {
-        var startPos = GetComponent<RectTransform>().anchoredPosition;
-        _currentAnchoredPosition += new Vector2(xValue, 0);
-        LeanTween
-            .moveX(GetComponent<RectTransform>(), _currentAnchoredPosition.x, _inventoryData.SwipeTime)
-            .setEase(_inventoryData.SwipeCurve);
-
         _currentInventoryText.text = _currentInventory.GetType().Name;
     }
 

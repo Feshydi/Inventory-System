@@ -49,8 +49,6 @@ public class PlayerInteractHolder : MonoBehaviour
 
             if (hitObject.TryGetComponent(out IInteractable interactable))
             {
-                GetComponent<PlayerInventoryController>().ChangeInventoryUIAlpha();
-
                 _logger.Log($"Interacting with {interactable}", this);
                 interactable.Interact(GetComponent<PlayerInventoryController>());
             }

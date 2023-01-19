@@ -14,8 +14,7 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
     public void RefreshDynamicInventory(InventorySystem inventoryToDisplay)
     {
-        Init(_inventorySystem);
-
+        Init(inventoryToDisplay);
         ClearSlots();
         AssignSlots();
     }

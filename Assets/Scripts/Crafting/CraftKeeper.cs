@@ -10,13 +10,13 @@ public class CraftKeeper : MonoBehaviour, IInteractable
 
     [Header("Customizable settings")]
     [SerializeField]
-    protected CraftingRecipeDisplay _craftDisplay;
+    private CraftingRecipeDisplay _craftDisplay;
 
     [SerializeField]
-    protected CraftSystem _craftSystem;
+    private UIManager _uIManager;
 
     [SerializeField]
-    private CanvasGroup _craftUI;
+    private CraftSystem _craftSystem;
 
     [SerializeField]
     private Logger _logger;
@@ -31,34 +31,12 @@ public class CraftKeeper : MonoBehaviour, IInteractable
 
     #region Methods
 
-    private void Awake()
-    {
-        LeanTween.alphaCanvas(_craftUI, 0, 0.1f);
-    }
-
-    public virtual void Craft() { }
-
     public void Interact(PlayerInventoryController player)
     {
-        _craftDisplay.Init(player, this);
+        _uIManager.ChangeUIStateAndOpen(UIState.CraftOpen);
 
-        ChangeCraftUIAlpha();
-    }
-
-    public void Interact()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void ChangeCraftUIAlpha()
-    {
-        var managerInstance = GameManager.Instance;
-
-        if (managerInstance.IsInventoryOpened)
-        {
-            LeanTween.alphaCanvas(_craftUI, 1, 0.3f);
-            _logger.Log($"Showing {_craftUI}", this);
-        }
+        if (_uIManager.CurrentUIState.Equals(UIState.CraftOpen))
+            _craftDisplay.Init(player, this);
     }
 
     #endregion

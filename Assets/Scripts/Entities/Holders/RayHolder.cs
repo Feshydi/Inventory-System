@@ -23,6 +23,9 @@ public class RayHolder : MonoBehaviour
 
     [Header("Customizable settings")]
     [SerializeField]
+    UIManager _uIManager;
+
+    [SerializeField]
     private Description _description;
 
     [SerializeField]
@@ -56,7 +59,7 @@ public class RayHolder : MonoBehaviour
 
     private void RayHit()
     {
-        if (_isHit && !GameManager.Instance.IsInventoryOpened)
+        if (_isHit && _uIManager.CurrentUIState.Equals(UIState.Close))
         {
             var hitObject = _raycastHit.transform.gameObject;
 

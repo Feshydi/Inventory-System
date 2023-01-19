@@ -22,6 +22,9 @@ public class PlayerMovementHolder : MonoBehaviour
 
     [Header("Customizable settings")]
     [SerializeField]
+    private UIManager _uIManager;
+
+    [SerializeField]
     private Vector2 _inputMove;
 
     [SerializeField]
@@ -88,7 +91,7 @@ public class PlayerMovementHolder : MonoBehaviour
     {
         if (_isGrounded)
         {
-            if (!GameManager.Instance.IsInventoryOpened)
+            if (_uIManager.CurrentUIState.Equals(UIState.Close))
             {
                 Vector3 move = (transform.right * _inputMove.x + transform.forward * _inputMove.y) * _playerData.Speed;
                 _velocity.x = move.x;
@@ -111,7 +114,7 @@ public class PlayerMovementHolder : MonoBehaviour
     // if grounded and closed inventories, then jump
     private void Jump_Performed(InputAction.CallbackContext context)
     {
-        if (_isGrounded && !GameManager.Instance.IsInventoryOpened)
+        if (_isGrounded && _uIManager.CurrentUIState.Equals(UIState.Close))
             _velocity.y += Mathf.Sqrt(_playerData.JumpHeight * _playerData.Gravity * -2.0f);
     }
 

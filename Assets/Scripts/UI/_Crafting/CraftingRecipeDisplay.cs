@@ -55,8 +55,6 @@ public class CraftingRecipeDisplay : MonoBehaviour
     private void Awake()
     {
         _buttonForCraft = new Dictionary<Button, CraftingRecipe>();
-
-        InventoryController.Instance.SetCraftingActive(false);
     }
 
     public void Init(PlayerInventoryController player, CraftKeeper craftKeeper)

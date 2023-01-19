@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCameraMovementHolder : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class PlayerCameraMovementHolder : MonoBehaviour
     private PlayerControls _inputActions;
 
     [Header("Customizable settings")]
+    [SerializeField]
+    UIManager _uIManager;
+
     [SerializeField]
     private float _xRotation;
 
@@ -42,9 +46,9 @@ public class PlayerCameraMovementHolder : MonoBehaviour
         _inputActions.Player.Disable();
     }
 
-    private void Camera_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    private void Camera_performed(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.IsInventoryOpened)
+        if (!_uIManager.CurrentUIState.Equals(UIState.Close))
             return;
 
         Vector2 inputCamera = context.ReadValue<Vector2>() * Time.deltaTime * _playerData.SensetivityModifier;

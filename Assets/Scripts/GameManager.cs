@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     private ItemDatabaseObject _database;
 
     [SerializeField]
-    private bool _isInventoryOpened;
+    private MouseItem _mouseItem;
 
     #endregion
 
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     public ItemDatabaseObject Database => _database;
 
-    public bool IsInventoryOpened => _isInventoryOpened;
+    public MouseItem MouseItem => _mouseItem;
 
     #endregion
 
@@ -39,11 +39,6 @@ public class GameManager : MonoBehaviour
     {
         if (hasFocus)
             Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    public void InventoryStatusChange()
-    {
-        _isInventoryOpened = !_isInventoryOpened;
     }
 
     #endregion

@@ -66,7 +66,7 @@ public class ItemActions : BaseItemActions, IBeginDragHandler, IDragHandler, IEn
 
         _actionWithShift = isHalf;
 
-        InventoryController.Instance.MouseItem.SetMouseItem(isHalf, slot);
+        GameManager.Instance.MouseItem.SetMouseItem(isHalf, slot);
         GetComponentInParent<InventoryDisplay>().InventorySystem.RemoveFromInventory(slot, isHalf);
     }
 
