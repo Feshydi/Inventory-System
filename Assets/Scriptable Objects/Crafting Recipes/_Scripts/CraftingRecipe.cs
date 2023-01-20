@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using static UnityEditor.Progress;
 
 [System.Serializable]
 public struct ItemAmount
@@ -46,12 +47,16 @@ public class CraftingRecipe : ScriptableObject
     {
         InventoryHolder[] inventoryHolders = player.GetComponents<InventoryHolder>();
 
-        // add check for enough place in inventories
+        // check for slot in inventories
+        // work correct if every result item belongs to different classes           !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        if (!inventoryHolders.Any(inventory => inventory.InventorySystem.HasFreeSlot(out InventorySlot slot)))
+        foreach (var result in _results)
         {
-            return false;
+            var inventoryHolder = result.ItemObject.GetInventoryType(player);
+            if (!inventoryHolder.InventorySystem.HasFreeSlot(out InventorySlot slot))
+                return false;
         }
+
         // create dictionary with needed items ID
         Dictionary<int, int> items = new Dictionary<int, int>();
         foreach (var item in _materials.Select(material => material.ItemObject).ToList())
@@ -86,11 +91,11 @@ public class CraftingRecipe : ScriptableObject
     // put results in inventory
     public void Craft(PlayerInventoryController player)
     {
-        InventoryHolder[] inventoryHolders = player.GetComponents<InventoryHolder>();
-
         // iterate materials and remove them from static inventories
         foreach (var item in _materials)
         {
+            var inventoryHolders = player.GetComponents<InventoryHolder>();
+
             var itemObject = item.ItemObject;
             var itemAmount = item.Amount;
 
@@ -103,13 +108,11 @@ public class CraftingRecipe : ScriptableObject
         // add results in static inventories
         foreach (var item in _results)
         {
+            var inventoryHolder = item.ItemObject.GetInventoryType(player);
             var itemObject = item.ItemObject;
             var itemAmount = item.Amount;
 
-            foreach (var inventory in inventoryHolders)
-            {
-                inventory.InventorySystem.AddToInventory(itemObject, itemAmount, out itemAmount);
-            }
+            inventoryHolder.InventorySystem.AddToInventory(itemObject, itemAmount, out itemAmount);
         }
     }
 

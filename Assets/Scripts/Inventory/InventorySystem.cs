@@ -135,6 +135,12 @@ public class InventorySystem
         return freeSlot != null ? true : false;
     }
 
+    public bool HasFreeSlotCount(out int slotCount)
+    {
+        slotCount = InventorySlots.FindAll(slot => slot.ID == -1).Count;
+        return slotCount != 0 ? true : false;
+    }
+
     public void RemoveItemAmount(ItemObject itemToRemove, int amount, out int amountLeft)
     {
         amountLeft = amount;

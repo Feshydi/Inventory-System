@@ -21,15 +21,6 @@ public class CraftSystem
 
     #endregion
 
-    #region Constructors
-
-    //public CraftSystem(int size)
-    //{
-    //    _craftingRecipes = new List<CraftingRecipe>(size);
-    //}
-
-    #endregion
-
     #region Methods
 
     #endregion

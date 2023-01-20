@@ -98,6 +98,44 @@ public abstract class ItemObject : ScriptableObject
 
     #region Methods
 
+    public InventoryHolder GetInventoryType(PlayerInventoryController player)
+    {
+        switch (this)
+        {
+            case var value when value.GetType().IsSubclassOf(typeof(Sword)):
+                if (player.TryGetComponent(out WeaponInventoryHolder weaponHolder))
+                    return weaponHolder;
+                break;
+            //case var value when value.GetType().IsSubclassOf(typeof(BowAndArrow)):
+            //    if (player.TryGetComponent(out BowAndArrowInventoryHolder bowAndArrowHolder))
+            //        return bowAndArrowHolder;
+            //    break;
+            //case var value when value.GetType().IsSubclassOf(typeof(Shield)):
+            //    if (player.TryGetComponent(out ShieldInventoryHolder shieldHolder))
+            //        return shieldHolder;
+            //    break;
+            case var value when value.GetType().IsSubclassOf(typeof(Equipment)):
+                if (player.TryGetComponent(out ArmorInventoryHolder armorHolder))
+                    return armorHolder;
+                break;
+            //case var value when value.GetType().IsSubclassOf(typeof(Material)):
+            //    if (player.TryGetComponent(out MaterialInventoryHolder materialHolder))
+            //        return materialHolder;
+            //    break;
+            //case var value when value.GetType().IsSubclassOf(typeof(Food)):
+            //case var value1 when value1.GetType().IsSubclassOf(typeof(Potion)):
+            case var value when value.GetType() == typeof(RestorationPotion):
+                if (player.TryGetComponent(out FoodInventoryHolder foodHolder))
+                    return foodHolder;
+                break;
+            case var value when value.GetType().IsSubclassOf(typeof(Default)):
+                if (player.TryGetComponent(out KeyItemsInventoryHolder keyItemsHolder))
+                    return keyItemsHolder;
+                break;
+        }
+        return null;
+    }
+
     public override string ToString()
     {
         return "";

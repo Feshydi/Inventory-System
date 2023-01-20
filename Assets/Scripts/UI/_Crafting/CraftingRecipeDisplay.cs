@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-using Palmmedia.ReportGenerator.Core.Logging;
 
 public class CraftingRecipeDisplay : MonoBehaviour
 {
@@ -16,15 +15,15 @@ public class CraftingRecipeDisplay : MonoBehaviour
     private PlayerInventoryController _player;
 
     [SerializeField]
-    private CraftKeeper _craftKeeper;
-
-    [SerializeField]
     private CraftSystem _craftSystem;
 
     [SerializeField]
     private Dictionary<Button, CraftingRecipe> _buttonForCraft;
 
     [Header("Customizable settings")]
+    [SerializeField]
+    private CanvasGroup _parentCanvasGroup;
+
     [SerializeField]
     private GameObject _recipePrefab;
 
@@ -35,7 +34,7 @@ public class CraftingRecipeDisplay : MonoBehaviour
     private Button _buttonPrefab;
 
     [SerializeField]
-    private Description _description;
+    private InventoryDescription _description;
 
     [SerializeField]
     private Logger _logger;
@@ -54,15 +53,22 @@ public class CraftingRecipeDisplay : MonoBehaviour
 
     private void Awake()
     {
+        _craftSystem = new CraftSystem();
         _buttonForCraft = new Dictionary<Button, CraftingRecipe>();
+    }
+
+    private void Update()
+    {
+        if (_player != null && _parentCanvasGroup.alpha == 0)
+            Clear();
     }
 
     public void Init(PlayerInventoryController player, CraftKeeper craftKeeper)
     {
+        Clear();
+
         _player = player;
-        _craftKeeper = craftKeeper;
-        _craftSystem = new CraftSystem();
-        foreach (var recipe in _craftKeeper.CraftSystem.CraftingRecipes)
+        foreach (var recipe in craftKeeper.CraftSystem.CraftingRecipes)
         {
             _craftSystem.CraftingRecipes.Add(recipe);
         }
@@ -72,8 +78,6 @@ public class CraftingRecipeDisplay : MonoBehaviour
 
     public bool DisplayCraftingRecipes()
     {
-        Clear();
-
         // create every recipe
         foreach (var craftingRecipe in _craftSystem.CraftingRecipes)
         {
@@ -124,6 +128,9 @@ public class CraftingRecipeDisplay : MonoBehaviour
 
     private void Clear()
     {
+        _player = null;
+        _craftSystem = new CraftSystem();
+
         _buttonForCraft = new Dictionary<Button, CraftingRecipe>();
 
         foreach (Transform _transform in transform)

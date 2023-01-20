@@ -56,7 +56,7 @@ public class UIManager : MonoBehaviour
 
     #region Methods
 
-    private void Awake()
+    private void Start()
     {
         _currentUIState = UIState.Close;
 
@@ -151,7 +151,7 @@ public class UIManager : MonoBehaviour
                 ui.Add(_background);
                 ui.Add(_inventory);
                 ui.Add(_craft);
-                _windowTitle.text = "Craft";
+                _windowTitle.text = "Crafting";
                 break;
             case UIState.ContainerOpen:
                 ui.Add(_background);
