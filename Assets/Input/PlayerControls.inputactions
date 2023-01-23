@@ -55,7 +55,7 @@
                 {
                     "name": "",
                     "id": "d5c06dec-b6c9-4e4f-9d6d-b87285666b5c",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -185,6 +185,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ItemMenu",
+                    "type": "Button",
+                    "id": "cdc11487-44ea-43dc-87aa-cc94e51e66f2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -207,6 +216,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Remove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cd6e70a6-5a84-4e41-b4eb-7bd6d29edb61",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ItemMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

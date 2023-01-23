@@ -2,42 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Class used just as list of item types
-// #to do:
-// Create all the type and object classes
-public class TypeItem
-{
-    public enum ItemType
-    {
-
-        // Equipment
-        Helmet,
-        Chest,
-        Gloves,
-        Leggings,
-        Boots,
-        Jewelry,
-        Ring,
-
-        // Weapons
-        Sword,
-
-        // Tools
-        Axe,
-        Pickaxe,
-        Mallet,
-
-        // Should be increased
-        Potion,
-        HPRestorationPotion,
-
-        Food,
-
-        Default,
-
-    }
-}
-
 [System.Serializable]
 public abstract class ItemObject : ScriptableObject
 {
@@ -45,20 +9,20 @@ public abstract class ItemObject : ScriptableObject
     #region Fields
 
     [SerializeField]
-    private int _id;
+    protected int _id;
 
     [SerializeField]
-    private Sprite _icon;
+    protected Sprite _icon;
 
     [SerializeField]
-    private string _title;
+    protected string _title;
 
     [SerializeField]
     [TextArea(15, 20)]
-    private string _description;
+    protected string _description;
 
     [SerializeField]
-    private int _maxStackSize;
+    protected int _maxStackSize;
 
     #endregion
 
@@ -102,33 +66,33 @@ public abstract class ItemObject : ScriptableObject
     {
         switch (this)
         {
-            case var value when value.GetType().IsSubclassOf(typeof(Sword)):
+            case var value when value.GetType() == typeof(Sword):
                 if (player.TryGetComponent(out WeaponInventoryHolder weaponHolder))
                     return weaponHolder;
                 break;
-            //case var value when value.GetType().IsSubclassOf(typeof(BowAndArrow)):
-            //    if (player.TryGetComponent(out BowAndArrowInventoryHolder bowAndArrowHolder))
-            //        return bowAndArrowHolder;
-            //    break;
-            //case var value when value.GetType().IsSubclassOf(typeof(Shield)):
-            //    if (player.TryGetComponent(out ShieldInventoryHolder shieldHolder))
-            //        return shieldHolder;
-            //    break;
+            case var value when value.GetType().IsSubclassOf(typeof(Bow)):
+            case var value1 when value1.GetType().IsSubclassOf(typeof(Arrow)):
+                if (player.TryGetComponent(out BowAndArrowInventoryHolder bowAndArrowHolder))
+                    return bowAndArrowHolder;
+                break;
+            case var value when value.GetType().IsSubclassOf(typeof(Shield)):
+                if (player.TryGetComponent(out ShieldInventoryHolder shieldHolder))
+                    return shieldHolder;
+                break;
             case var value when value.GetType().IsSubclassOf(typeof(Equipment)):
                 if (player.TryGetComponent(out ArmorInventoryHolder armorHolder))
                     return armorHolder;
                 break;
-            //case var value when value.GetType().IsSubclassOf(typeof(Material)):
-            //    if (player.TryGetComponent(out MaterialInventoryHolder materialHolder))
-            //        return materialHolder;
-            //    break;
-            //case var value when value.GetType().IsSubclassOf(typeof(Food)):
-            //case var value1 when value1.GetType().IsSubclassOf(typeof(Potion)):
-            case var value when value.GetType() == typeof(RestorationPotion):
+            case var value when value.GetType() == typeof(Materials):
+                if (player.TryGetComponent(out MaterialInventoryHolder materialHolder))
+                    return materialHolder;
+                break;
+            case var value when value.GetType().IsSubclassOf(typeof(Food)):
+            case var value1 when value1.GetType().IsSubclassOf(typeof(Potion)):
                 if (player.TryGetComponent(out FoodInventoryHolder foodHolder))
                     return foodHolder;
                 break;
-            case var value when value.GetType().IsSubclassOf(typeof(Default)):
+            case var value when value.GetType() == typeof(KeyItems):
                 if (player.TryGetComponent(out KeyItemsInventoryHolder keyItemsHolder))
                     return keyItemsHolder;
                 break;

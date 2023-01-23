@@ -21,23 +21,11 @@ public class Sword : ItemObject
 
     #region Properties
 
-    public int AttackDamage
-    {
-        get { return _attackDamage; }
-        set { _attackDamage = value; }
-    }
+    public int AttackDamage => _attackDamage;
 
-    public float AttackRate
-    {
-        get { return _attackRate; }
-        set { _attackRate = value; }
-    }
+    public float AttackRate => _attackRate;
 
-    public float AttackRange
-    {
-        get { return _attackRange; }
-        set { _attackRange = value; }
-    }
+    public float AttackRange => _attackRange;
 
     #endregion
 

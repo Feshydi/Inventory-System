@@ -17,9 +17,8 @@ MonoBehaviour:
     Amount: 3
   - ItemObject: {fileID: 11400000, guid: 99640678d9939447984fcc52270f5e8c, type: 2}
     Amount: 10
-  - ItemObject: {fileID: 11400000, guid: 99e85608056a242eca807b76f5650f3f, type: 2}
+  - ItemObject: {fileID: 11400000, guid: 5924a34f054bd43e68a57989f5e9dc46, type: 2}
     Amount: 20
   _results:
   - ItemObject: {fileID: 11400000, guid: f7d5e5e46648f44d0aaeb7f5e6826d8f, type: 2}
     Amount: 3
-  _craftingTime: 0

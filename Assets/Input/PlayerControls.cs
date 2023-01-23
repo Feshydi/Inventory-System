@@ -77,7 +77,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d5c06dec-b6c9-4e4f-9d6d-b87285666b5c"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -207,6 +207,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ItemMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""cdc11487-44ea-43dc-87aa-cc94e51e66f2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -231,6 +240,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Remove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd6e70a6-5a84-4e41-b4eb-7bd6d29edb61"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -248,6 +268,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_Split = m_Inventory.FindAction("Split", throwIfNotFound: true);
         m_Inventory_Remove = m_Inventory.FindAction("Remove", throwIfNotFound: true);
+        m_Inventory_ItemMenu = m_Inventory.FindAction("ItemMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -374,12 +395,14 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private IInventoryActions m_InventoryActionsCallbackInterface;
     private readonly InputAction m_Inventory_Split;
     private readonly InputAction m_Inventory_Remove;
+    private readonly InputAction m_Inventory_ItemMenu;
     public struct InventoryActions
     {
         private @PlayerControls m_Wrapper;
         public InventoryActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Split => m_Wrapper.m_Inventory_Split;
         public InputAction @Remove => m_Wrapper.m_Inventory_Remove;
+        public InputAction @ItemMenu => m_Wrapper.m_Inventory_ItemMenu;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -395,6 +418,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Remove.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnRemove;
                 @Remove.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnRemove;
                 @Remove.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnRemove;
+                @ItemMenu.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnItemMenu;
+                @ItemMenu.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnItemMenu;
+                @ItemMenu.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnItemMenu;
             }
             m_Wrapper.m_InventoryActionsCallbackInterface = instance;
             if (instance != null)
@@ -405,6 +431,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Remove.started += instance.OnRemove;
                 @Remove.performed += instance.OnRemove;
                 @Remove.canceled += instance.OnRemove;
+                @ItemMenu.started += instance.OnItemMenu;
+                @ItemMenu.performed += instance.OnItemMenu;
+                @ItemMenu.canceled += instance.OnItemMenu;
             }
         }
     }
@@ -421,5 +450,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     {
         void OnSplit(InputAction.CallbackContext context);
         void OnRemove(InputAction.CallbackContext context);
+        void OnItemMenu(InputAction.CallbackContext context);
     }
 }
